@@ -27,7 +27,7 @@ terraform.tfvars
 .gitmodules
 
 # Kubespray
-dependencies/kubespray
+# dependencies/kubespray
 
 # Misc
 iac.zip

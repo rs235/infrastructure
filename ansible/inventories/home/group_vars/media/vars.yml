@@ -7,8 +7,8 @@ cifs_mounts:
     password: "{{ smb_common_password }}"
 
   - server: truenas.home.arpa
-    share: media-ssd
-    mount_point: /mnt/media-ssd
+    share: media
+    mount_point: /mnt/media
     username: media
     password: "{{ smb_media_password }}"
 

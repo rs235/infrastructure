@@ -31,4 +31,3 @@ qbittorrent_group: qbittorrent
 # List of mount points for qBittorrent service template.
 cifs_mount_points:
   - /mnt/downloads
-  - /mnt/media-ssd

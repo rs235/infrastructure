@@ -21,13 +21,13 @@ module "syncthing" {
 
   # RAM
 
-  memory = 2048
+  memory = 1024
 
   # Disks
 
   storage = module.common.proxmox.storage
 
-  disk_size = 32
+  disk_size = 16
 
   # Network
 

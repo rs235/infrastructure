@@ -1,19 +1,5 @@
 ---
 linux_users:
-  - name: ansible
-    comment: "Ansible Automation"
-    group: ansible
-    uid: 1000
-    gid: 1000
-    create_home: true
-    home: /home/ansible
-    system: false
-    shell: /bin/bash
-    groups:
-      - sudo
-    ssh_key: "{{ ssh_key_ansible }}"
-    sudo_nopasswd: true
-
   - name: rs
     comment: "Admin Account"
     group: rs
@@ -45,15 +31,8 @@ cifs_mounts:
     username: syncthing
     password: "{{ smb_syncthing_password }}"
 
-  - server: truenas.home.arpa
-    share: photos
-    mount_point: /mnt/photos
-    username: syncthing
-    password: "{{ smb_syncthing_password }}"
-
 cifs_mount_points:
   - /mnt/rs
-  - /mnt/photos
 
 syncthing_user: syncthing
 syncthing_group: syncthing
