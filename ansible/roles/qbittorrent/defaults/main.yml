@@ -1,0 +1,12 @@
+---
+# User and group
+qbittorrent_user: qbittorrent
+qbittorrent_group: qbittorrent
+
+# Location of qBittorrent configuration files
+qbittorrent_config_dir: /home/qbittorrent/.config/qBittorrent
+
+# Mount points for service template
+smb_mount_points:
+  - /mnt/downloads
+  - /mnt/media-ssd

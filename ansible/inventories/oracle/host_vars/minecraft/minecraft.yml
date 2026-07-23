@@ -1,0 +1,36 @@
+---
+# SSH configuration
+ansible_user: ansible
+ansible_ssh_private_key_file: ~/.ssh/id_ed25519_ansible
+# ansible_ssh_common_args: "-o IdentitiesOnly=yes"
+
+# Privilege escalation
+ansible_become: true
+ansible_become_method: sudo
+
+domain_name: home.arpa
+
+smb_mounts:
+  - server: "truenas.{{ domain_name }}"
+    share: common
+    mount_point: /mnt/common
+    username: common
+    password: "{{ smb_common_password }}"
+
+linux_users:
+  - name: rs
+    comment: "Ryan Smith"
+    uid: 1001
+    group: rs
+    gid: 1001
+    create_home: true
+    home: /home/rs
+    system: false
+    shell: /bin/bash
+    groups:
+      - sudo
+    ssh_key: "{{ ssh_key_rs }}"
+
+docker_users:
+  - rs
+  - ansible

@@ -1,0 +1,33 @@
+# Ansible
+*.retry
+ansible.log
+
+# Linux
+.directory
+
+# IDE
+.vscode/
+*.kate-swp
+
+# Python
+.venv
+
+# Terraform
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+.terraform
+.terraform.*
+
+# Secrets
+.terraform-secrets
+.ansible-secrets
+
+# Git
+.gitmodules
+
+# Kubespray
+dependencies/kubespray
+
+# Misc
+iac.zip

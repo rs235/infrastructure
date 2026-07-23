@@ -1,0 +1,40 @@
+module "LXC" {
+  source = "../../../modules/proxmox/lxc"
+
+  # General
+  name        = "LXC"
+  vm_id       = 200
+  target_node = module.common.proxmox.node
+  unprivileged = true
+  template    = "local:vztmpl/ubuntu-26.04-standard_26.04-1_amd64.tar.zst"
+  os_type = "ubuntu"
+
+  # CPU
+  cores = 1
+
+  # Memory
+  memory = 512
+  swap   = 512
+
+  # Disks
+  storage     = module.common.proxmox.storage
+  rootfs_size = 8
+
+  # Network
+  bridge    = module.common.network.bridge
+  firewall  = true
+  # vlan_id = module.common.network.vlan_id
+  address   = "10.10.10.XXX/24"
+  gateway   = "10.10.10.1"
+
+  # User
+  # password  =
+  ssh_key   = var.ssh_key
+
+  # Features
+  nesting = true
+  keyctl  = false
+
+  # Console
+  console = true
+}

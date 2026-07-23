@@ -1,0 +1,9 @@
+---
+- name: Ensure kubectl access from local machine.
+  hosts: k8s-cp1
+  roles:
+    - kubeconfig_local
+  vars:
+    local_owner: rs
+    local_group: rs
+    local_home: /home/rs

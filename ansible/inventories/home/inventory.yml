@@ -1,0 +1,75 @@
+---
+all:
+  children:
+
+    # Home environment
+    home:
+      children:
+
+        # Network infrastructure
+        network:
+          hosts:
+            opnsense:
+              ansible_host: opnsense.home.arpa
+
+        # Self hosted services
+        services:
+          hosts:
+            sandbox:
+              ansible_host: sandbox.home.arpa
+
+            syncthing:
+              ansible_host: syncthing.home.arpa
+
+            minecraft:
+              ansible_host: minecraft.home.arpa
+
+        # Media stack
+        media:
+          hosts:
+            qbittorrent:
+              ansible_host: qbittorrent.home.arpa
+
+        # Kubespray
+        k8s_cluster:
+          children:
+
+            # Control Plane
+            kube_control_plane:
+              hosts:
+                k8s-cp1:
+                  ansible_host: k8s-cp1.home.arpa
+                  ip: 10.10.10.31
+                  etcd_member_name: etcd1
+
+                k8s-cp2:
+                  ansible_host: k8s-cp2.home.arpa
+                  ip: 10.10.10.32
+                  etcd_member_name: etcd2
+
+                k8s-cp3:
+                  ansible_host: k8s-cp3.home.arpa
+                  ip: 10.10.10.33
+                  etcd_member_name: etcd3
+
+            # Worker nodes
+            kube_node:
+              hosts:
+                k8s-w1:
+                  ansible_host: k8s-w1.home.arpa
+                  ip: 10.10.10.34
+
+                k8s-w2:
+                  ansible_host: k8s-w2.home.arpa
+                  ip: 10.10.10.35
+
+                k8s-w3:
+                  ansible_host: k8s-w3.home.arpa
+                  ip: 10.10.10.36
+            # ETCD
+            etcd:
+              hosts:
+                k8s-cp1:
+                k8s-cp2:
+                k8s-cp3:
+

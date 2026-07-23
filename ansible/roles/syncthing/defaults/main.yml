@@ -1,0 +1,12 @@
+---
+# User and group
+syncthing_user: syncthing
+syncthing_group: syncthing
+
+# Location of qBittorrent configuration files
+syncthing_config_dir: /home/syncthing/...
+
+# Mount points for service template
+smb_mount_points:
+  - /mnt/rs
+  - /mnt/photos

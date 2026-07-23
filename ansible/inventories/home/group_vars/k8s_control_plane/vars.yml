@@ -1,0 +1,9 @@
+---
+kubectl_users:
+  - name: ansible
+    group: ansible
+    home: /home/ansible
+
+  - name: rs
+    group: rs
+    home: /home/rs

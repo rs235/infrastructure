@@ -1,0 +1,7 @@
+---
+- name: Configure qBittorrent VM
+  hosts: qbittorrent
+  roles:
+    - linux_users
+    - cifs_mount
+    - qbittorrent

@@ -1,0 +1,9 @@
+---
+- name: Prepare EC2 instance for project
+  hosts: project
+  become: true
+
+  roles:
+    - user_management
+    - docker
+    - mumble_server

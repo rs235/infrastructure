@@ -1,0 +1,13 @@
+---
+all:
+  children:
+
+    # Oracle Cloud
+    oracle:
+      children:
+
+        # Oracle free
+        amperea1:
+          hosts:
+            minecraft:
+              ansible_host: minecraft.somedomain.example

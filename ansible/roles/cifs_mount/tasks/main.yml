@@ -1,0 +1,48 @@
+---
+- name: Install cifs-utils for SMB support (state=present is optional)
+  ansible.builtin.apt:
+    name: cifs-utils
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Ensure /etc/samba directory exists
+  ansible.builtin.file:
+    path: /etc/samba
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create SMB credentials file
+  ansible.builtin.copy:
+    dest: "/etc/samba/credentials-{{ cifs.username }}"
+    owner: root
+    group: root
+    mode: "0600"
+    content: |
+      username={{ cifs.username }}
+      password={{ cifs.password }}
+  loop: "{{ cifs_mounts }}"
+  loop_control:
+    loop_var: cifs
+
+- name: Create mount points
+  ansible.builtin.file:
+    path: "{{ cifs.mount_point }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ cifs_mounts }}"
+  loop_control:
+    loop_var: cifs
+
+- name: Mount SMB shares
+  ansible.posix.mount:
+    src: "//{{ cifs.server }}/{{ cifs.share }}"
+    path: "{{ cifs.mount_point }}"
+    fstype: cifs
+    opts: "credentials=/etc/samba/credentials-{{ cifs.username }},uid=1500,gid=1500,iocharset=utf8,vers=3.0"
+    state: mounted
+  loop: "{{ cifs_mounts }}"
+  loop_control:
+    loop_var: cifs
