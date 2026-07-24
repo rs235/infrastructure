@@ -5,15 +5,48 @@ cifs_mounts:
     mount_point: /mnt/common
     username: common
     password: "{{ smb_common_password }}"
+    options:
+      - uid=1500
+      - gid=1500
+      - _netdev
+      - x-systemd.automount
+      - iocharset=utf8
+      - vers=3.1.1
+      - serverino
+      - cache=strict
+      - actimeo=1
+      - noperm
 
   - server: truenas.home.arpa
     share: media
     mount_point: /mnt/media
     username: media
     password: "{{ smb_media_password }}"
+    options:
+      - uid=1500
+      - gid=1500
+      - _netdev
+      - x-systemd.automount
+      - iocharset=utf8
+      - vers=3.1.1
+      - serverino
+      - cache=strict
+      - actimeo=1
+      - noperm
 
   - server: truenas.home.arpa
     share: downloads
     mount_point: /mnt/downloads
     username: downloads
     password: "{{ smb_downloads_password }}"
+    options:
+      - uid=1500
+      - gid=1500
+      - _netdev
+      - x-systemd.automount
+      - iocharset=utf8
+      - vers=3.1.1
+      - serverino
+      - cache=strict
+      - actimeo=1
+      - noperm

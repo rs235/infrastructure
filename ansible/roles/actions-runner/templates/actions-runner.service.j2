@@ -1,0 +1,16 @@
+[Unit]
+Description=GitHub Actions Runner
+After=network-online.target
+
+[Service]
+ExecStart=/opt/actions-runner/runsvc.sh
+User="{{ runner_user }}"
+WorkingDirectory=/opt/actions-runner
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec=5min
+
+[Install]
+WantedBy=multi-user.target
+
+# ./config.sh --unattended --url "{{ runner_repo }}" --token "{{ runner_token }}" --runnergroup Default --name infra-runner-home --labels linux,x64,self-hosted,infra --work _work

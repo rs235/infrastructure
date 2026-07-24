@@ -30,6 +30,17 @@ cifs_mounts:
     mount_point: /mnt/rs
     username: syncthing
     password: "{{ smb_syncthing_password }}"
+    options:
+      - uid=1500
+      - gid=1500
+      - _netdev
+      - x-systemd.automount
+      - iocharset=utf8
+      - vers=3.1.1
+      - serverino
+      - cache=strict
+      - actimeo=1
+      - noperm
 
 cifs_mount_points:
   - /mnt/rs

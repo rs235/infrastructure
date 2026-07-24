@@ -41,7 +41,8 @@
     src: "//{{ cifs.server }}/{{ cifs.share }}"
     path: "{{ cifs.mount_point }}"
     fstype: cifs
-    opts: "credentials=/etc/samba/credentials-{{ cifs.username }},uid=1500,gid=1500,iocharset=utf8,vers=3.0"
+    opts: >-
+      credentials=/etc/samba/credentials-{{ cifs.username }},{{ (cifs.options | default(options)) | join(',') }}
     state: mounted
   loop: "{{ cifs_mounts }}"
   loop_control:

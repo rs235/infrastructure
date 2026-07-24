@@ -24,6 +24,9 @@ all:
             minecraft:
               ansible_host: minecraft.home.arpa
 
+            github-runner:
+              ansible_host: github-runner.home.arpa
+
         # Media stack
         media:
           hosts:

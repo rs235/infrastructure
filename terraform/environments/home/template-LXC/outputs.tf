@@ -1,17 +1,17 @@
 output "name" {
   value = {
-    syncthing   = module.syncthing.name
+    LXC   = module.LXC.name
   }
 }
 
 output "vm_id" {
   value = {
-    syncthing   = module.syncthing.vm_id
+    LXC   = module.LXC.vm_id
   }
 }
 
 output "fqdn" {
   value = {
-    syncthing   = module.syncthing.fqdn
+    LXC   = module.LXC.fqdn
   }
 }

@@ -1,2 +1,13 @@
 ---
 cifs_mounts: []
+options:
+  - uid=1500
+  - gid=1500
+  - _netdev
+  - x-systemd.automount
+  - iocharset=utf8
+  - vers=3.1.1
+  - serverino
+  - cache=strict
+  - actimeo=1
+  - noperm
