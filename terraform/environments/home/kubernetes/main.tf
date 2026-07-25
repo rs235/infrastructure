@@ -17,7 +17,7 @@ module "k8s-cp1" {
 
   # CPU
 
-  cores = 1
+  cores = 3
 
   # Memory
 
