@@ -21,7 +21,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: terraform/environments/home/kubernetes
+        working-directory: terraform/environments/home/sandbox
 
     steps:
       - uses: actions/checkout@v4
