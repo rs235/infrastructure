@@ -17,7 +17,7 @@ module "sandbox" {
 
   # CPU
 
-  cores = 3
+  cores = 1
 
   # RAM
 
