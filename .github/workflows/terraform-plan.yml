@@ -9,8 +9,6 @@ jobs:
   terraform:
     runs-on:
       - self-hosted
-      - linux
-      - home
     
     env:
       TF_INPUT: "0"
