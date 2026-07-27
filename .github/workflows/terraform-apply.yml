@@ -44,6 +44,15 @@ jobs:
       - name: Terraform apply
         run: terraform apply -input=false -auto-approve
 
+      - name: Create Python virtual environment
+        run: |
+          python3 -m venv .venv
+
+      - name: Install Ansible
+        run: |
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -r ansible/requirements.txt
+
       - name: Wait for machines
         run: |
           ansible all \
