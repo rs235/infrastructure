@@ -12,9 +12,6 @@ concurrency:
   group: terraform-home-sandbox
   cancel-in-progress: false
 
-env:
-  WORK_DIR: "terraform/environments/home/sandbox"
-
 jobs:
   terraform:
     runs-on:
@@ -29,7 +26,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ${{ env.WORK_DIR }}
+        working-directory: "terraform/environments/home/sandbox"
 
     steps:
       - uses: actions/checkout@v6
@@ -67,14 +64,14 @@ jobs:
       - name: Install Ansible
         run: |
           .venv/bin/python -m pip install --upgrade pip
-          .venv/bin/python -m pip install -r ansible/requirements.txt
+          .venv/bin/python -m pip install -r requirements.txt
 
       - name: Wait for machines
         run: |
           ansible all \
-            -i ansible/inventories/home/inventory.yml \
+            -i inventories/home/inventory.yml \
             -m ansible.builtin.wait_for_connection \
             -a "timeout=300"
 
       - name: Ansible Configure
-        run: ansible-playbook -i ansible/inventories/home/inventory.yml ansible/playbooks/sandbox.yml
+        run: ansible-playbook -i inventories/home/inventory.yml ansible/playbooks/sandbox.yml
