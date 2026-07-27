@@ -44,4 +44,12 @@ jobs:
       - name: Terraform apply
         run: terraform apply -input=false -auto-approve
 
-        
+      - name: Wait for machines
+        run: |
+          ansible all \
+            -i ansible/inventories/home/inventory.yml \
+            -m ansible.builtin.wait_for_connection \
+            -a "timeout=300"
+
+      - name: Ansible Configure
+        run: ansible-playbook -i ansible/inventories/home/inventory.yml ansible/playbooks/sandbox.yml
