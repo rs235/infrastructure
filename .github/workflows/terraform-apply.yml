@@ -44,6 +44,22 @@ jobs:
       - name: Terraform apply
         run: terraform apply -input=false -auto-approve
 
+  ansible:
+    runs-on:
+      - self-hosted
+    
+    env:
+      PROXMOX_VE_ENDPOINT: ${{ secrets.PROXMOX_VE_ENDPOINT }}
+      PROXMOX_VE_API_TOKEN: ${{ secrets.PROXMOX_VE_API_TOKEN }}
+      PROXMOX_VE_INSECURE: ${{ secrets.PROXMOX_VE_INSECURE }}
+
+    defaults:
+      run:
+        working-directory: ansible
+
+    steps:
+      - uses: actions/checkout@v6
+
       - name: Create Python virtual environment
         run: |
           python3 -m venv .venv
