@@ -6,5 +6,9 @@ terraform {
     }
   }
 
+  backend "local" {
+    path = "/opt/terraform-state/proxmox/terraform.tfstate"
+  }
+
   required_version = ">= 1.15"
 }
