@@ -22,7 +22,7 @@ jobs:
     
     env:
       TF_INPUT: "0"
-      TF_LOG: DEBUG
+      TF_LOG: ERROR
       PROXMOX_VE_ENDPOINT: ${{ secrets.PROXMOX_VE_ENDPOINT }}
       PROXMOX_VE_API_TOKEN: ${{ secrets.PROXMOX_VE_API_TOKEN }}
       PROXMOX_VE_INSECURE: ${{ secrets.PROXMOX_VE_INSECURE }}
