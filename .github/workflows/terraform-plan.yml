@@ -5,6 +5,17 @@ on:
     paths:
       - "terraform/**"
 
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: terraform-home-sandbox
+  cancel-in-progress: false
+
+env:
+  WORK_DIR: "terraform/environments/home/sandbox"
+
 jobs:
   terraform:
     runs-on:
@@ -12,29 +23,45 @@ jobs:
     
     env:
       TF_INPUT: "0"
-      TF_LOG: DEBUG
+      TF_LOG: ERROR
       PROXMOX_VE_ENDPOINT: ${{ secrets.PROXMOX_VE_ENDPOINT }}
       PROXMOX_VE_API_TOKEN: ${{ secrets.PROXMOX_VE_API_TOKEN }}
       PROXMOX_VE_INSECURE: ${{ secrets.PROXMOX_VE_INSECURE }}
 
     defaults:
       run:
-        working-directory: terraform/environments/home/sandbox
+        working-directory: ${{ env.WORK_DIR }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.15.0
 
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+          
       - name: Terraform init
-        run: terraform init
-
+        run: terraform init -input=false
+        
       - name: Terraform validate
         run: terraform validate
 
       - name: Terraform plan
-        run: terraform plan -input=false
+        run: terraform plan -input=false -no-color -out=tfplan
 
-        
+      - name: Terraform show
+        run: terraform show -no-color tfplan > tfplan.txt
+
+      - name: Comment Terraform plan
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
+        with:
+          path: terraform/environments/home/sandbox/tfplan.txt
+
+      - name: Upload Terraform plan
+        uses: actions/upload-artifact@v7
+        with:
+          name: terraform-plan
+          path: ${{ env.WORK_DIR }}/tfplan.txt
+

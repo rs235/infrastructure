@@ -1,0 +1,64 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: terraform-home-sandbox
+  cancel-in-progress: false
+
+env:
+  WORK_DIR: "terraform/environments/home/sandbox"
+
+jobs:
+  terraform:
+    runs-on:
+      - self-hosted
+    
+    env:
+      TF_INPUT: "0"
+      TF_LOG: ERROR
+      PROXMOX_VE_ENDPOINT: ${{ secrets.PROXMOX_VE_ENDPOINT }}
+      PROXMOX_VE_API_TOKEN: ${{ secrets.PROXMOX_VE_API_TOKEN }}
+      PROXMOX_VE_INSECURE: ${{ secrets.PROXMOX_VE_INSECURE }}
+
+    defaults:
+      run:
+        working-directory: ${{ env.WORK_DIR }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.15.0
+
+      - name: Terraform init
+        run: terraform init -input=false
+
+      - name: Terraform apply
+        run: terraform apply -input=false -auto-approve
+
+      - name: Create Python virtual environment
+        run: |
+          python3 -m venv .venv
+
+      - name: Install Ansible
+        run: |
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -r ansible/requirements.txt
+
+      - name: Wait for machines
+        run: |
+          ansible all \
+            -i ansible/inventories/home/inventory.yml \
+            -m ansible.builtin.wait_for_connection \
+            -a "timeout=300"
+
+      - name: Ansible Configure
+        run: ansible-playbook -i ansible/inventories/home/inventory.yml ansible/playbooks/sandbox.yml
