@@ -73,5 +73,14 @@ jobs:
             -m ansible.builtin.wait_for_connection \
             -a "timeout=300"
 
+      - name: Create vault password file
+        run: |
+          printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
+          chmod 600 .vault_pass
+
       - name: Ansible Configure
-        run: .venv/bin/ansible-playbook -i inventories/home/inventory.yml ansible/playbooks/sandbox.yml
+        run: |
+          .venv/bin/ansible-playbook \
+          -i inventories/home/inventory.yml \
+          --vault-password-file .vault_pass \
+          ansible/playbooks/sandbox.yml
