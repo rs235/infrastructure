@@ -68,10 +68,10 @@ jobs:
 
       - name: Wait for machines
         run: |
-          ansible all \
+          .venv/bin/ansible all \
             -i inventories/home/inventory.yml \
             -m ansible.builtin.wait_for_connection \
             -a "timeout=300"
 
       - name: Ansible Configure
-        run: ansible-playbook -i inventories/home/inventory.yml ansible/playbooks/sandbox.yml
+        run: .venv/bin/ansible-playbook -i inventories/home/inventory.yml ansible/playbooks/sandbox.yml
