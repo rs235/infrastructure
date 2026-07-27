@@ -55,7 +55,7 @@ jobs:
         run: terraform show -no-color tfplan > tfplan.txt
 
       - name: Comment Terraform plan
-        uses: marocchino/sticky-pull-request-comment@5770ad5
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
         with:
           path: terraform/environments/home/sandbox/tfplan.txt
 
@@ -65,4 +65,3 @@ jobs:
           name: terraform-plan
           path: ${{ env.WORK_DIR }}/tfplan.txt
 
-        
