@@ -57,8 +57,9 @@ jobs:
         working-directory: ansible
 
     steps:
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+      - uses: actions/setup-python@v7
         with:
+          # Pinned major and minor version to ensure reproducibility but allow newest patches.
           python-version: "3.13"
 
       - name: Create Python virtual environment
