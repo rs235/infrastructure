@@ -33,9 +33,9 @@ jobs:
         working-directory: ${{ env.WORK_DIR }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@vd23441a48e516b6c34aea4fa41551a30e30af803
 
-      - uses: hashicorp/setup-terraform@v4
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
           terraform_version: 1.15.0
 
@@ -60,7 +60,7 @@ jobs:
           path: terraform/environments/home/sandbox/tfplan.txt
 
       - name: Upload Terraform plan
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: terraform-plan
           path: ${{ env.WORK_DIR }}/tfplan.txt

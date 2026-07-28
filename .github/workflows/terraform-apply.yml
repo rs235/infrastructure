@@ -29,9 +29,9 @@ jobs:
         working-directory: terraform/environments/home/sandbox
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@vd23441a48e516b6c34aea4fa41551a30e30af803
 
-      - uses: hashicorp/setup-terraform@v4
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
           terraform_version: 1.15.0
 
@@ -42,6 +42,7 @@ jobs:
         run: terraform apply -input=false -auto-approve
 
   ansible:
+    needs: terraform
     runs-on:
       - self-hosted
     
@@ -55,7 +56,9 @@ jobs:
         working-directory: ansible
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.13"
 
       - name: Create Python virtual environment
         run: |
@@ -85,3 +88,7 @@ jobs:
           -i inventories/home/inventory.yml \
           --vault-password-file .vault_pass \
           playbooks/sandbox.yml
+
+      - name: Remove vault password
+        if: always()
+        run: rm -f .vault_pass
