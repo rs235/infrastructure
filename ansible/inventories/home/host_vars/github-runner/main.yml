@@ -63,12 +63,12 @@ runner_linux_group: github-runner
 github_username: rs235
 github_repo_name: infrastructure
 
-runner_token: CDWRM66LHUUVGFYUPMXREXLKMNTV6
+runner_token: "{{ github_runner_token }}"
 
 runner_url: https://github.com/actions/runner/releases/download/v2.336.0/actions-runner-linux-x64-2.336.0.tar.gz
 runner_checksum: 04cf0be1aff4c3ec3554466c39124ca250e3effd8873bb7e8d68535aa9505d5d
 
 runner_name: infra-home
 runner_group: Default
-runner_labels: self-hosted,Linux,X64,infra
+runner_labels: self-hosted,infra,home
 runner_work: _work

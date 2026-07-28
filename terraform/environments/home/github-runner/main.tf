@@ -6,8 +6,8 @@ module "github-runner" {
   vm_id       = 200
   target_node = module.common.proxmox.node
   unprivileged = true
-  template    = "local:vztmpl/debian-13-standard_13.6-1_amd64.tar.zst"
-  os_type = "debian"
+  template    = "local:vztmpl/ubuntu-26.04-standard_26.04-1_amd64.tar.zst"
+  os_type = "ubuntu"
 
   # CPU
   cores = 2
