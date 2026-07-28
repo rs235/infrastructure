@@ -1,9 +1,13 @@
 resource "proxmox_virtual_environment_vm" "vm" {
 
   # General
-  name = var.name
+  name      = var.name
   vm_id     = var.vm_id
   node_name = var.target_node
+  tags      = [
+    "terraform",
+    "dev"
+  ]
 
   # Auto start
   started = true
