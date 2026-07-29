@@ -23,6 +23,7 @@
     content: |
       username={{ cifs.username }}
       password={{ cifs.password }}
+  no_log: true
   loop: "{{ cifs_mounts }}"
   loop_control:
     loop_var: cifs
@@ -33,6 +34,7 @@
     state: directory
     mode: "0755"
   loop: "{{ cifs_mounts }}"
+  no_log: true
   loop_control:
     loop_var: cifs
 
@@ -44,6 +46,7 @@
     opts: >-
       credentials=/etc/samba/credentials-{{ cifs.username }},{{ (cifs.options | default(options)) | join(',') }}
     state: mounted
+  no_log: true
   loop: "{{ cifs_mounts }}"
   loop_control:
     loop_var: cifs
