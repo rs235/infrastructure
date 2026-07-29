@@ -66,5 +66,5 @@ jobs:
       - name: Upload Terraform plan
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: "terraform-plan-${{ inputs.working-directory }}"
+          name: "terraform-plan-${{ inputs.concurrency-group }}"
           path: "${{ inputs.working-directory }}/tfplan.txt"
