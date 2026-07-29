@@ -1,15 +1,20 @@
-name: Sandbox Plan
+name: Sandbox Apply
 
 on:
-  pull_request:
+  push:
+    branches:
+        - main
     paths:
       - "terraform/environments/home/sandbox/**"
       - "terraform/modules/proxmox/**"
       - "terraform/modules/common/**"
 
 jobs:
-  plan:
-    uses: ./.github/workflows/template-terraform-plan.yml
+  apply:
+    uses: ./.github/workflows/template-terraform-apply.yml
     with:
       working-directory: terraform/environments/home/sandbox
+      ansible-playbook: sandbox
+      ansible-group: sandbox
+      concurrency-group: terraform-home-sandbox
     secrets: inherit

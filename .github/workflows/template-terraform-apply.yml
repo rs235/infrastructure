@@ -6,12 +6,24 @@ on:
       working-directory:
         required: true
         type: string
+      
+      ansible-playbook:
+        required: true
+        type: string
+
+      ansible-group:
+        required: true
+        type: string
+
+      concurrency-group:
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: terraform-home-sandbox
+  group: ${{ inputs.concurrency-group }}
   cancel-in-progress: false
 
 jobs:
@@ -95,7 +107,7 @@ jobs:
       # Changed timeout from 300 to 5 for testing
       - name: Wait for machines
         run: |
-          "${{ runner.temp }}/venv/bin/ansible" sandbox \
+          "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-group }} \
             -i inventories/home/inventory.yml \
             --vault-password-file "${{ runner.temp }}/vault_pass" \
             -m ansible.builtin.wait_for_connection \
@@ -106,4 +118,9 @@ jobs:
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
           -i inventories/home/inventory.yml \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
-          playbooks/sandbox.yml
+          "playbooks/${{ inputs.ansible-playbook }}.yml"
+      
+      - name: Cleanup SSH keys
+        if: always()
+        run: |
+          rm -f ~/.ssh/id_ed25519_ansible

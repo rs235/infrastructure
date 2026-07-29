@@ -1,9 +1,9 @@
-name: Sandbox Plan
+name: Kubernetes Plan
 
 on:
   pull_request:
     paths:
-      - "terraform/environments/home/sandbox/**"
+      - "terraform/environments/home/kubernetes/**"
       - "terraform/modules/proxmox/**"
       - "terraform/modules/common/**"
 
@@ -11,5 +11,6 @@ jobs:
   plan:
     uses: ./.github/workflows/template-terraform-plan.yml
     with:
-      working-directory: terraform/environments/home/sandbox
+      working-directory: terraform/environments/home/kubernetes
+      ansible-playbook: kubernetes
     secrets: inherit
