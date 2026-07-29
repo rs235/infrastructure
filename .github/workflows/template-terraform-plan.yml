@@ -7,12 +7,16 @@ on:
         required: true
         type: string
 
+      concurrency-group:
+        required: true
+        type: string
+
 permissions:
   contents: read
   pull-requests: write
 
 concurrency:
-  group: terraform-home-sandbox
+  group: ${{ inputs.concurrency-group }}
   cancel-in-progress: false
 
 jobs:
@@ -22,7 +26,7 @@ jobs:
     
     env:
       TF_INPUT: "0"
-      TF_LOG: ERROR
+      TF_LOG: DEBUG
       PROXMOX_VE_ENDPOINT: ${{ secrets.PROXMOX_VE_ENDPOINT }}
       PROXMOX_VE_API_TOKEN: ${{ secrets.PROXMOX_VE_API_TOKEN }}
       PROXMOX_VE_INSECURE: ${{ secrets.PROXMOX_VE_INSECURE }}
@@ -56,10 +60,10 @@ jobs:
       - name: Comment Terraform plan
         uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
         with:
-          path: tfplan.txt
+          path: "${{ inputs.working-directory }}/tfplan.txt"
 
       - name: Upload Terraform plan
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: terraform-plan
-          path: tfplan.txt
+          path: "${{ inputs.working-directory }}/tfplan.txt"
