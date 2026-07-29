@@ -4,5 +4,5 @@
   become: true
   roles:
     - linux_users
-    - cifs_mounts
+    - cifs_mount
     - docker
