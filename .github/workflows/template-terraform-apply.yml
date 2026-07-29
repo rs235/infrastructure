@@ -108,7 +108,7 @@ jobs:
             --vault-password-file "${{ runner.temp }}/vault_pass" \
             --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
             -m ansible.builtin.wait_for_connection \
-            -a "timeout=300"
+            -a "timeout=120"
 
       - name: Ansible Configure
         run: |
