@@ -16,5 +16,5 @@ jobs:
     uses: ./.github/workflows/template-terraform-plan.yml
     with:
       working-directory: terraform/environments/home/sandbox
-      concurency-group: terraform-home-sandbox
+      concurrency-group: terraform-home-sandbox
     secrets: inherit
