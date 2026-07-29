@@ -15,7 +15,7 @@ module "sandbox" {
 
   tags = [
     "terraform",
-    "k8s"
+    "dev"
   ]
 
   template_vm_id = 900
