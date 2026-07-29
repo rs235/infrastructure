@@ -3,6 +3,6 @@
   hosts: sandbox
   become: true
   roles:
-    - cifs_mount
     - linux_users
+    - cifs_mounts
     - docker
