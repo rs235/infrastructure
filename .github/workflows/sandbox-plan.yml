@@ -1,0 +1,13 @@
+name: Sandbox Plan
+
+on:
+  pull_request:
+    paths:
+      - "terraform/environments/home/sandbox/**"
+
+jobs:
+  plan:
+    uses: ./.github/workflows/template-terraform-plan.yml
+    with:
+      working-directory: terraform/environments/home/sandbox
+    secrets: inherit
