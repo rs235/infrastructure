@@ -1,7 +1,7 @@
 module "common" {
   source = "../common"
 }
-
+ 
 module "k8s-cp1" {
   source = "../../../modules/proxmox/vm"
 
@@ -80,7 +80,7 @@ module "k8s-cp2" {
 
   address = "10.10.10.32/24"
 
-  gateway = module.common.network.gateway
+  gateway = module.common.cloud-init.gateway
 
 }
 
@@ -121,7 +121,7 @@ module "k8s-cp3" {
 
   address = "10.10.10.33/24"
 
-  gateway = module.common.network.gateway
+  gateway = module.common.cloud-init.gateway
 
 }
 
@@ -162,7 +162,7 @@ module "k8s-w1" {
 
   address = "10.10.10.34/24"
 
-  gateway = module.common.network.gateway
+  gateway = module.common.cloud-init.gateway
 
 }
 
@@ -203,7 +203,7 @@ module "k8s-w2" {
 
   address = "10.10.10.35/24"
 
-  gateway = module.common.network.gateway
+  gateway = module.common.cloud-init.gateway
 
 }
 
@@ -244,6 +244,6 @@ module "k8s-w3" {
 
   address = "10.10.10.36/24"
 
-  gateway = module.common.network.gateway
+  gateway = module.common.cloud-init.gateway
 
 }

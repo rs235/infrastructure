@@ -19,7 +19,7 @@ module "sandbox" {
 
   cores = 2
 
-  # RAM
+  # Memory
 
   memory = 2048
 
