@@ -9,20 +9,6 @@
   loop_control:
     loop_var: user
 
-- name: Debug user
-  ansible.builtin.debug:
-    var: user
-  loop: "{{ linux_users }}"
-  loop_control:
-    loop_var: user
-
-- name: Debug groups
-  ansible.builtin.debug:
-    msg: "{{ user.groups | default('UNDEFINED') }}"
-  loop: "{{ linux_users }}"
-  loop_control:
-    loop_var: user
-
 - name: Create primary group
   ansible.builtin.group:
     name: "{{ user.group }}"
