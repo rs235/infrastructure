@@ -1,9 +1,11 @@
 name: Reusable Terraform Plan
 
 on:
-  pull_request:
-    paths:
-      - "terraform/**"
+  workflow_call:
+    inputs:
+      working-directory:
+        required: true
+        type: string
 
 permissions:
   contents: read
