@@ -11,13 +11,13 @@ resource "proxmox_virtual_environment_vm" "opnsense" {
 
   boot_order = ["ide3", "scsi0"]
 
-#   # QEMU Guest Agent
-#   agent {
-#     enabled = true
-#     type    = "virtio"
-#     trim    = true
-#     timeout = "15m"
-#   }
+  #   # QEMU Guest Agent
+  #   agent {
+  #     enabled = true
+  #     type    = "virtio"
+  #     trim    = true
+  #     timeout = "15m"
+  #   }
 
   # CPU
   cpu {
@@ -35,10 +35,10 @@ resource "proxmox_virtual_environment_vm" "opnsense" {
   machine = "q35"
 
   efi_disk {
-  datastore_id      = "local-lvm"
-  type              = "4m"
-  pre_enrolled_keys = true
-}
+    datastore_id      = "local-lvm"
+    type              = "4m"
+    pre_enrolled_keys = true
+  }
 
   # Display
   serial_device {}

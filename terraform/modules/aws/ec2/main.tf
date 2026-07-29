@@ -59,10 +59,10 @@ resource "aws_instance" "instance" {
   # Configuration
   # ---------------------------------------------------------------------------
 
-  monitoring               = var.monitoring
-  disable_api_termination  = var.disable_api_termination
+  monitoring              = var.monitoring
+  disable_api_termination = var.disable_api_termination
 
-  user_data                   = var.user_data
+  user_data = var.user_data
 
   # When set to true, this option ensures that any changes to the user_data will force a replacement of the EC2 instance, allowing the new user data script to execute.
   user_data_replace_on_change = true

@@ -54,6 +54,6 @@ variable "gateway" {
 # Terraform Lifecycle
 # Terraform Lifecycle
 variable "prevent_destroy" {
-    type    = bool
-    default = false
+  type    = bool
+  default = false
 }

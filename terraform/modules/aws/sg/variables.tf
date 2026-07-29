@@ -33,6 +33,6 @@ variable "egress_rules" {
 
 variable "tags" {
   description = "Security Group tags."
-  type = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
 }

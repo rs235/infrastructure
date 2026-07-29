@@ -5,7 +5,7 @@ locals {
   }
 
   network = {
-    bridge  = "vmbr1"
+    bridge = "vmbr1"
     # vlan_id = 10
   }
 

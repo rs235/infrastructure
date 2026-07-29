@@ -10,5 +10,5 @@ output "vm_id" {
 
 output "fqdn" {
   description = "Container FQDN"
-  value = "${var.name}.home.arpa"
+  value       = "${var.name}.home.arpa"
 }

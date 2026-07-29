@@ -29,8 +29,8 @@ resource "aws_internet_gateway" "igw" {
 # ------------------------------------------------------------------------------
 
 resource "aws_subnet" "public_subnet" {
-  vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.public_subnet_cidr
+  vpc_id     = aws_vpc.vpc.id
+  cidr_block = var.public_subnet_cidr
 
   # "coalesce" is used to provide a default value when a variable is null or undefined. So if var.availability_zone is empty (null) it pick the first option from data.aws_availability_zones.available.names. This makes it so availability_zone does not need to be defined in the resource.
   availability_zone = coalesce(

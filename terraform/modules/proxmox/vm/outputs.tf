@@ -10,5 +10,5 @@ output "vm_id" {
 
 output "fqdn" {
   description = "VM FQDN"
-  value = "${proxmox_virtual_environment_vm.vm.name}.home.arpa"
+  value       = "${proxmox_virtual_environment_vm.vm.name}.home.arpa"
 }

@@ -4,7 +4,7 @@
 
 variable "instance_type" {
   description = "AWS EC2 instance type e.g. t3.micro or t3.small."
-  type = string
+  type        = string
 
   validation {
     condition     = length(var.instance_type) > 0
@@ -77,7 +77,7 @@ variable "volume_size" {
   type        = number
 
   validation {
-    condition = var.volume_size >= 8
+    condition     = var.volume_size >= 8
     error_message = "Volume size must be at least 8 GiB."
   }
 }
@@ -116,14 +116,14 @@ variable "iam_instance_profile" {
 
 variable "monitoring" {
   description = "Enable detailed CloudWatch monitoring for the EC2 instance."
-  type    = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "disable_api_termination" {
   description = "Prevent API-based termination of the EC2 instance. When enabled, Terraform destroy will fail until this setting is disabled."
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "user_data" {

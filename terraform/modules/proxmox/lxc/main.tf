@@ -40,23 +40,23 @@ resource "proxmox_virtual_environment_container" "lxc" {
   }
 
   initialization {
-  hostname = var.name
+    hostname = var.name
 
-  ip_config {
-    ipv4 {
-      address = var.address
-      gateway = var.gateway
+    ip_config {
+      ipv4 {
+        address = var.address
+        gateway = var.gateway
+      }
+    }
+
+    user_account {
+      password = var.password
+
+      keys = [
+        var.ssh_key
+      ]
     }
   }
-
-  user_account {
-    password = var.password
-
-    keys = [
-      var.ssh_key
-    ]
-  }
-}
 
   # Features
   features {
