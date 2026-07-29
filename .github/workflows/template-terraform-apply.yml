@@ -35,7 +35,6 @@ jobs:
     
     env:
       TF_INPUT: "0"
-      TF_LOG: ERROR
       PROXMOX_VE_ENDPOINT: ${{ secrets.PROXMOX_VE_ENDPOINT }}
       PROXMOX_VE_API_TOKEN: ${{ secrets.PROXMOX_VE_API_TOKEN }}
       PROXMOX_VE_INSECURE: ${{ secrets.PROXMOX_VE_INSECURE }}
@@ -67,9 +66,6 @@ jobs:
       - infra
       - home
 
-    env:
-      ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
-
     defaults:
       run:
         working-directory: ansible
@@ -84,15 +80,16 @@ jobs:
 
       - name: Configure SSH
         run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
+          mkdir -p "${{ runner.temp }}/.ssh"
+          chmod 700 "${{ runner.temp }}/.ssh"
 
-          echo "${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519_ansible
-          chmod 600 ~/.ssh/id_ed25519_ansible
+          printf '%s' "${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}" > "${{ runner.temp }}/.ssh/id_ed25519_ansible"
+
+          chmod 600 "${{ runner.temp }}/.ssh/id_ed25519_ansible"
 
       - name: Create Python virtual environment
         run: |
-          python3 -m venv "${{ runner.temp }}/venv"
+          python -m venv "${{ runner.temp }}/venv"
 
       - name: Install Ansible and requirements
         run: |
@@ -104,23 +101,19 @@ jobs:
           printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${{ runner.temp }}/vault_pass"
           chmod 600 "${{ runner.temp }}/vault_pass"
 
-      # Changed timeout from 300 to 5 for testing
       - name: Wait for machines
         run: |
           "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-group }} \
             -i inventories/home/inventory.yml \
             --vault-password-file "${{ runner.temp }}/vault_pass" \
+            --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
             -m ansible.builtin.wait_for_connection \
-            -a "timeout=5"
+            -a "timeout=300"
 
       - name: Ansible Configure
         run: |
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
           -i inventories/home/inventory.yml \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
+          --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
           "playbooks/${{ inputs.ansible-playbook }}.yml"
-      
-      - name: Cleanup SSH keys
-        if: always()
-        run: |
-          rm -f ~/.ssh/id_ed25519_ansible
