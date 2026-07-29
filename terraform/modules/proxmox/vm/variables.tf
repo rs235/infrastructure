@@ -19,6 +19,10 @@ variable "target_node" {
   type = string
 }
 
+variable "tags" {
+  type = string
+}
+
 variable "cores" {
   type = number
 }

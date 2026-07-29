@@ -13,6 +13,11 @@ module "k8s-cp1" {
 
   target_node = module.common.proxmox.node
 
+  tags = [
+    "terraform",
+    "k8s"
+  ]
+
   template_vm_id = 901
 
   # CPU
@@ -53,6 +58,11 @@ module "k8s-cp2" {
   vm_id = 132
 
   target_node = module.common.proxmox.node
+
+  tags = [
+    "terraform",
+    "k8s"
+  ]
 
   template_vm_id = 901
 
@@ -95,6 +105,11 @@ module "k8s-cp3" {
 
   target_node = module.common.proxmox.node
 
+  tags = [
+    "terraform",
+    "k8s"
+  ]
+
   template_vm_id = 901
 
   # CPU
@@ -135,6 +150,11 @@ module "k8s-w1" {
   vm_id = 134
 
   target_node = module.common.proxmox.node
+
+  tags = [
+    "terraform",
+    "k8s"
+  ]
 
   template_vm_id = 901
 
@@ -177,6 +197,11 @@ module "k8s-w2" {
 
   target_node = module.common.proxmox.node
 
+  tags = [
+    "terraform",
+    "k8s"
+  ]
+
   template_vm_id = 901
 
   # CPU
@@ -217,6 +242,11 @@ module "k8s-w3" {
   vm_id = 136
 
   target_node = module.common.proxmox.node
+
+  tags = [
+    "terraform",
+    "k8s"
+  ]
 
   template_vm_id = 901
 
