@@ -13,6 +13,11 @@ module "sandbox" {
 
   target_node = module.common.proxmox.node
 
+  tags = [
+    "terraform",
+    "k8s"
+  ]
+
   template_vm_id = 900
 
   # CPU
