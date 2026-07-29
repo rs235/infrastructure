@@ -20,7 +20,7 @@ variable "target_node" {
 }
 
 variable "tags" {
-  type = string
+  type = list(string)
 }
 
 variable "cores" {

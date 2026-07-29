@@ -4,7 +4,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
   name      = var.name
   vm_id     = var.vm_id
   node_name = var.target_node
-  tags = var.tags
+  tags      = var.tags
 
   # Auto start
   started = true
