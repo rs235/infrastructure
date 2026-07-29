@@ -90,13 +90,14 @@ jobs:
           printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${{ runner.temp }}/vault_pass"
           chmod 600 "${{ runner.temp }}/vault_pass"
 
+      # Changed timeout from 300 to 5 for testing
       - name: Wait for machines
         run: |
           "${{ runner.temp }}/venv/bin/ansible" all \
             -i inventories/home/inventory.yml \
             --vault-password-file "${{ runner.temp }}/vault_pass" \
             -m ansible.builtin.wait_for_connection \
-            -a "timeout=300"
+            -a "timeout=5"
 
       - name: Ansible Configure
         run: |
