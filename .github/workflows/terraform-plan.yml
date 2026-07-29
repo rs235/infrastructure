@@ -13,9 +13,6 @@ concurrency:
   group: terraform-home-sandbox
   cancel-in-progress: false
 
-env:
-  WORK_DIR: "terraform/environments/home/sandbox"
-
 jobs:
   terraform:
     runs-on:
@@ -30,7 +27,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ${{ env.WORK_DIR }}
+        working-directory: "terraform/environments/home/sandbox"
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -57,11 +54,10 @@ jobs:
       - name: Comment Terraform plan
         uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
         with:
-          path: terraform/environments/home/sandbox/tfplan.txt
+          path: tfplan.txt
 
       - name: Upload Terraform plan
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: terraform-plan
-          path: ${{ env.WORK_DIR }}/tfplan.txt
-
+          path: tfplan.txt
