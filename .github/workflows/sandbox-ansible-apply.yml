@@ -5,16 +5,18 @@ on:
     branches:
         - main
     paths:
-      - "terraform/environments/home/sandbox/**"
-      - "terraform/modules/proxmox/**"
-      - "terraform/modules/common/**"
+      - "ansible/inventories/**"
+      - "ansible/playbooks/**"
+      - "ansible/roles/**"
+      - "ansible/requirements.yml"
+      - "ansible/ansible.cfg"
 
 permissions:
   contents: read
 
 jobs:
   plan:
-    uses: ./.github/workflows/template-ansible-check.yml
+    uses: ./.github/workflows/template-ansible-apply.yml
     with:
       concurrency-group: ansible-home-sandbox
       ansible-playbook: sandbox
