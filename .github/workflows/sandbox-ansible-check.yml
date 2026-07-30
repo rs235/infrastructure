@@ -3,8 +3,8 @@ name: Sandbox Ansible Check
 on:
   pull_request:
     paths:
-      - "ansible/inventories/**"
-      - "ansible/playbooks/**"
+      - "ansible/inventories/home/**"
+      - "ansible/playbooks/sandbox.yml**"
       - "ansible/roles/**"
       - "ansible/requirements.yml"
       - "ansible/ansible.cfg"

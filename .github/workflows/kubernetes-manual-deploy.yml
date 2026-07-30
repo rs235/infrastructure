@@ -1,3 +1,5 @@
+name: Kubernetes Manual Deploy
+
 on:
   workflow_dispatch:
 
