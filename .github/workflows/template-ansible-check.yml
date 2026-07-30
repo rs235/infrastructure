@@ -117,5 +117,5 @@ jobs:
       - name: Upload Ansible check
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: "ansible-check-${{ inputs.concurrency-group }}"
+          name: "${{ inputs.concurrency-group }}-check"
           path: "${{ runner.temp }}/ansible-check.txt"
