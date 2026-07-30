@@ -71,7 +71,7 @@ jobs:
         run: |
           "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-group }} \
             -u ansible \
-            -i inventories/home/inventory.yml \
+            -i ansible/inventories/home/inventory.yml \
             --vault-password-file "${{ runner.temp }}/vault_pass" \
             --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
             -m ansible.builtin.wait_for_connection \
@@ -81,11 +81,11 @@ jobs:
         run: |
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
           -u ansible \
-          -i inventories/home/inventory.yml \
+          -i ansible/inventories/home/inventory.yml \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
           --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
           --syntax-check \
-          "playbooks/${{ inputs.ansible-playbook }}.yml"
+          "ansible/playbooks/${{ inputs.ansible-playbook }}.yml"
 
 
       - name: Ansible check
