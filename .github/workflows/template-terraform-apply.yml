@@ -7,13 +7,13 @@ on:
         required: true
         type: string
       
-      ansible-playbook:
-        required: true
-        type: string
+      # ansible-playbook:
+      #   required: true
+      #   type: string
 
-      ansible-group:
-        required: true
-        type: string
+      # ansible-group:
+      #   required: true
+      #   type: string
 
       concurrency-group:
         required: true

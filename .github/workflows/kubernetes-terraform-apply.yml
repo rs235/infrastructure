@@ -18,8 +18,8 @@ jobs:
     uses: ./.github/workflows/template-terraform-apply.yml
     with:
       working-directory: terraform/environments/home/kubernetes
-      ansible-playbook: kubernetes
-      ansible-group: k8s_cluster
+      # ansible-playbook: kubernetes
+      # ansible-group: k8s_cluster
       concurrency-group: terraform-home-kubernetes
     secrets: inherit
 
@@ -27,15 +27,18 @@ jobs:
     needs: terraform-apply
     uses: ./.github/workflows/template-ansible-check.yml
     with:
+      working-directory: ansible
       ansible-playbook: kubernetes
       ansible-group: k8s_cluster
       concurrency-group: ansible-home-kubernetes
+      
     secrets: inherit
 
   ansible-apply:
       needs: ansible-check
       uses: ./.github/workflows/template-ansible-apply.yml
       with:
+        working-directory: ansible
         ansible-playbook: kubernetes
         ansible-group: k8s_cluster
         concurrency-group: ansible-home-kubernetes
