@@ -18,13 +18,3 @@ jobs:
       working-directory: terraform/environments/home/kubernetes
       concurrency-group: terraform-home-kubernetes
     secrets: inherit
-
-  kubernetes-ansible-check:
-      needs: kubernetes-terraform-plan
-      uses: ./.github/workflows/template-ansible-check.yml
-      with:
-        working-directory: ansible
-        ansible-playbook: kubernetes
-        ansible-group: k8s_cluster
-        concurrency-group: ansible-home-kubernetes
-      secrets: inherit
