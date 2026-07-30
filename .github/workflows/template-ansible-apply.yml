@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  template-ansible-check:
+  template-ansible-apply:
     runs-on:
       - self-hosted
       - infra
