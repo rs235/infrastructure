@@ -3,7 +3,10 @@ name: Reusable Ansible Check
 on:
   workflow_call:
     inputs:
-      
+      working-directory:
+        required: true
+        type: string
+
       ansible-playbook:
         required: true
         type: string
@@ -30,6 +33,10 @@ jobs:
       - self-hosted
       - infra
       - home
+
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
 
     env:
       ANSIBLE_NOCOLOR: "1"
@@ -60,7 +67,7 @@ jobs:
       - name: Install Ansible and requirements
         run: |
           "${{ runner.temp }}/venv/bin/python" -m pip install --upgrade pip
-          "${{ runner.temp }}/venv/bin/python" -m pip install -r ansible/requirements.txt
+          "${{ runner.temp }}/venv/bin/python" -m pip install -r requirements.txt
 
       - name: Create vault password file
         run: |
@@ -71,7 +78,7 @@ jobs:
         run: |
           "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-group }} \
             -u ansible \
-            -i ansible/inventories/home/inventory.yml \
+            -i inventories/home/inventory.yml \
             --vault-password-file "${{ runner.temp }}/vault_pass" \
             --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
             -m ansible.builtin.wait_for_connection \
@@ -81,11 +88,11 @@ jobs:
         run: |
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
           -u ansible \
-          -i ansible/inventories/home/inventory.yml \
+          -i inventories/home/inventory.yml \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
           --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
           --syntax-check \
-          "ansible/playbooks/${{ inputs.ansible-playbook }}.yml"
+          "playbooks/${{ inputs.ansible-playbook }}.yml"
 
 
       - name: Ansible check
@@ -94,12 +101,12 @@ jobs:
 
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
           -u ansible \
-          -i ansible/inventories/home/inventory.yml \
+          -i inventories/home/inventory.yml \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
           --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
           --check \
           --diff \
-          "ansible/playbooks/${{ inputs.ansible-playbook }}.yml" \
+          "playbooks/${{ inputs.ansible-playbook }}.yml" \
           | tee "${{ runner.temp }}/ansible-check.txt"
       
       - name: Comment Ansible check

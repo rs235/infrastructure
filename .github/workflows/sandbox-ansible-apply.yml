@@ -18,6 +18,7 @@ jobs:
   plan:
     uses: ./.github/workflows/template-ansible-apply.yml
     with:
+      working-directory: ansible
       concurrency-group: ansible-home-sandbox
       ansible-playbook: sandbox
       ansible-group: sandbox

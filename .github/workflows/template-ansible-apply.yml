@@ -33,6 +33,10 @@ jobs:
       - infra
       - home
 
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -70,7 +74,7 @@ jobs:
         run: |
           "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-group }} \
             -u ansible \
-            -i ansible/inventories/home/inventory.yml \
+            -i inventories/home/inventory.yml \
             --vault-password-file "${{ runner.temp }}/vault_pass" \
             --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
             -m ansible.builtin.wait_for_connection \
@@ -80,7 +84,7 @@ jobs:
         run: |
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
           -u ansible \
-          -i ansible/inventories/home/inventory.yml \
+          -i inventories/home/inventory.yml \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
           --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
-          "ansible/playbooks/${{ inputs.ansible-playbook }}.yml"
+          "playbooks/${{ inputs.ansible-playbook }}.yml"
