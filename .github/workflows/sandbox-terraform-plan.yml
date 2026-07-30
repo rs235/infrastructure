@@ -12,7 +12,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  plan:
+  sandbox-terraform-plan:
     uses: ./.github/workflows/template-terraform-plan.yml
     with:
       working-directory: terraform/environments/home/sandbox

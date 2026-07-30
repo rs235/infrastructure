@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  terraform:
+  template-terraform-apply:
     runs-on:
       - self-hosted
       - infra

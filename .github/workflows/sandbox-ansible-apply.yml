@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  plan:
+  sandbox-ansible-apply:
     uses: ./.github/workflows/template-ansible-apply.yml
     with:
       working-directory: ansible

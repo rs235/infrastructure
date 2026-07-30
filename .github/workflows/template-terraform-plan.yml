@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  terraform:
+  template-terraform-plan:
     runs-on:
       - self-hosted
       - infra

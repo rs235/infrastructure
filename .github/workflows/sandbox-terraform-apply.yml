@@ -10,7 +10,7 @@ on:
       - "terraform/modules/common/**"
 
 jobs:
-  apply:
+  sandbox-terraform-apply:
     uses: ./.github/workflows/template-terraform-apply.yml
     with:
       working-directory: terraform/environments/home/sandbox

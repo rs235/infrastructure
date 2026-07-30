@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  terraform-apply:
+  kubernetes-terraform-apply:
     uses: ./.github/workflows/template-terraform-apply.yml
     with:
       working-directory: terraform/environments/home/kubernetes
@@ -23,8 +23,8 @@ jobs:
       concurrency-group: terraform-home-kubernetes
     secrets: inherit
 
-  ansible-apply:
-      needs: terraform-apply
+  kubernetes-ansible-apply:
+      needs: kubernetes-terraform-apply
       uses: ./.github/workflows/template-ansible-apply.yml
       with:
         working-directory: ansible

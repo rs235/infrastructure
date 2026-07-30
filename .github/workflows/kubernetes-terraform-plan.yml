@@ -12,15 +12,15 @@ permissions:
   pull-requests: write
 
 jobs:
-  terraform-plan:
+  kubernetes-terraform-plan:
     uses: ./.github/workflows/template-terraform-plan.yml
     with:
       working-directory: terraform/environments/home/kubernetes
       concurrency-group: terraform-home-kubernetes
     secrets: inherit
 
-  ansible-check:
-      needs: terraform-plan
+  kubernetes-ansible-check:
+      needs: kubernetes-terraform-plan
       uses: ./.github/workflows/template-ansible-check.yml
       with:
         working-directory: ansible

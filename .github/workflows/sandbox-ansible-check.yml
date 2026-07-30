@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  plan:
+  sandbox-ansible-check:
     uses: ./.github/workflows/template-ansible-check.yml
     with:
       working-directory: ansible
