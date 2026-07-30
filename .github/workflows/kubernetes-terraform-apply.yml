@@ -10,7 +10,7 @@ on:
       - "terraform/modules/common/**"
 
 jobs:
-  apply:
+  terraform-apply:
     uses: ./.github/workflows/template-terraform-apply.yml
     with:
       working-directory: terraform/environments/home/kubernetes
@@ -18,3 +18,21 @@ jobs:
       ansible-group: k8s_cluster
       concurrency-group: terraform-home-kubernetes
     secrets: inherit
+
+  ansible-check:
+    needs: terraform-apply
+    uses: ./.github/workflows/template-ansible-check.yml
+    with:
+      ansible-playbook: kubernetes
+      ansible-group: k8s_cluster
+      concurrency-group: ansible-home-kubernetes
+    secrets: inherit
+
+  ansible-apply:
+      needs: ansible-check
+      uses: ./.github/workflows/template-ansible-apply.yml
+      with:
+        ansible-playbook: kubernetes
+        ansible-group: k8s_cluster
+        concurrency-group: ansible-home-kubernetes
+      secrets: inherit
