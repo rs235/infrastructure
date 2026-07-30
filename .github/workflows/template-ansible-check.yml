@@ -1,0 +1,114 @@
+name: Reusable Ansible Check
+
+on:
+  workflow_call:
+    inputs:
+      
+      ansible-playbook:
+        required: true
+        type: string
+
+      ansible-group:
+        required: true
+        type: string
+
+      concurrency-group:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ${{ inputs.concurrency-group }}
+  cancel-in-progress: false
+
+jobs:
+  ansible:
+    runs-on:
+      - self-hosted
+      - infra
+      - home
+
+    env:
+      ANSIBLE_NOCOLOR: "1"
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          # Pinned major and minor version to ensure reproducibility but allow newest patches.
+          python-version: "3.13"
+
+      - name: Configure SSH
+        run: |
+          mkdir -p "${{ runner.temp }}/.ssh"
+          chmod 700 "${{ runner.temp }}/.ssh"
+
+          printf '%s' "${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}" > "${{ runner.temp }}/.ssh/id_ed25519_ansible"
+
+          chmod 600 "${{ runner.temp }}/.ssh/id_ed25519_ansible"
+
+      - name: Create Python virtual environment
+        run: |
+          python -m venv "${{ runner.temp }}/venv"
+
+      - name: Install Ansible and requirements
+        run: |
+          "${{ runner.temp }}/venv/bin/python" -m pip install --upgrade pip
+          "${{ runner.temp }}/venv/bin/python" -m pip install -r ansible/requirements.txt
+
+      - name: Create vault password file
+        run: |
+          printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${{ runner.temp }}/vault_pass"
+          chmod 600 "${{ runner.temp }}/vault_pass"
+
+      - name: Wait for machines
+        run: |
+          "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-group }} \
+            -u ansible \
+            -i inventories/home/inventory.yml \
+            --vault-password-file "${{ runner.temp }}/vault_pass" \
+            --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
+            -m ansible.builtin.wait_for_connection \
+            -a "timeout=300"
+
+      - name: Syntax check
+        run: |
+          "${{ runner.temp }}/venv/bin/ansible-playbook" \
+          -u ansible \
+          -i inventories/home/inventory.yml \
+          --vault-password-file "${{ runner.temp }}/vault_pass" \
+          --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
+          --syntax-check \
+          "playbooks/${{ inputs.ansible-playbook }}.yml"
+
+
+      - name: Ansible check
+        run: |
+          set -o pipefail
+
+          "${{ runner.temp }}/venv/bin/ansible-playbook" \
+          -u ansible \
+          -i ansible/inventories/home/inventory.yml \
+          --vault-password-file "${{ runner.temp }}/vault_pass" \
+          --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
+          --check \
+          --diff \
+          "ansible/playbooks/${{ inputs.ansible-playbook }}.yml" \
+          | tee "${{ runner.temp }}/ansible-check.txt"
+      
+      - name: Comment Ansible check
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
+        with:
+          path: "${{ runner.temp }}/ansible-check.txt"
+
+      - name: Upload Ansible check
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: "ansible-check-${{ inputs.concurrency-group }}"
+          path: "${{ runner.temp }}/ansible-check.txt"

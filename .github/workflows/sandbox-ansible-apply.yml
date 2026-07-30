@@ -1,4 +1,4 @@
-name: Sandbox Apply
+name: Sandbox Ansible Apply
 
 on:
   push:
@@ -9,12 +9,14 @@ on:
       - "terraform/modules/proxmox/**"
       - "terraform/modules/common/**"
 
+permissions:
+  contents: read
+
 jobs:
-  apply:
-    uses: ./.github/workflows/template-terraform-apply.yml
+  plan:
+    uses: ./.github/workflows/template-ansible-check.yml
     with:
-      working-directory: terraform/environments/home/sandbox
+      concurrency-group: ansible-home-sandbox
       ansible-playbook: sandbox
       ansible-group: sandbox
-      concurrency-group: terraform-home-sandbox
     secrets: inherit

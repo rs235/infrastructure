@@ -1,0 +1,20 @@
+name: Kubernetes Terraform Apply
+
+on:
+  push:
+    branches:
+        - main
+    paths:
+      - "terraform/environments/home/kubernetes/**"
+      - "terraform/modules/proxmox/**"
+      - "terraform/modules/common/**"
+
+jobs:
+  apply:
+    uses: ./.github/workflows/template-terraform-apply.yml
+    with:
+      working-directory: terraform/environments/home/kubernetes
+      ansible-playbook: kubernetes
+      ansible-group: k8s_cluster
+      concurrency-group: terraform-home-kubernetes
+    secrets: inherit

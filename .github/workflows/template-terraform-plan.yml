@@ -56,15 +56,15 @@ jobs:
         run: terraform plan -input=false -no-color -out=tfplan
 
       - name: Terraform show
-        run: terraform show -no-color tfplan > tfplan.txt
+        run: terraform show -no-color tfplan > "${{ runner.temp }}/tfplan.txt"
 
       - name: Comment Terraform plan
         uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
         with:
-          path: "${{ inputs.working-directory }}/tfplan.txt"
+          path: "${{ runner.temp }}/tfplan.txt"
 
       - name: Upload Terraform plan
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: "terraform-plan-${{ inputs.concurrency-group }}"
-          path: "${{ inputs.working-directory }}/tfplan.txt"
+          path: "${{ runner.temp }}/tfplan.txt"
