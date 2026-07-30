@@ -1,0 +1,25 @@
+name: Kubernetes Ansible Apply
+
+on:
+  push:
+    branches:
+        - main
+    paths:
+      - "ansible/inventories/home/**"
+      - "ansible/playbooks/kubernetes.yml**"
+      - "ansible/roles/**"
+      - "ansible/requirements.yml"
+      - "ansible/ansible.cfg"
+
+permissions:
+  contents: read
+
+jobs:
+  kubernetes-ansible-apply:
+    uses: ./.github/workflows/template-ansible-apply.yml
+    with:
+      working-directory: ansible
+      concurrency-group: ansible-home-kubernetes
+      ansible-playbook: kubernetes
+      ansible-group: k8s_cluster
+    secrets: inherit
