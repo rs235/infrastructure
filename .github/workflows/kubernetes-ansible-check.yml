@@ -14,11 +14,15 @@ permissions:
   pull-requests: write
 
 jobs:
-  sandbox-ansible-check:
-    uses: ./.github/workflows/template-ansible-check.yml
-    with:
-      working-directory: ansible
-      concurrency-group: ansible-home-kubernetes
-      ansible-playbook: kubernetes
-      ansible-group: k8s_cluster
-    secrets: inherit
+  # sandbox-ansible-check:
+  #   uses: ./.github/workflows/template-ansible-check.yml
+  #   with:
+  #     working-directory: ansible
+  #     concurrency-group: ansible-home-kubernetes
+  #     ansible-playbook: kubernetes
+  #     ansible-group: k8s_cluster
+  #   secrets: inherit
+  dummy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "::notice::Kubespray doesn't support Ansible checks. No check can be performed."
