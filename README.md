@@ -5,16 +5,6 @@ This repository does not manage the very base layer of my home environment which
 
 ## Tools and versions
 
-Kubespray: v2.31.0
-
-Ansible: 11.13.0
-
-Python: 3.12
-
-Terraform: v1.15.8
-
-Proxmox BPG: 0.110.0
-
 | Name        | Version |
 | ---         | ---     |
 | Terraform   | 1.15.8  |
