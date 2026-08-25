@@ -12,13 +12,48 @@ Infrastructure is managed with Terraform while configuration is handled by Ansib
 ## Workflow
 
 ```mermaid
+---
+config:
+  layout: elk
+---
 flowchart LR
-    change["Code Change"] --> pull["Pull Request"]
-    pull["Pull Request"] --> ci_check["Checks (CI)"]
-    ci_check["Checks (CI)"] --> ci_plan["Plan (CI)"]
-    ci_plan["Plan (CI)"] --> review["Plan Review"]
-    review["Plan Review"] --> merge["Merge"]
-    merge["Merge"] --> apply["Apply (CD)"]
+    A["GitHub Push"] -- Trigger --> B["GitHub Actions Workflow"]
+    B --> C{"Run Tests"}
+    C -- Pass --> D["Lint & Validate"]
+    C -- Fail --> E["Notify Developer"]
+    D -- Pass --> F["Plan Infrastructure"]
+    D -- Fail --> E
+    F --> G{"Review Plan"}
+    G -- Approve --> H["Apply Infrastructure"]
+    G -- Reject --> I["Cancel Deployment"]
+    H --> J{"Deployment Success"}
+    J -- Yes --> K["Update State File"]
+    J -- No --> L["Rollback"]
+    K --> M["Notify Team"]
+    L --> M
+    E --> N["End"]
+    I --> N
+    M --> N
+
+     A:::trigger
+     B:::process
+     C:::decision
+     D:::process
+     E:::failure
+     F:::process
+     G:::decision
+     H:::process
+     J:::decision
+     K:::process
+     L:::failure
+     M:::notification
+     N:::notification
+    classDef trigger stroke:#38bdf8,fill:#f0f9ff
+    classDef process stroke:#818cf8,fill:#eef2ff
+    classDef decision stroke:#a78bfa,fill:#f5f3ff
+    classDef success stroke:#4ade80,fill:#f0fdf4
+    classDef failure stroke:#f87171,fill:#fef2f2
+    classDef notification stroke:#facc15,fill:#fefce8
 ```
 
 ## Repository structure
