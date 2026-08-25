@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/template-terraform-apply.yml
     with:
       working-directory: terraform/environments/home/sandbox
-      ansible-playbook: sandbox
-      ansible-group: sandbox
+      # ansible-playbook: sandbox
+      # ansible-group: sandbox
       concurrency-group: terraform-home-sandbox
     secrets: inherit
