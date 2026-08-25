@@ -5,9 +5,54 @@ Provisioned infrastructure is not split into typical environments like dev, test
 
 This repository currently does not manage the very base layer of my home environment which includes Proxmox, TrueNAS, OPNsense and other network devices and instead focuses mainly on the applications and services running on top of it. This might change eventually.
 
-Infrastructure is managed with Terraform while configuration is handled by Ansible.
+Infrastructure is managed with **Terraform** while configuration is handled by **Ansible**.
+The project uses **Terraform** for infrastructure provisioning, **Ansible** for operating-system and application configuration, and **GitHub Actions** for CI/CD. Kubernetes workloads are managed separately through **GitOps with Argo CD**.
 
 ## Architecture
+
+```mermaid
+---
+config:
+  theme: redux
+---
+flowchart TB
+    n2["GitHub"] --> n3["GitHub Actions"]
+    n3 --> n4["Terraform"] & n5["Ansible"]
+    n4 --> n6["Proxmox VE"]
+    n5 --> n7["Linux / Kubernetes"]
+    n7 --> n8["Kubernetes"] & n10["Services"]
+    n8 --> n9["ArgoCD"]
+    n6 --> n11["VM"] & n12["LXC"]
+    n11 --> n9
+    n12 --> n9
+    n9 --> n13["Kubernetes Workloads"]
+
+     n2:::Sky
+     n3:::Sky
+     n4:::Sky
+     n5:::Sky
+     n6:::Sky
+     n7:::Sky
+     n8:::Sky
+     n10:::Sky
+     n9:::Sky
+     n11:::Sky
+     n12:::Sky
+     n13:::Sky
+    classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
+    style n2 fill:#BBDEFB,stroke:none
+    style n3 stroke:none,fill:#BBDEFB
+    style n4 stroke:none,fill:#BBDEFB
+    style n5 stroke:none,fill:#BBDEFB
+    style n6 stroke:none,fill:#BBDEFB
+    style n7 stroke:none,fill:#BBDEFB
+    style n8 stroke:none,fill:#BBDEFB
+    style n10 stroke:none,fill:#BBDEFB
+    style n9 stroke:none,fill:#BBDEFB
+    style n11 stroke:none,fill:#BBDEFB
+    style n12 stroke:none,fill:#BBDEFB
+    style n13 stroke:none,fill:#BBDEFB
+```
 
 ## Workflow
 
