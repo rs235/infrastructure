@@ -1,0 +1,56 @@
+---
+- name: Install Mumble server
+  ansible.builtin.apt:
+    name: mumble-server
+    update_cache: true
+    cache_valid_time: 3600
+    state: present
+
+- name: Check if mumble-server.ini needs updating
+  ansible.builtin.template:
+    src: mumble-server.ini.j2
+    dest: /etc/mumble/mumble-server.ini
+    owner: "{{ mumble_user }}"
+    group: "{{ mumble_group }}"
+    mode: "0640"
+  check_mode: true
+  register: mumble_ini_status
+
+- name: Check if mumble-server.sqlite needs updating
+  ansible.builtin.copy:
+    src: mumble-server.sqlite
+    dest: /var/lib/mumble-server/mumble-server.sqlite
+    owner: "{{ mumble_user }}"
+    group: "{{ mumble_group }}"
+    mode: "0640"
+  check_mode: true
+  register: mumble_db_status
+
+- name: Stop Mumble server before config replacement
+  ansible.builtin.systemd_service:
+    name: mumble-server
+    state: stopped
+  when: mumble_db_status.changed or mumble_ini_status.changed
+
+- name: Deploy mumble-server.ini configuration file
+  ansible.builtin.template:
+    src: mumble-server.ini.j2
+    dest: /etc/mumble/mumble-server.ini
+    owner: "{{ mumble_user }}"
+    group: "{{ mumble_group }}"
+    mode: "0640"
+  when: mumble_ini_status.changed
+
+- name: Deploy mumble-server.sqlite configuration file
+  ansible.builtin.copy:
+    src: mumble-server.sqlite
+    dest: /var/lib/mumble-server/mumble-server.sqlite
+    owner: "{{ mumble_user }}"
+    group: "{{ mumble_group }}"
+    mode: "0640"
+  when: mumble_db_status.changed
+
+- name: Start Mumble server
+  ansible.builtin.systemd_service:
+    name: mumble-server
+    state: started

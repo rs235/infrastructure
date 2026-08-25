@@ -1,0 +1,14 @@
+---
+- name: Systemd daemon reload
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Systemd enable syncthing
+  ansible.builtin.systemd_service:
+    name: syncthing
+    enabled: true
+
+- name: Systemd restart syncthing
+  ansible.builtin.systemd_service:
+    name: syncthing
+    state: restarted

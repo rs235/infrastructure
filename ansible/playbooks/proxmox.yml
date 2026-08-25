@@ -1,0 +1,56 @@
+---
+- name: Network configuration
+  hosts: proxmox
+  roles:
+    - proxmox_network
+
+- name: Configure firewall
+  hosts: proxmox
+  roles:
+    - proxmox_firewall
+
+- name: Create users
+  hosts: proxmox
+  roles:
+    - linux_users
+
+- name: Create Terraform API key
+  hosts: proxmox
+  roles:
+    - proxmox_api_keys
+
+- name: Add SMB share to Storage
+  hosts: proxmox
+  roles:
+    - proxmox_smb
+
+- name: Configure backups
+  hosts: proxmox
+  roles:
+    - proxmox_backups
+
+- name: Configure repositories
+  hosts: proxmox
+  roles:
+    - proxmox_repositories
+
+- name: System update
+  hosts: proxmox
+  roles:
+    - proxmox_update
+
+- name: Create Ubuntu 26.04 template
+  hosts: proxmox
+  roles:
+    - proxmox_VM_template
+
+- name: Download Ubuntu 26.04 LXC template
+  hosts: proxmox
+  roles:
+    - proxmox_LXC_template
+
+- name: Reboot
+  hosts: proxmox
+  roles:
+    - proxmox_reboot
+

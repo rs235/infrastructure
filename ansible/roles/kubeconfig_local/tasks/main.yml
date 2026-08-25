@@ -1,0 +1,26 @@
+---
+- name: Ensure kubeconfig directory exists locally
+  ansible.builtin.file:
+    path: "{{ local_home }}/.kube"
+    state: directory
+    owner: "{{ local_owner }}"
+    group: "{{ local_group }}"
+    mode: "0700"
+  become: false
+  delegate_to: localhost
+
+- name: Download kubeconfig
+  ansible.builtin.fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ local_home }}/.kube/config"
+    flat: true
+  become: true
+
+- name: Set kubeconfig ownership and permissions
+  ansible.builtin.file:
+    path: "{{ local_home }}/.kube/config"
+    owner: "{{ local_owner }}"
+    group: "{{ local_group }}"
+    mode: "0600"
+  become: false
+  delegate_to: localhost

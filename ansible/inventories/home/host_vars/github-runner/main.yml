@@ -1,0 +1,74 @@
+---
+linux_users:
+  - name: rs
+    comment: "Admin Account"
+    group: rs
+    uid: 1001
+    gid: 1001
+    create_home: true
+    home: /home/rs
+    system: false
+    shell: /bin/bash
+    groups:
+      - sudo
+    ssh_key: "{{ ssh_key_rs }}"
+    sudo_nopasswd: true
+
+  - name: ansible
+    comment: "Ansible Automation"
+    group: ansible
+    uid: 1000
+    gid: 1000
+    create_home: true
+    home: /home/ansible
+    system: false
+    shell: /bin/bash
+    groups:
+      - sudo
+    ssh_key: "{{ ssh_key_ansible }}"
+    sudo_nopasswd: true
+
+  - name: github-runner
+    comment: "GitHub runner service account"
+    group: github-runner
+    uid: 1500
+    gid: 1500
+    create_home: true
+    home: /var/lib/github-runner
+    system: true
+    # shell: /usr/sbin/nologin
+    shell: /bin/bash
+
+cifs_mounts:
+  - server: "truenas.{{ domain_name }}"
+    share: common
+    mount_point: /mnt/common
+    username: common
+    password: "{{ smb_common_password }}"
+    options:
+      - uid=1500
+      - gid=1500
+      - _netdev
+      - x-systemd.automount
+      - iocharset=utf8
+      - vers=3.1.1
+      - serverino
+      - cache=strict
+      - actimeo=1
+      - noperm
+
+runner_linux_user: github-runner
+runner_linux_group: github-runner
+
+github_username: rs235
+github_repo_name: infrastructure
+
+runner_token: "{{ github_runner_token }}"
+
+runner_url: https://github.com/actions/runner/releases/download/v2.336.0/actions-runner-linux-x64-2.336.0.tar.gz
+runner_checksum: 04cf0be1aff4c3ec3554466c39124ca250e3effd8873bb7e8d68535aa9505d5d
+
+runner_name: infra-home
+runner_group: Default
+runner_labels: self-hosted,infra,home
+runner_work: _work

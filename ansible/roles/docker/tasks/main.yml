@@ -1,0 +1,77 @@
+---
+- name: Remove conflicting packages
+  ansible.builtin.apt:
+    pkg:
+      - docker.io
+      - docker-compose
+      - docker-compose-v2
+      - docker-doc
+      - podman-docker
+      - containerd
+      - runc
+    autoremove: true
+    purge: true
+    state: absent
+
+- name: Install prerequisites for installation of Docker's apt repository
+  ansible.builtin.apt:
+    pkg:
+      - ca-certificates
+      - curl
+    update_cache: true
+    state: present
+
+- name: Create keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Download keyring file
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/{{ ansible_facts.distribution | lower }}/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Get package architecture
+  ansible.builtin.command:
+    cmd: dpkg --print-architecture
+  register: dpkg_architecture
+  changed_when: false
+
+- name: Install Docker apt repository
+  ansible.builtin.template:
+    src: docker.sources.j2
+    dest: /etc/apt/sources.list.d/docker.sources
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install latest version of Docker
+  ansible.builtin.apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    update_cache: true
+    # cache_valid_time: 3600
+    state: present
+
+- name: Enable and start Docker service
+  ansible.builtin.systemd_service:
+    name: docker
+    enabled: true
+    state: started
+
+- name: Add users to docker group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: docker
+    append: true
+  loop: "{{ docker_users }}"

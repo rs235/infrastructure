@@ -1,0 +1,59 @@
+---
+linux_users:
+  - name: ansible
+    comment: "Ansible Automation"
+    group: ansible
+    uid: 1000
+    gid: 1000
+    create_home: true
+    home: /home/ansible
+    system: false
+    shell: /bin/bash
+    groups:
+      - sudo
+    ssh_key: "{{ ssh_key_ansible }}"
+    sudo_nopasswd: true
+
+  - name: rs
+    comment: "Admin Account"
+    group: rs
+    uid: 1001
+    gid: 1001
+    create_home: true
+    home: /home/rs
+    system: false
+    shell: /bin/bash
+    groups:
+      - sudo
+    ssh_key: "{{ ssh_key_rs }}"
+    sudo_nopasswd: true
+
+  - name: minecraft
+    comment: "Minecraft service account"
+    group: minecraft
+    uid: 1500
+    gid: 1500
+    create_home: true
+    home: /var/lib/minecraft
+    system: true
+    shell: /usr/sbin/nologin
+
+cifs_mounts:
+  - server: "truenas.{{ domain_name }}"
+    share: common
+    mount_point: /mnt/common
+    username: common
+    password: "{{ smb_common_password }}"
+
+  - server: "truenas.{{ domain_name }}"
+    share: minecraft
+    mount_point: /mnt/minecraft
+    username: minecraft
+    password: "{{ smb_minecraft_password }}"
+
+cifs_mount_points:
+  - /mnt/common
+  - /mnt/minecraft
+
+minecraft_user: minecraft
+minecraft_group: minecraft

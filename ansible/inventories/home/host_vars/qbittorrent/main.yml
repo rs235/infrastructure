@@ -1,0 +1,33 @@
+---
+linux_users:
+  - name: qbittorrent
+    comment: "qBittorrent service account"
+    uid: 1500
+    group: qbittorrent
+    gid: 1500
+    create_home: true
+    home: /home/qbittorrent
+    system: true
+    shell: /usr/sbin/nologin
+
+  - name: rs
+    comment: "Admin"
+    uid: 1001
+    group: rs
+    gid: 1001
+    create_home: true
+    home: /home/rs
+    system: false
+    shell: /bin/bash
+    groups:
+      - sudo
+    ssh_key: "{{ ssh_key_rs }}"
+    sudo_nopasswd: true
+
+# qBittorrent user for setting file permissions
+qbittorrent_user: qbittorrent
+qbittorrent_group: qbittorrent
+
+# List of mount points for qBittorrent service template.
+cifs_mount_points:
+  - /mnt/downloads

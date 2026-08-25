@@ -1,0 +1,60 @@
+---
+- name: Validate user definitions
+  ansible.builtin.assert:
+    that:
+      - user.name | length > 0
+      - user.group | length > 0
+    fail_msg: "Each user must have 'name' and 'group' defined."
+  loop: "{{ linux_users }}"
+  loop_control:
+    loop_var: user
+
+- name: Create primary group
+  ansible.builtin.group:
+    name: "{{ user.group }}"
+    gid: "{{ user.gid | default(omit, true) }}"
+    state: present
+  loop: "{{ linux_users }}"
+  loop_control:
+    loop_var: user
+
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+    comment: "{{ user.comment | default(omit, true) }}"
+    uid: "{{ user.uid | default(omit, true) }}"
+    group: "{{ user.group }}" # Set user's primary group
+    create_home: "{{ user.create_home | default(true) }}"
+    home: "{{ user.home | default(omit, true) }}"
+    system: "{{ user.system | default(false) }}" # Select between normal and system user types.
+    shell: "{{ user.shell | default('/bin/bash') }}"
+    state: present
+    append: true # Keep existing supplementary group memberships.
+    groups: "{{ user.groups | default(omit, true) }}" # Set supplementary groups for user.
+  loop: "{{ linux_users }}"
+  loop_control:
+    loop_var: user
+
+- name: Configure passwordless sudo
+  ansible.builtin.template:
+    src: sudoer.j2
+    dest: "/etc/sudoers.d/{{ user.name }}"
+    owner: root
+    group: root
+    mode: '0440'
+    validate: 'visudo -cf %s'
+  loop: "{{ linux_users }}"
+  loop_control:
+    loop_var: user
+  when:
+    - user.sudo_nopasswd | default(false)
+
+- name: Install SSH key
+  ansible.posix.authorized_key:
+    user: "{{ user.name }}"
+    key: "{{ user.ssh_key }}"
+    state: present
+  loop: "{{ linux_users }}"
+  loop_control:
+    loop_var: user
+  when: user.ssh_key is defined # Run this task only if SSH key is defined.

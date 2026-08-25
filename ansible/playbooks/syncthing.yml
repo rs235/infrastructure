@@ -1,0 +1,15 @@
+---
+- name: Bootstrap Syncthing container
+  hosts: syncthing
+  become: true
+
+  roles:
+    - linux_users
+    - cifs_mount
+
+- name: Install and configure Syncthing
+  hosts: syncthing
+  become: true
+
+  roles:
+    - syncthing

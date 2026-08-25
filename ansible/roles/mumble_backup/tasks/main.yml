@@ -1,0 +1,16 @@
+---
+- name: Stop Mumble server before backup
+  ansible.builtin.systemd_service:
+    name: mumble-server
+    state: stopped
+
+- name: Fetch Mumble database
+  ansible.builtin.fetch:
+    src: /var/lib/mumble-server/mumble-server.sqlite
+    dest: roles/mumble-server/files/
+    flat: true
+
+- name: Start Mumble server
+  ansible.builtin.systemd_service:
+    name: mumble-server
+    state: started

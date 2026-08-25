@@ -1,0 +1,28 @@
+name: Kubernetes Manual Deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  kubernetes-terraform-apply:
+    uses: ./.github/workflows/template-terraform-apply.yml
+    with:
+      working-directory: terraform/environments/home/kubernetes
+      # ansible-playbook: kubernetes
+      # ansible-group: k8s_cluster
+      concurrency-group: terraform-home-kubernetes
+    secrets: inherit
+
+  kubernetes-ansible-apply:
+      needs: kubernetes-terraform-apply
+      uses: ./.github/workflows/template-ansible-apply.yml
+      with:
+        working-directory: ansible
+        ansible-playbook: kubernetes
+        ansible-group: k8s_cluster
+        concurrency-group: ansible-home-kubernetes
+      secrets: inherit

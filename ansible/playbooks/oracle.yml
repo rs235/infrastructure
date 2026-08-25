@@ -1,0 +1,10 @@
+---
+- hosts: home
+  roles:
+    - common
+
+- import_playbook: monitoring.yml
+- import_playbook: media.yml
+- import_playbook: apps.yml
+- import_playbook: kubernetes.yml
+- import_playbook: sandbox.yml

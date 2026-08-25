@@ -1,0 +1,20 @@
+name: Sandbox Terraform Plan
+
+on:
+  pull_request:
+    paths:
+      - "terraform/environments/home/sandbox/**"
+      - "terraform/modules/proxmox/**"
+      - "terraform/modules/common/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  sandbox-terraform-plan:
+    uses: ./.github/workflows/template-terraform-plan.yml
+    with:
+      working-directory: terraform/environments/home/sandbox
+      concurrency-group: terraform-home-sandbox
+    secrets: inherit

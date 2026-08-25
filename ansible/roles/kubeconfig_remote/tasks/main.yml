@@ -1,0 +1,23 @@
+---
+- name: Create kubeconfig directory
+  ansible.builtin.file:
+    path: "{{ user.home }}/.kube"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: "0700"
+  loop: "{{ kubectl_users }}"
+  loop_control:
+    loop_var: user
+
+- name: Copy kubeconfig file
+  ansible.builtin.copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ user.home }}/.kube/config"
+    remote_src: true
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: "0600"
+  loop: "{{ kubectl_users }}"
+  loop_control:
+    loop_var: user

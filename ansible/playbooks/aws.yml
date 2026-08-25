@@ -1,0 +1,6 @@
+---
+- hosts: aws
+  roles:
+    - common
+
+- import_playbook: website.yml

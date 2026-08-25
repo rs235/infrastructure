@@ -1,0 +1,65 @@
+---
+- name: Create directory
+  ansible.builtin.file:
+    path: /opt/actions-runner
+    state: directory
+    owner: "{{ runner_linux_user }}"
+    group: "{{ runner_linux_group }}"
+    mode: "0750"
+
+- name: Download actions-runner archive
+  ansible.builtin.get_url:
+    url: "{{ runner_url }}"
+    dest: /tmp/actions-runner.tar.gz
+    mode: '0644'
+    checksum: "sha256:{{ runner_checksum }}"
+
+- name: Extract archive
+  ansible.builtin.unarchive:
+    src: /tmp/actions-runner.tar.gz
+    dest: /opt/actions-runner
+    remote_src: true
+    creates: /opt/actions-runner/config.sh
+
+- name: Ensure correct ownership
+  ansible.builtin.file:
+    path: /opt/actions-runner
+    state: directory
+    owner: "{{ runner_linux_user }}"
+    group: "{{ runner_linux_group }}"
+    # mode: "0750" remove if working without
+    recurse: true
+
+- name: Configure runner
+  become: true
+  become_user: "{{ runner_linux_user }}"
+  ansible.builtin.command:
+    cmd: ./config.sh --unattended --url "https://github.com/{{ github_username }}/{{ github_repo_name }}" --token "{{ runner_token }}" --runnergroup "{{ runner_group }}" --name "{{ runner_name }}" --labels "{{ runner_labels }}" --work "{{ runner_work }}"
+    chdir: /opt/actions-runner
+    creates: /opt/actions-runner/.runner
+  # no_log: true
+
+- name: Check if runner service is installed
+  ansible.builtin.stat:
+    path: /etc/systemd/system/actions.runner.{{ github_username }}-{{ github_repo_name}}.{{ runner_name }}.service
+  register: runner_service
+
+- name: Install GitHub Actions runner service
+  become: true
+  ansible.builtin.command:
+    cmd: ./svc.sh install "{{ runner_linux_user }}"
+    chdir: /opt/actions-runner
+  when: not runner_service.stat.exists
+
+- name: Ensure runner service is started
+  become: true
+  ansible.builtin.systemd:
+    name: "actions.runner.{{ github_username }}-{{ github_repo_name }}.{{ runner_name }}.service"
+    daemon_reload: true
+    state: started
+    enabled: true
+
+- name: Remove downloaded archive
+  ansible.builtin.file:
+    path: /tmp/actions-runner.tar.gz
+    state: absent
