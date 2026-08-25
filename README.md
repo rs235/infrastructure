@@ -40,18 +40,6 @@ flowchart TB
      n12:::Sky
      n13:::Sky
     classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
-    style n2 fill:#BBDEFB,stroke:none
-    style n3 stroke:none,fill:#BBDEFB
-    style n4 stroke:none,fill:#BBDEFB
-    style n5 stroke:none,fill:#BBDEFB
-    style n6 stroke:none,fill:#BBDEFB
-    style n7 stroke:none,fill:#BBDEFB
-    style n8 stroke:none,fill:#BBDEFB
-    style n10 stroke:none,fill:#BBDEFB
-    style n9 stroke:none,fill:#BBDEFB
-    style n11 stroke:none,fill:#BBDEFB
-    style n12 stroke:none,fill:#BBDEFB
-    style n13 stroke:none,fill:#BBDEFB
 ```
 
 ## Workflow
