@@ -1,12 +1,19 @@
 ## Overview
 
-This repository provisions and manages self hosted Proxmox server with a full, highly available Kubernetes cluster running on top of it, and AWS cloud instance with possible future expansion to other cloud providers.
-Provisioned infrastructure is not split into typical environments like dev, test, prod. Instead it treats home and different cloud providers as separate environments.
+Infrastructure as code project for provisioning and management of personal environments on Proxmox VE and commercial cloud platforms.
 
-This repository currently does not manage the very base layer of my home environment which includes Proxmox, TrueNAS, OPNsense and other network devices and instead focuses mainly on the applications and services running on top of it. This might change eventually.
+This repository provisions and manages resources on a self hosted Proxmox VE server and AWS cloud platform. Main goals of this project are modularity, reusability and reproducibility while keeping the code conscise and useful without it becoming a future maintenance burden.
 
-Infrastructure is managed with **Terraform** while configuration is handled by **Ansible**.
-The project uses **Terraform** for infrastructure provisioning, **Ansible** for operating-system and application configuration, and **GitHub Actions** for CI/CD. Kubernetes workloads are managed separately through **GitOps with Argo CD**.
+This project is built around the concept of separate environments but not in a typical, corporate way. Instead of creating artificial dev / test / prod environments I made a decision to instead treat home server and different cloud providers as separate environments.
+
+This repository currently does not manage the very base layer of my home environment which includes Proxmox VE, TrueNAS, OPNsense and assorted network devices and instead focuses mainly on the applications and services running on top of this estabilished base layer.
+
+Main building blocks of this projects are:
+- Terraform - Used for infrastructure provisioning.
+- Ansible - Used for operating system, kubernetes and application installation and configuration.
+- GitHub Actions as the CI/CD tool. The glue that holds all moving parts together.
+
+Additionaly Kubernetes application provisioning is done via ArgoCD in its own GitOps repository: LINK
 
 ## Architecture
 
@@ -159,3 +166,10 @@ AWS_SECRET_ACCESS_KEY
 
 **Backups** - State files are backed up with a simple cron job to a mounted SMB share once a day.
 
+## Future improvements
+
+- Moving state to a dedicated system with locking mechanism.
+- Improved secret management.
+- Additional environments.
+- Improved, automated off-site backups.
+- Enabling provisioning and configuration of the very base layer of home environment if possible (Proxmox VE, TrueNAS, OPNsense, Home Assistant OS, network devices). 
