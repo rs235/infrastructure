@@ -9,7 +9,7 @@ This project is built around the concept of separate environments but not in a t
 This repository currently does not manage the very base layer of my home environment which includes Proxmox VE, TrueNAS, OPNsense and assorted network devices and instead focuses mainly on the applications and services running on top of this estabilished base layer.
 
 Main building blocks of this projects are:
-- Terraform - Used for infrastructure provisioning.
+- Terraform - Used for infrastructure provisioning which includes Proxmox VM, LXC and associated with them virtual devices and configuration, AWS resources like VPC, Security Group and EC2 instances.
 - Ansible - Used for operating system, kubernetes and application installation and configuration.
 - GitHub Actions as the CI/CD tool. The glue that holds all moving parts together.
 
@@ -17,7 +17,7 @@ Additionaly Kubernetes application provisioning is done via ArgoCD in its own Gi
 
 ## Architecture
 
-```mermaid
+``` mermaid
 ---
 config:
   theme: redux
@@ -47,6 +47,30 @@ flowchart TB
      n12:::Sky
      n13:::Sky
     classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
+```
+
+#### Infrastructure provisioning
+
+Terraform is used for provisioning and management of infrastructure on top of Proxmox VE and cloud platforms.
+
+``` mermaid
+---
+config:
+  theme: redux
+---
+flowchart TB
+    n14["GitHub"] --> n15["GitHub Actions"]
+    n15 --> n16["Terraform"]
+    n16 --> n17["Proxmox VE"]
+    n17 --> n18["VM"] & n19["LXC"]
+
+     n14:::Sky
+     n15:::Sky
+     n16:::Sky
+     n17:::Sky
+     n18:::Sky
+     n19:::Sky
+     classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
 ```
 
 ## Workflow
@@ -172,4 +196,7 @@ AWS_SECRET_ACCESS_KEY
 - Improved secret management.
 - Additional environments.
 - Improved, automated off-site backups.
-- Enabling provisioning and configuration of the very base layer of home environment if possible (Proxmox VE, TrueNAS, OPNsense, Home Assistant OS, network devices). 
+- Enabling provisioning and configuration of the very base layer of home environment if possible (Proxmox VE, TrueNAS, OPNsense, Home Assistant OS, network devices).
+
+
+**Disclaimer**: This readme **was not** LLM generated.
