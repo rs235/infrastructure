@@ -23,29 +23,32 @@ config:
   theme: redux
 ---
 flowchart TB
-    n2["GitHub"] --> n3["GitHub Actions"]
-    n3 --> n4["Terraform"] & n5["Ansible"]
-    n4 --> n6["Proxmox VE / Cloud"]
-    n5 --> n7["Linux / Kubernetes"]
-    n7 --> n8["Kubernetes"] & n10["Services"]
-    n8 --> n9["ArgoCD"]
-    n6 --> n11["VM"] & n12["LXC"]
-    n11 --> n9
-    n12 --> n9
-    n9 --> n13["Kubernetes Workloads"]
+    n1["GitHub"] --> n2["GitHub Actions"]
+    n2 --> n3["Terraform"] & n7["Ansible"]
+    n3 --> n4["Proxmox VE"] & n13["Cloud"]
+    n7 --> n8["Linux"]
+    n8 --> n16["Applications"] & n10["Services"] & n9["Kubernetes"]
+    n9 --> n11["ArgoCD"]
+    n4 --> n5["VM"] & n6["LXC"]
+    n11 --> n12["Kubernetes Workloads"]
+    n13 --> n14["VM"] & n15["Cloud Resources"]
 
+     n1:::Sky
      n2:::Sky
      n3:::Sky
-     n4:::Sky
-     n5:::Sky
-     n6:::Sky
      n7:::Sky
+     n4:::Sky
+     n13:::Sky
      n8:::Sky
      n10:::Sky
      n9:::Sky
+     n16:::Sky
      n11:::Sky
+     n5:::Sky
+     n6:::Sky
      n12:::Sky
-     n13:::Sky
+     n14:::Sky
+     n15:::Sky
     classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
 ```
 
