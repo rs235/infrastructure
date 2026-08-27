@@ -80,7 +80,7 @@ jobs:
             -m ansible.builtin.wait_for_connection \
             -a "timeout=300"
 
-      - name: Ansible Configure
+      - name: Execute Ansible playbook
         run: |
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
           -u ansible \

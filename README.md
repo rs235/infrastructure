@@ -54,14 +54,6 @@ flowchart TB
 
 #### Infrastructure provisioning
 
-Terraform is used for provisioning and management of infrastructure on top of Proxmox VE and cloud platforms.
-It's responsible for infrastructure resources such as:
-- Virtual machines
-- Linux Containers
-- VPCs
-- Security Groups
-- IAM
-
 ``` mermaid
 ---
 config:
@@ -82,14 +74,15 @@ flowchart TB
      classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
 ```
 
-#### Configuration management
+Terraform is used for provisioning and management of infrastructure on top of Proxmox VE and cloud platforms.
+It's responsible for infrastructure resources such as:
+- Virtual machines
+- Linux Containers
+- VPCs
+- Security Groups
+- IAM
 
-Ansible is responsible for configuration of the provisioned infrastructure. It manages things like:
-- Kubernetes cluster deployment
-- SSH key management
-- User management
-- System configuration
-- Package installation and configuration
+#### Configuration management
 
 ``` mermaid
 ---
@@ -111,6 +104,13 @@ flowchart TB
      n7:::Sky
      classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
 ```
+
+Ansible is responsible for configuration of the provisioned infrastructure. It manages things like:
+- Kubernetes cluster deployment
+- SSH key management
+- User management
+- System configuration
+- Package installation and configuration
 
 #### Kubernetes
 
@@ -135,7 +135,31 @@ flowchart TB
 
 Kubernetes cluster deployment is done via Kubespray on top of Proxmox VE provisioned virtual machines. Kubernetes workloads are deployed and managed through GitOps using ArgoCD: **REPO LINK**.
 
-## Workflow
+## Repository structure
+
+```
+.
+├── ansible               # Contains Ansible configuration, playbooks, roles and inventory.
+│   ├── inventories       # Ansible inventory split into separate environments with their own vars.
+│   │   ├── aws
+│   │   └── home
+│   ├── playbooks         # Ansible playbooks. Mostly used to call reusable roles.
+│   └── roles             # Reusable Ansible roles.
+├── dependencies          # Contains Ansible dependencies like Kubespray.
+│   └── kubespray         # Kubespray *git submodule* with *pinned tag*.
+├── scripts
+│   └── ansible_setup.sh
+└── terraform             # Contains Terraform environments and modules.
+    ├── environments      # Separate Terraform environments per cloud provider.
+    │   ├── aws
+    │   └── home
+    ├── modules           # Reusable Terraform modules separated by environment.
+    │   ├── aws
+    │   └── proxmox
+    └── README.md         # The file you're reading.
+```
+
+## CI/CD workflow
 
 ```mermaid
 ---
@@ -182,33 +206,98 @@ flowchart LR
     classDef notification stroke:#facc15,fill:#fefce8
 ```
 
-## Repository structure
+CI/CD pipeline is built with GitHub Actions. Actions related to Home environment run on a local, self hosted GitHub Actions runner inside of a Linux container (LXC) while Cloud platform related actions run on a temporary GitHub hosted runner. **This keeps network access rules and credentials separate between environments** to minimize attack surface. 
 
+GitHub Actions are designed to be **modular and reusable**. Every major application group or system has it's own Action that runs on pull requests that touch specific repository paths and triggers reusable Action with trigger type workflow_call that executes appropriate tasks.
+
+All workflows use **concurency controls** to prevent running conflicting operations simultaneously.
+
+###### Terraform pull requests
+
+Workflow steps:
+1. terraform fmt -check
+2. terraform init
+3. terraform validate
+4. terraform plan (Posted as a comment in the pull request)
+5. Merge
+6. terraform apply
+
+###### Ansible pull requests
+
+Workflow steps:
+1. SSH connectivity check with timeout
+2. Ansible syntax check
+3. Ansible playbook check and diff (Posted as comment in the pull request)
+4. Merge
+5. Ansible apply
+
+## Secrets and security considerations
+
+- No secrets are stored in plaintext inside of the repository. 
+- Credentials required by GitHub Actions are kept as repository secrets and are injected at runtime. 
+- Any temporary files that could contain potentially sensitive information are created in runner_temp directory and destroyed after job completion.
+- Ansible Vault is used to store encrypted Ansible secrets.
+- Local GitHub Actions runner runs in its own isolated container.
+- Infrastructure changes are reviewed through pull requests.
+- Terraform plans are created before applying changes.
+- Ansible check mode is used to preview changes.
+- Terraform destroy is kept as a separate workflow.
+
+Repository secrets:
 ```
-.
-├── ansible               # Contains Ansible configuration, playbooks, roles and inventory.
-│   ├── inventories       # Ansible inventory split into separate environments with their own vars.
-│   │   ├── aws
-│   │   └── home
-│   ├── playbooks         # Ansible playbooks. Mostly used to call reusable roles.
-│   └── roles             # Reusable Ansible roles.
-├── dependencies          # Contains Ansible dependencies like Kubespray.
-│   └── kubespray         # Kubespray *git submodule* with *pinned tag*.
-├── scripts
-│   └── ansible_setup.sh
-└── terraform             # Contains Terraform environments and modules.
-    ├── environments      # Separate Terraform environments per cloud provider.
-    │   ├── aws
-    │   └── home
-    ├── modules           # Reusable Terraform modules separated by environment.
-    │   ├── aws
-    │   └── proxmox
-    └── README.md         # The file you're reading.
+ANSIBLE_SSH_PRIVATE_KEY
+ANSIBLE_VAULT_PASSWORD
+
+PROXMOX_VE_API_TOKEN
+PROXMOX_VE_ENDPOINT
+PROXMOX_VE_INSECURE
+
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
 ```
 
-## Prerequisites
+Local GitHub Actions runner secrets:
+```
+Ansible SSH key
+```
 
-This project requires a local, self hosted GitHub runner for interacting with a self hosted Proxmox server.
+## State management
+
+**Location** - Currently Terraform state is kept on Github runner's filesystem. This is not ideal due to lack of state locking mechanism which makes it impossible to safely make changes to infrastructure from multiple machines. Because of this limitation **the only supported way of making changes to infrastructure is through the GitHub Actions workflow**. This is something that could not be resolved at the time of creating this project due to resource constraints and will be addressed in the future.
+
+**Separation** - Terraform state is separated by major system or group of apps. This way there is no risk of changes made, for example to a Minecraft server affecting the Kubernetes cluster. This approach ads another layer of stability and security to the environment.
+
+**Backups** - State files are backed up with a simple cron job to a mounted SMB share once a day.
+
+## Project goals
+
+This project is intended to demonstrate practical experience with:
+
+Infrastructure as Code
+Terraform
+Proxmox VE
+Ansible
+Linux administration
+Kubernetes
+Kubespray
+GitHub Actions
+CI/CD
+GitOps
+Argo CD
+Infrastructure automation
+Configuration management
+Reproducible infrastructure
+Idempotence in automation
+
+The architecture is designed to resemble production infrastructure practices while remaining manageable as a one person home project.
+
+## Future improvements
+
+- Moving state to a dedicated system with locking mechanism.
+- Improved secret management.
+- Additional environments.
+- Improved, automated off-site backups.
+- Enabling provisioning and configuration of the very base layer of home environment if possible (Proxmox VE, TrueNAS, OPNsense, Home Assistant OS, network devices).
 
 ### Tools and versions
 
@@ -219,46 +308,3 @@ This project requires a local, self hosted GitHub runner for interacting with a 
 | Kubespray   | 2.31.0  |
 | Proxmox BPG | 0.110.0 |
 | Python      | 3.12    |
-
-### Accounts, credentials, permissions
-
-SSH access with sudo for Ansible.
-
-Proxmox API token for Terraform BPG provider.
-
-AWS Access Key for Terraform AWS provider.
-
-### Environment variables and secrets
-
-Repository secrets:
-
-ANSIBLE_SSH_PRIVATE_KEY
-ANSIBLE_VAULT_PASSWORD
-
-PROXMOX_VE_API_TOKEN
-PROXMOX_VE_ENDPOINT
-PROXMOX_VE_INSECURE
-
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-
-## Getting started
-
-## State management
-
-**Location** - Currently Terraform state is kept on Github runner's filesystem. This is not ideal due to lack of state locking mechanism which makes it impossible to safely make changes to infrastructure from multiple machines. Because of this limitation **the only supported way of making changes to infrastructure is through the GitHub Actions workflow**. This is something that could not be resolved at the time of creating this project due to resource constraints and will be addressed in the future.
-
-**Separation** - Terraform state is separated by major system or group of apps. This way there is no risk of changes made, for example to a Minecraft server affecting the Kubernetes cluster. This approach ads another layer of stability and security to the environment.
-
-**Backups** - State files are backed up with a simple cron job to a mounted SMB share once a day.
-
-## Future improvements
-
-- Moving state to a dedicated system with locking mechanism.
-- Improved secret management.
-- Additional environments.
-- Improved, automated off-site backups.
-- Enabling provisioning and configuration of the very base layer of home environment if possible (Proxmox VE, TrueNAS, OPNsense, Home Assistant OS, network devices).
-
-
-**Disclaimer**: This readme **was not** LLM generated.
