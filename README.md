@@ -13,7 +13,7 @@ Main building blocks of this projects are:
 - Ansible - Used for operating system, kubernetes and application installation and configuration.
 - GitHub Actions as the CI/CD tool. The glue that holds all moving parts together.
 
-Additionaly Kubernetes application provisioning is done via ArgoCD in its own GitOps repository: LINK
+Additionaly Kubernetes application provisioning is done via ArgoCD in its own GitOps repository: **REPO LINK**.
 
 ## Architecture
 
@@ -54,7 +54,35 @@ flowchart TB
 
 #### Infrastructure provisioning
 
+``` mermaid
+---
+config:
+  theme: redux
+---
+flowchart TB
+    n1["Terraform"] --> n2["Proxmox VE"] & n3["Cloud"]
+    n2 --> n4["VM"] & n7["LXC"]
+    n3 --> n5["VM"] & n6["Cloud Resources"]
+
+     n1:::Sky
+     n2:::Sky
+     n3:::Sky
+     n4:::Sky
+     n5:::Sky
+     n6:::Sky
+     n7:::Sky
+     classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
+```
+
 Terraform is used for provisioning and management of infrastructure on top of Proxmox VE and cloud platforms.
+It's responsible for infrastructure resources such as:
+- Virtual machines
+- Linux Containers
+- VPCs
+- Security Groups
+- IAM
+
+#### Configuration management
 
 ``` mermaid
 ---
@@ -62,15 +90,50 @@ config:
   theme: redux
 ---
 flowchart TB
-    n1["Terraform"] --> n2["Proxmox VE"]
-    n2["Proxmox VE"] --> n3["VM"] & n4["LXC"]
+    n1["Ansible"] --> n2["Linux"]
+    n2 --> n3["Applications"] & n4["Services"] & n5["Kubernetes"]
+    n5 --> n6["ArgoCD"]
+    n6 --> n7["Kubernetes Workloads"]
 
      n1:::Sky
      n2:::Sky
      n3:::Sky
      n4:::Sky
+     n5:::Sky
+     n6:::Sky
+     n7:::Sky
      classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
 ```
+
+Ansible is responsible for configuration of the provisioned infrastructure. It manages things like:
+- Kubernetes cluster deployment
+- SSH key management
+- User management
+- System configuration
+- Package installation and configuration
+
+#### Kubernetes
+
+``` mermaid
+---
+config:
+  theme: redux
+---
+flowchart TB
+    n1["Ansible"] --> n2["Kubespray"]
+    n2 --> n3["Kubernetes"]
+    n3 --> n4["ArgoCD"]
+    n4 --> n5["Kubernetes Workloads"]
+
+     n1:::Sky
+     n2:::Sky
+     n3:::Sky
+     n4:::Sky
+     n5:::Sky
+     classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
+```
+
+Kubernetes cluster deployment is done via Kubespray on top of Proxmox VE provisioned virtual machines. Kubernetes workloads are deployed and managed through GitOps using ArgoCD: **REPO LINK**.
 
 ## Workflow
 
