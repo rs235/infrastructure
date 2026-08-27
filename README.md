@@ -25,7 +25,7 @@ config:
 flowchart TB
     n2["GitHub"] --> n3["GitHub Actions"]
     n3 --> n4["Terraform"] & n5["Ansible"]
-    n4 --> n6["Proxmox VE"]
+    n4 --> n6["Proxmox VE / Cloud"]
     n5 --> n7["Linux / Kubernetes"]
     n7 --> n8["Kubernetes"] & n10["Services"]
     n8 --> n9["ArgoCD"]
@@ -59,17 +59,13 @@ config:
   theme: redux
 ---
 flowchart TB
-    n14["GitHub"] --> n15["GitHub Actions"]
-    n15 --> n16["Terraform"]
-    n16 --> n17["Proxmox VE"]
-    n17 --> n18["VM"] & n19["LXC"]
+    n1["Terraform"] --> n2["Proxmox VE"]
+    n2["Proxmox VE"] --> n3["VM"] & n4["LXC"]
 
-     n14:::Sky
-     n15:::Sky
-     n16:::Sky
-     n17:::Sky
-     n18:::Sky
-     n19:::Sky
+     n1:::Sky
+     n2:::Sky
+     n3:::Sky
+     n4:::Sky
      classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
 ```
 
