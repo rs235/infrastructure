@@ -54,6 +54,14 @@ flowchart TB
 
 #### Infrastructure provisioning
 
+Terraform is used for provisioning and management of infrastructure on top of Proxmox VE and cloud platforms.
+It's responsible for infrastructure resources such as:
+- Virtual machines
+- Linux Containers
+- VPCs
+- Security Groups
+- IAM
+
 ``` mermaid
 ---
 config:
@@ -74,15 +82,14 @@ flowchart TB
      classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
 ```
 
-Terraform is used for provisioning and management of infrastructure on top of Proxmox VE and cloud platforms.
-It's responsible for infrastructure resources such as:
-- Virtual machines
-- Linux Containers
-- VPCs
-- Security Groups
-- IAM
-
 #### Configuration management
+
+Ansible is responsible for configuration of the provisioned infrastructure. It manages things like:
+- Kubernetes cluster deployment
+- SSH key management
+- User management
+- System configuration
+- Package installation and configuration
 
 ``` mermaid
 ---
@@ -104,13 +111,6 @@ flowchart TB
      n7:::Sky
      classDef Sky stroke-width:1px, stroke-dasharray:none, stroke:#374D7C, fill:#E2EBFF, color:#374D7C
 ```
-
-Ansible is responsible for configuration of the provisioned infrastructure. It manages things like:
-- Kubernetes cluster deployment
-- SSH key management
-- User management
-- System configuration
-- Package installation and configuration
 
 #### Kubernetes
 
