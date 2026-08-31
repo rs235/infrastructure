@@ -172,8 +172,8 @@ metallb_config:
 
 argocd_enabled: true
 argocd_version: v3.5.2
-# argocd_install_url: https://raw.githubusercontent.com/argoproj/argo-cd/{{ argocd_version }}/manifests/install.yaml
-# argocd_install_checksum: sha256:cdf6758b489d25641c2a1fd835642543aaa64fe530867d0136a83ddf3dafe456
+argocd_install_url: https://raw.githubusercontent.com/argoproj/argo-cd/{{ argocd_version }}/manifests/install.yaml
+argocd_install_checksum: sha256:9a87f2b3e14c278f12501eb0ef5c3955b27cf05370ca425381c6a908cf85a5c5
 
 # argocd_namespace: argocd
 # Default password:
