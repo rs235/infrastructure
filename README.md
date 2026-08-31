@@ -212,7 +212,7 @@ GitHub Actions are designed to be **modular and reusable**. Every major applicat
 
 All workflows use **concurency controls** to prevent running conflicting operations simultaneously.
 
-###### Terraform pull requests
+##### Terraform pull requests
 
 Workflow steps:
 1. terraform fmt -check
@@ -222,7 +222,7 @@ Workflow steps:
 5. Merge
 6. terraform apply
 
-###### Ansible pull requests
+##### Ansible pull requests
 
 Workflow steps:
 1. SSH connectivity check with timeout
