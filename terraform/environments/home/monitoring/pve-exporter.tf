@@ -1,4 +1,4 @@
-module "LXC" {
+module "pve-exporter" {
   source = "../../../modules/proxmox/lxc"
 
   # General

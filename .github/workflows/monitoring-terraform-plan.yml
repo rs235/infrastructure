@@ -1,4 +1,4 @@
-name: monitoring Terraform Plan
+name: Monitoring Terraform Plan
 
 on:
   pull_request:
