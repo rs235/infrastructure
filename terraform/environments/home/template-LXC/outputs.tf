@@ -1,17 +1,17 @@
 output "name" {
   value = {
-    LXC = module.LXC.name
+    <MODULE_NAME> = module.<MODULE_NAME>.name
   }
 }
 
 output "vm_id" {
   value = {
-    LXC = module.LXC.vm_id
+    <MODULE_NAME> = module.<MODULE_NAME>.vm_id
   }
 }
 
 output "fqdn" {
   value = {
-    LXC = module.LXC.fqdn
+    <MODULE_NAME> = module.<MODULE_NAME>.fqdn
   }
 }

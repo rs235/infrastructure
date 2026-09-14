@@ -1,9 +1,9 @@
-module "LXC" {
+module "<MODULE_NAME>" {
   source = "../../../modules/proxmox/lxc"
 
   # General
-  name         = "LXC"
-  vm_id        = 200
+  name         = "<RESOURCE_NAME>"
+  vm_id        = <VM_ID>
   target_node  = module.common.proxmox.node
   unprivileged = true
   template     = "local:vztmpl/ubuntu-26.04-standard_26.04-1_amd64.tar.zst"
@@ -24,12 +24,12 @@ module "LXC" {
   bridge   = module.common.network.bridge
   firewall = true
   # vlan_id = module.common.network.vlan_id
-  address = "10.10.10.XXX/24"
+  address = "10.10.10.<LAST_OCTET>/24"
   gateway = "10.10.10.1"
 
   # User
   # password  =
-  ssh_key = var.ssh_key
+  ssh_pub_key = module.common.user.ssh_pub_key
 
   # Features
   nesting = true

@@ -1,17 +1,17 @@
 output "name" {
   value = {
-    VM = module.VM.name
+    <MODULE_NAME> = module.<MODULE_NAME>.name
   }
 }
 
 output "vm_id" {
   value = {
-    VM = module.VM.vm_id
+    <MODULE_NAME> = module.<MODULE_NAME>.vm_id
   }
 }
 
 output "fqdn" {
   value = {
-    VM = module.VM.fqdn
+    <MODULE_NAME> = module.<MODULE_NAME>.fqdn
   }
 }
