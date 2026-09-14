@@ -1,7 +1,3 @@
-module "common" {
-  source = "../common"
-}
-
 module "k8s-cp1" {
   source = "../../../modules/proxmox/vm"
 

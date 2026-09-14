@@ -13,7 +13,7 @@ locals {
     gateway = "10.10.10.1"
   }
 
-  ssh_pub_key = {
+  user = {
     ssh_pub_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGlasRS7kxBSKvZ4vTGtCIeTa92Zjm7IXkurFfoRofk ansible@automation"
   }
 }

@@ -29,7 +29,7 @@ module "pve-exporter" {
 
   # User
   # password  =
-  ssh_pub_key = var.ssh_pub_key
+  ssh_pub_key = module.common.user.ssh_pub_key
 
   # Features
   nesting = true
