@@ -108,10 +108,10 @@ users:
     sudo: "ALL=(ALL) NOPASSWD:ALL"
     lock_passwd: true
     ssh_authorized_keys:
-      - ${file(pathexpand("~/.ssh/id_ed25519_ansible.pub"))}
+      - ${var.ansible_ssh_public_key}
 
-packages:
-  - htop
+# packages:
+#   - htop
 EOF
 
 }

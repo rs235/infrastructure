@@ -6,5 +6,10 @@ variable "region" {
   default     = "eu-north-1"
 }
 
+variable "ansible_ssh_public_key" {
+  description = "Public key for Ansible automation account."
+  type        = string
+}
+
 # VPC variables
 # SG variables
