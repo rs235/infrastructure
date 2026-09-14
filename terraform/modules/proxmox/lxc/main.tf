@@ -53,7 +53,7 @@ resource "proxmox_virtual_environment_container" "lxc" {
       password = var.password
 
       keys = [
-        var.ssh-public-key
+        var.ssh_pub_key
       ]
     }
   }

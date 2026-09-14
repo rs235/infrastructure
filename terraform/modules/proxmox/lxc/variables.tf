@@ -127,7 +127,7 @@ variable "password" {
   sensitive = true
 }
 
-variable "ssh-public-key" {
+variable "ssh_pub_key" {
   type      = string
   default   = null
   sensitive = true
