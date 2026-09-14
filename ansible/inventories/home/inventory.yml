@@ -15,8 +15,8 @@ all:
         # Self hosted services
         services:
           hosts:
-            sandbox:
-              ansible_host: sandbox.home.arpa
+            monitoring:
+              ansible_host: monitoring.home.arpa
 
             syncthing:
               ansible_host: syncthing.home.arpa

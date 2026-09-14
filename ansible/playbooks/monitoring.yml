@@ -1,0 +1,7 @@
+---
+- name: Connect SMB share, install Docker and extra packages
+  hosts: monitoring
+  become: true
+  roles:
+    - linux_users
+    - cifs_mount

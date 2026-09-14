@@ -11,6 +11,8 @@ on:
       - "ansible/requirements.yml"
       - "ansible/ansible.cfg"
 
+  workflow_dispatch:
+
 permissions:
   contents: read
 

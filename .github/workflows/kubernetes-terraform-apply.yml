@@ -9,6 +9,8 @@ on:
       - "terraform/modules/proxmox/**"
       - "terraform/modules/common/**"
 
+  workflow_dispatch:
+
 permissions:
   contents: read
   pull-requests: write

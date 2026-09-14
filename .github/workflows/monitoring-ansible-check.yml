@@ -1,24 +1,26 @@
-name: Sandbox Ansible Check
+name: Monitoring Ansible Check
 
 on:
   pull_request:
     paths:
       - "ansible/inventories/home/**"
-      - "ansible/playbooks/sandbox.yml**"
+      - "ansible/playbooks/monitoring.yml**"
       - "ansible/roles/**"
       - "ansible/requirements.yml"
       - "ansible/ansible.cfg"
+
+  workflow_dispatch:
 
 permissions:
   contents: read
   pull-requests: write
 
 jobs:
-  sandbox-ansible-check:
+  monitoring-ansible-check:
     uses: ./.github/workflows/template-ansible-check.yml
     with:
       working-directory: ansible
-      concurrency-group: ansible-home-sandbox
-      ansible-playbook: sandbox
-      ansible-group: sandbox
+      concurrency-group: ansible-home-monitoring
+      ansible-playbook: monitoring
+      ansible-group: monitoring
     secrets: inherit

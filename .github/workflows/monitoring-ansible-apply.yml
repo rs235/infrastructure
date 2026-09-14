@@ -1,4 +1,4 @@
-name: Sandbox Ansible Apply
+name: Monitoring Ansible Apply
 
 on:
   push:
@@ -6,20 +6,22 @@ on:
         - main
     paths:
       - "ansible/inventories/home/**"
-      - "ansible/playbooks/sandbox.yml**"
+      - "ansible/playbooks/monitoring.yml**"
       - "ansible/roles/**"
       - "ansible/requirements.yml"
       - "ansible/ansible.cfg"
+
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  sandbox-ansible-apply:
+  monitoring-ansible-apply:
     uses: ./.github/workflows/template-ansible-apply.yml
     with:
       working-directory: ansible
-      concurrency-group: ansible-home-sandbox
-      ansible-playbook: sandbox
-      ansible-group: sandbox
+      concurrency-group: ansible-home-monitoring
+      ansible-playbook: monitoring
+      ansible-group: monitoring
     secrets: inherit
