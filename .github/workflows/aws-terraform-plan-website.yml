@@ -13,7 +13,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  monitoring-terraform-plan:
+  website-terraform-plan:
     uses: ./.github/workflows/aws-template-terraform-plan.yml
     with:
       working-directory: terraform/environments/aws/website
