@@ -9,3 +9,7 @@ output "network" {
 output "cloud-init" {
   value = local.cloud-init
 }
+
+output "user" {
+  value = local.user
+}
