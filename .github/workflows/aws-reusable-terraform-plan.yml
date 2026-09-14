@@ -1,4 +1,4 @@
-name: AWS - Reusable Terraform Plan
+name: Reusable Terraform Plan
 
 on:
   workflow_call:
@@ -11,6 +11,21 @@ on:
         required: true
         type: string
 
+      ansible_ssh_public_key:
+        required: true
+        type: string
+
+      runner:
+        required: true
+        type: string
+
+    secrets:
+      aws_access_key_id:
+        required: true
+
+      aws_secret_access_key:
+        required: true
+
 permissions:
   contents: read
   pull-requests: write
@@ -21,13 +36,13 @@ concurrency:
 
 jobs:
   template-terraform-plan:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runner) }}
     
     env:
       TF_INPUT: "0"
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      TF_VAR_ANSIBLE_SSH_PUBLIC_KEY: ${{ vars.ANSIBLE_SSH_PUBLIC_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      TF_VAR_ansible_ssh_public_key: ${{ inputs.ansible_ssh_public_key }}
 
     defaults:
       run:

@@ -14,8 +14,12 @@ permissions:
 
 jobs:
   project-terraform-plan:
-    uses: ./.github/workflows/aws-reusable-terraform-apply.yml
+    uses: ./.github/workflows/aws-reusable-terraform-plan.yml
     with:
       working-directory: terraform/environments/aws/project
       concurrency-group: terraform-aws-project
-    secrets: inherit
+      runner: '["ubuntu-latest"]'
+      ansible_ssh_public_key: ${{ vars.ANSIBLE_SSH_PUBLIC_KEY }}
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
