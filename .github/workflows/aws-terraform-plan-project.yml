@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   project-terraform-plan:
-    uses: ./.github/workflows/aws-template-terraform-plan.yml
+    uses: ./.github/workflows/aws-reusable-terraform-apply.yml
     with:
       working-directory: terraform/environments/aws/project
       concurrency-group: terraform-aws-project

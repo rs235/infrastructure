@@ -12,7 +12,7 @@ on:
 
 jobs:
   project-terraform-apply:
-    uses: ./.github/workflows/template-terraform-apply.yml
+    uses: ./.github/workflows/aws-reusable-terraform-apply.yml
     with:
       working-directory: terraform/environments/aws/project
       concurrency-group: terraform-aws-project
