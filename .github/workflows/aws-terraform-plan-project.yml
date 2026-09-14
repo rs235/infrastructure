@@ -1,9 +1,9 @@
-name: AWS - Terraform Plan - website
+name: AWS - Terraform Plan - project
 
 on:
   pull_request:
     paths:
-      - "terraform/environments/aws/website/**"
+      - "terraform/environments/aws/project/**"
       - "terraform/modules/aws/**"
 
   workflow_dispatch:
@@ -13,9 +13,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  website-terraform-plan:
+  project-terraform-plan:
     uses: ./.github/workflows/aws-template-terraform-plan.yml
     with:
-      working-directory: terraform/environments/aws/website
-      concurrency-group: terraform-aws-website
+      working-directory: terraform/environments/aws/project
+      concurrency-group: terraform-aws-project
     secrets: inherit

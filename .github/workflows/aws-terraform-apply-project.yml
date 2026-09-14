@@ -1,0 +1,19 @@
+name: AWS - Terraform Apply - project
+
+on:
+  push:
+    branches:
+        - main
+    paths:
+      - "terraform/environments/aws/project/**"
+      - "terraform/modules/proxmox/**"
+
+  workflow_dispatch:
+
+jobs:
+  project-terraform-apply:
+    uses: ./.github/workflows/template-terraform-apply.yml
+    with:
+      working-directory: terraform/environments/aws/project
+      concurrency-group: terraform-aws-project
+    secrets: inherit
