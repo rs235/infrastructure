@@ -1,0 +1,21 @@
+name: AWS - Terraform Plan - website
+
+on:
+  pull_request:
+    paths:
+      - "terraform/environments/aws/website/**"
+      - "terraform/modules/aws/**"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  monitoring-terraform-plan:
+    uses: ./.github/workflows/aws-template-terraform-plan.yml
+    with:
+      working-directory: terraform/environments/aws/website
+      concurrency-group: terraform-aws-website
+    secrets: inherit

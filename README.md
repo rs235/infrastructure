@@ -156,7 +156,7 @@ Kubernetes cluster deployment is done via Kubespray on top of Proxmox VE provisi
     ├── modules           # Reusable Terraform modules separated by environment.
     │   ├── aws
     │   └── proxmox
-    └── README.md         # The file you're reading.
+    └── README.md
 ```
 
 ## CI/CD workflow
