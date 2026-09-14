@@ -108,7 +108,7 @@ users:
     sudo: "ALL=(ALL) NOPASSWD:ALL"
     lock_passwd: true
     ssh_authorized_keys:
-      - ${var.ansible_ssh_public_key}
+      - ${var.ANSIBLE_SSH_PUBLIC_KEY}
 
 # packages:
 #   - htop

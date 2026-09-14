@@ -6,7 +6,7 @@ variable "region" {
   default     = "eu-north-1"
 }
 
-variable "ansible_ssh_public_key" {
+variable "ANSIBLE_SSH_PUBLIC_KEY" {
   description = "Public key for Ansible automation account."
   type        = string
 }
