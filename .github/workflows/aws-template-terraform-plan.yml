@@ -1,4 +1,4 @@
-name: Reusable Terraform Plan
+name: AWS - Reusable Terraform Plan
 
 on:
   workflow_call:
