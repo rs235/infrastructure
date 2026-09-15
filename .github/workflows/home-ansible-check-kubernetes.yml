@@ -1,3 +1,4 @@
+---
 name: Home - Ansible Check - kubernetes
 on:
   pull_request:
