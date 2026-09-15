@@ -170,7 +170,7 @@ metallb_config:
 #           address_pool:
 #             - pool2
 
-argocd_enabled: true
+argocd_enabled: false
 argocd_version: v2.14.21
 argocd_install_url: https://raw.githubusercontent.com/argoproj/argo-cd/{{ argocd_version }}/manifests/install.yaml
 argocd_install_checksum: sha256:ee39d40847bbb36154ebcdf2f5c93e0a9001ab60131afb60dbe42981a069699e
