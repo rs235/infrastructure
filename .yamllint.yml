@@ -1,0 +1,52 @@
+---
+extends: default
+
+rules:
+  # Kubernetes manifests and Helm templates commonly have long lines
+  # (annotations, URLs, image references, JSON-in-YAML, etc.).
+  line-length:
+    max: 120
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+
+  # Kubernetes manifests conventionally use 2 spaces.
+  indentation:
+    spaces: 2
+    indent-sequences: true
+
+  # Require explicit YAML document boundaries.
+  document-start:
+    present: true
+
+  # Don't require `...` at the end of every Kubernetes manifest.
+  document-end: disable
+
+  # Useful for catching accidental YAML 1.1 booleans such as `yes`, `no`,
+  # `on`, and `off`.
+  truthy:
+    allowed-values: ['true', 'false']
+    check-keys: true
+
+  # Duplicate YAML keys are almost always a bug in manifests.
+  key-duplicates: enable
+
+  # Keep comments readable without being overly prescriptive.
+  comments:
+    require-starting-space: true
+    min-spaces-from-content: 2
+
+  # Avoid unnecessary whitespace noise.
+  trailing-spaces: enable
+
+  # Ensure files are POSIX-friendly.
+  new-line-at-end-of-file: enable
+
+  # Don't allow excessive blank lines.
+  empty-lines:
+    max: 1
+    max-start: 0
+    max-end: 0
+
+  # Empty/null values are often intentional in Kubernetes manifests,
+  # so leave this disabled from the default configuration.
+  empty-values: disable

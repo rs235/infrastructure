@@ -4,7 +4,7 @@ name: AWS - Terraform Apply - project
 on:
   push:
     branches:
-        - main
+      - main
     paths:
       - "terraform/environments/aws/project/**"
       - "terraform/modules/proxmox/**"

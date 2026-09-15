@@ -47,7 +47,7 @@ concurrency:
 jobs:
   reusable-terraform-apply:
     runs-on: ${{ fromJSON(inputs.runner) }}
-    
+
     env:
       TF_INPUT: "0"
 
