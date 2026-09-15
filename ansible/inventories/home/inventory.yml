@@ -1,5 +1,8 @@
 ---
 all:
+  vars:
+    ansible_user: ansible
+
   children:
 
     # Home environment

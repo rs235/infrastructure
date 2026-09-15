@@ -29,7 +29,7 @@ module "github-runner" {
 
   # User
   # password  =
-  ssh_key = var.ssh_key
+  ssh_pub_key = module.common.user.ssh_pub_key
 
   # Features
   nesting = true
