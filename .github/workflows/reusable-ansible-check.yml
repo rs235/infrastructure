@@ -1,5 +1,5 @@
 ---
-name: Reusable Ansible Check
+name: Reusable Ansible Check test
 
 on:
   workflow_call:
