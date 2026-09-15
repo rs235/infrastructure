@@ -104,3 +104,5 @@ jobs:
         with:
           name: "${{ inputs.concurrency-group }}-plan"
           path: "${{ runner.temp }}/tfplan.txt"
+          if-no-files-found: error
+          retention-days: 14

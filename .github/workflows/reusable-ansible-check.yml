@@ -128,3 +128,5 @@ jobs:
         with:
           name: "${{ inputs.concurrency-group }}-check"
           path: "${{ runner.temp }}/ansible-check.txt"
+          if-no-files-found: error
+          retention-days: 14
