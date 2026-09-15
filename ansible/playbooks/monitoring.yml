@@ -1,7 +1,16 @@
 ---
-- name: Bootstrap (users, mounts)
+- name: Bootstrap container
   hosts: pve-exporter
-  become: true
+  become: false
+  vars:
+    ansible_user: root
+  roles:
+    - bootstrap_lxc
+
+- name: Configure Linux users
+  hosts: pve-exporter
+  become: false
+  vars:
+    ansible_user: root
   roles:
     - linux_users
-    - cifs_mount
