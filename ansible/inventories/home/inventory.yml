@@ -15,9 +15,6 @@ all:
         # Self hosted services
         services:
           hosts:
-            monitoring:
-              ansible_host: monitoring.home.arpa
-
             syncthing:
               ansible_host: syncthing.home.arpa
 
@@ -27,11 +24,16 @@ all:
             github-runner:
               ansible_host: github-runner.home.arpa
 
-        # Media stack
+        # Media
         media:
           hosts:
             qbittorrent:
               ansible_host: qbittorrent.home.arpa
+
+        monitoring:
+          hosts:
+            pve-exporter:
+              ansible_host: pve-exporter.home.arpa
 
         # Kubespray
         k8s_cluster:
