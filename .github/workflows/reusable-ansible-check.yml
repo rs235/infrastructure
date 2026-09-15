@@ -101,7 +101,6 @@ jobs:
           --syntax-check \
           "playbooks/${{ inputs.ansible-playbook }}.yml"
 
-
       - name: Ansible check
         run: |
           set -o pipefail

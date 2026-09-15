@@ -79,20 +79,18 @@ jobs:
           printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${{ runner.temp }}/vault_pass"
           chmod 600 "${{ runner.temp }}/vault_pass"
 
-      - name: Wait for machines
-        run: |
-          "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-inventory-group }} \
-            -u ansible \
-            -i inventories/home/inventory.yml \
-            --vault-password-file "${{ runner.temp }}/vault_pass" \
-            --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
-            -m ansible.builtin.wait_for_connection \
-            -a "timeout=300"
+      # - name: Wait for machines
+      #   run: |
+      #     "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-inventory-group }} \
+      #       -i inventories/home/inventory.yml \
+      #       --vault-password-file "${{ runner.temp }}/vault_pass" \
+      #       --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
+      #       -m ansible.builtin.wait_for_connection \
+      #       -a "timeout=300"
 
       - name: Execute Ansible playbook
         run: |
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
-          -u ansible \
           -i inventories/home/inventory.yml \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
           --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
