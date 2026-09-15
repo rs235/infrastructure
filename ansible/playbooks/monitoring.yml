@@ -1,5 +1,5 @@
 ---
-- name: Connect SMB share, install Docker and extra packages
+- name: Bootstrap (users, mounts)
   hosts: monitoring
   become: true
   roles:

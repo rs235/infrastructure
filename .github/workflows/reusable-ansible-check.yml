@@ -26,10 +26,10 @@ on:
 
     secrets:
       ansible_ssh_private_key:
-        required: yes
+        required: true
 
       ansible_vault_password:
-        required: yes
+        required: true
 
 permissions:
   contents: read
