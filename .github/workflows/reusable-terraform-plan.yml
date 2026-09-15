@@ -12,19 +12,29 @@ on:
         type: string
 
       ansible_ssh_public_key:
-        required: true
+        required: false
         type: string
 
       runner:
         required: true
         type: string
 
+      proxmox_ve_insecure:
+        required: false
+        type: string
+
     secrets:
       aws_access_key_id:
-        required: true
+        required: false
 
       aws_secret_access_key:
-        required: true
+        required: false
+
+      proxmox_ve_endpoint:
+        required: false
+
+      proxmox_ve_api_token:
+        required: false
 
 permissions:
   contents: read
@@ -35,14 +45,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  template-terraform-plan:
+  reusable-terraform-plan:
     runs-on: ${{ fromJSON(inputs.runner) }}
     
     env:
       TF_INPUT: "0"
+
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
       TF_VAR_ansible_ssh_public_key: ${{ inputs.ansible_ssh_public_key }}
+
+      PROXMOX_VE_ENDPOINT: ${{ secrets.proxmox_ve_endpoint }}
+      PROXMOX_VE_API_TOKEN: ${{ secrets.proxmox_ve_api_token }}
+      PROXMOX_VE_INSECURE: ${{ inputs.proxmox_ve_insecure }}
 
     defaults:
       run:

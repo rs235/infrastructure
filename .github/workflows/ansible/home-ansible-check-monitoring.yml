@@ -1,0 +1,30 @@
+name: Home - Ansible Check - monitoring
+
+on:
+  pull_request:
+    paths:
+      - "ansible/inventories/home/**"
+      - "ansible/playbooks/monitoring.yml"
+      - "ansible/roles/**"
+      - "ansible/requirements.yml"
+      - "ansible/ansible.cfg"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ansible-check-monitoring:
+    uses: ./.github/workflows/reusable-ansible-check.yml
+    with:
+      working-directory: ansible
+      concurrency-group: home-ansible-monitoring
+      runner: '["self-hosted", "linux", "terraform", "dev"]'
+      ansible-playbook: monitoring
+      ansible-group: monitoring
+
+    secrets:
+      ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
+      ansible_vault_password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}

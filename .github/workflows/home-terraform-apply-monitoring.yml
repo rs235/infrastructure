@@ -1,0 +1,23 @@
+name: Home - Terraform Apply - monitoring
+
+on:
+  push:
+    branches:
+        - main
+    paths:
+      - "terraform/environments/home/monitoring/**"
+      - "terraform/modules/proxmox/**"
+
+  workflow_dispatch:
+
+jobs:
+  terraform-apply-monitoring:
+    uses: ./.github/workflows/reusable-terraform-apply.yml
+    with:
+      working-directory: terraform/environments/home/monitoring
+      concurrency-group: home-terraform-monitoring
+      runner: '["self-hosted", "linux", "terraform", "dev"]'
+      proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
+    secrets:
+      proxmox_ve_endpoint: ${{ secrets.PROXMOX_VE_ENDPOINT }}
+      proxmox_ve_api_token: ${{ secrets.PROXMOX_VE_API_TOKEN }}

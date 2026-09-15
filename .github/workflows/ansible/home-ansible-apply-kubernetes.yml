@@ -6,7 +6,7 @@ on:
         - main
     paths:
       - "ansible/inventories/home/**"
-      - "ansible/playbooks/kubernetes.yml**"
+      - "ansible/playbooks/kubernetes.yml"
       - "ansible/roles/**"
       - "ansible/requirements.yml"
       - "ansible/ansible.cfg"
@@ -18,10 +18,14 @@ permissions:
 
 jobs:
   kubernetes-ansible-apply:
-    uses: ./.github/workflows/template-ansible-apply.yml
+    uses: ./.github/workflows/reusable-ansible-apply.yml
     with:
       working-directory: ansible
-      concurrency-group: ansible-home-kubernetes
+      concurrency-group: home-ansible-kubernetes
+      runner: '["self-hosted", "linux", "terraform", "dev"]'
       ansible-playbook: kubernetes
       ansible-group: k8s_cluster
-    secrets: inherit
+
+    secrets:
+      ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
+      ansible_vault_password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}

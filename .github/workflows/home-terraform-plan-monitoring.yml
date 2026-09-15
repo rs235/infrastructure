@@ -1,0 +1,25 @@
+name: Home - Terraform Plan - monitoring
+
+on:
+  pull_request:
+    paths:
+      - "terraform/environments/home/monitoring/**"
+      - "terraform/modules/proxmox/**"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  terraform-plan-monitoring:
+    uses: ./.github/workflows/reusable-terraform-plan.yml
+    with:
+      working-directory: terraform/environments/home/monitoring
+      concurrency-group: home-terraform-monitoring
+      runner: '["self-hosted", "linux", "terraform", "dev"]'
+      proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
+    secrets:
+      proxmox_ve_endpoint: ${{ secrets.PROXMOX_VE_ENDPOINT }}
+      proxmox_ve_api_token: ${{ secrets.PROXMOX_VE_API_TOKEN }}

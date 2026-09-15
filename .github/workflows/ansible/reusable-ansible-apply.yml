@@ -1,9 +1,17 @@
-name: Reusable Ansible Check
+name: Reusable Ansible Apply
 
 on:
   workflow_call:
     inputs:
       working-directory:
+        required: true
+        type: string
+
+      concurrency-group:
+        required: true
+        type: string
+
+      runner:
         required: true
         type: string
 
@@ -15,31 +23,27 @@ on:
         required: true
         type: string
 
-      concurrency-group:
-        required: true
-        type: string
+    secrets:
+      ansible_ssh_private_key:
+        required: yes
+
+      ansible_vault_password:
+        required: yes
 
 permissions:
   contents: read
-  pull-requests: write
 
 concurrency:
   group: ${{ inputs.concurrency-group }}
   cancel-in-progress: false
 
 jobs:
-  template-ansible-check:
-    runs-on:
-      - self-hosted
-      - infra
-      - home
+  reusable-ansible-apply:
+    runs-on: ${{ fromJSON(inputs.runner) }}
 
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
-
-    env:
-      ANSIBLE_NOCOLOR: "1"
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -84,38 +88,11 @@ jobs:
             -m ansible.builtin.wait_for_connection \
             -a "timeout=300"
 
-      - name: Syntax check
+      - name: Execute Ansible playbook
         run: |
           "${{ runner.temp }}/venv/bin/ansible-playbook" \
           -u ansible \
           -i inventories/home/inventory.yml \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
           --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
-          --syntax-check \
           "playbooks/${{ inputs.ansible-playbook }}.yml"
-
-
-      - name: Ansible check
-        run: |
-          set -o pipefail
-
-          "${{ runner.temp }}/venv/bin/ansible-playbook" \
-          -u ansible \
-          -i inventories/home/inventory.yml \
-          --vault-password-file "${{ runner.temp }}/vault_pass" \
-          --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
-          --check \
-          --diff \
-          "playbooks/${{ inputs.ansible-playbook }}.yml" \
-          | tee "${{ runner.temp }}/ansible-check.txt"
-      
-      - name: Comment Ansible check
-        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
-        with:
-          path: "${{ runner.temp }}/ansible-check.txt"
-
-      - name: Upload Ansible check
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: "${{ inputs.concurrency-group }}-check"
-          path: "${{ runner.temp }}/ansible-check.txt"

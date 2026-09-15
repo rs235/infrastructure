@@ -15,8 +15,13 @@ permissions:
 
 jobs:
   monitoring-terraform-plan:
-    uses: ./.github/workflows/template-terraform-plan.yml
+    uses: ./.github/workflows/reusable-terraform-plan.yml
     with:
       working-directory: terraform/environments/home/monitoring
       concurrency-group: terraform-home-monitoring
-    secrets: inherit
+      runner: '["self-hosted", "linux", "terraform", "dev"]'
+    secrets:
+      proxmox_ve_endpoint: ${{ secrets.PROXMOX_VE_ENDPOINT }}
+      proxmox_ve_api_token: ${{ secrets.PROXMOX_VE_API_TOKEN }}
+      #  Move this to vars. It's not a secret.
+      proxmox_ve_insecure: ${{ secrets.PROXMOX_VE_INSECURE }}

@@ -14,10 +14,10 @@ permissions:
 
 jobs:
   project-terraform-plan:
-    uses: ./.github/workflows/aws-reusable-terraform-plan.yml
+    uses: ./.github/workflows/reusable-terraform-plan.yml
     with:
       working-directory: terraform/environments/aws/project
-      concurrency-group: terraform-aws-project
+      concurrency-group: aws-terraform-project
       runner: '["ubuntu-latest"]'
       ansible_ssh_public_key: ${{ vars.ANSIBLE_SSH_PUBLIC_KEY }}
     secrets:
