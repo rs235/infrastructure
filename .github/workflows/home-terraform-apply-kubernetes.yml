@@ -21,7 +21,7 @@ jobs:
     with:
       working-directory: terraform/environments/home/kubernetes
       concurrency-group: home-terraform-kubernetes
-      runner: '["self-hosted", "linux", "terraform", "dev"]'
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
     secrets:
       proxmox_ve_endpoint: ${{ secrets.PROXMOX_VE_ENDPOINT }}
