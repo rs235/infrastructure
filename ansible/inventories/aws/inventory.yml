@@ -6,7 +6,7 @@ all:
     aws:
       children:
 
-         # EC2 instances
+        # EC2 instances
         ec2:
           hosts:
             website:

@@ -58,7 +58,8 @@ local_release_dir: "/tmp/releases"
 retry_stagger: 5
 
 # This is the user that owns the cluster installation.
-# Note: cilium needs to set kube_owner to root https://kubespray.io/#/docs/CNI/cilium?id=unprivileged-agent-configuration
+# Note: cilium needs to set kube_owner to root
+# https://kubespray.io/#/docs/CNI/cilium?id=unprivileged-agent-configuration
 kube_owner: root
 
 # This is the group that the cert creation scripts chgrp the
@@ -88,7 +89,8 @@ credentials_dir: "{{ inventory_dir }}/credentials"
 # kube_oidc_groups_claim: groups
 # kube_oidc_groups_prefix: 'oidc:'
 
-## Structured AuthenticationConfiguration https://kubernetes.io/docs/reference/access-authn-authz/authentication/#using-authentication-configuration
+## Structured AuthenticationConfiguration
+#  https://kubernetes.io/docs/reference/access-authn-authz/authentication/#using-authentication-configuration
 ## Note: --authentication-config and --oidc-* flags are mutually exclusive
 # kube_apiserver_use_authentication_config_file: false
 # kube_apiserver_authentication_config_jwt:
@@ -108,7 +110,8 @@ credentials_dir: "{{ inventory_dir }}/credentials"
 # kube_webhook_token_auth_url: https://...
 # kube_webhook_token_auth_url_skip_tls_verify: false
 
-## For webhook authorization, authorization_modes must include Webhook or kube_apiserver_authorization_config_authorizers must configure a type: Webhook
+## For webhook authorization, authorization_modes must include Webhook or
+# kube_apiserver_authorization_config_authorizers must configure a type: Webhook
 # kube_webhook_authorization: false
 # kube_webhook_authorization_url: https://...
 # kube_webhook_authorization_url_skip_tls_verify: false
@@ -263,8 +266,16 @@ resolvconf_mode: host_resolvconf
 # Deploy netchecker app to verify DNS resolve as an HTTP service
 deploy_netchecker: false
 # Ip address of the kubernetes skydns service
-skydns_server: "{{ kube_service_subnets.split(',') | first | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(3) | ansible.utils.ipaddr('address') }}"
-skydns_server_secondary: "{{ kube_service_subnets.split(',') | first | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(4) | ansible.utils.ipaddr('address') }}"
+skydns_server: >-
+  {{ kube_service_subnets.split(',')
+  | first | ansible.utils.ipaddr('net')
+  | ansible.utils.ipaddr(3)
+  | ansible.utils.ipaddr('address') }}
+skydns_server_secondary: >-
+  {{ kube_service_subnets.split(',')
+  | first | ansible.utils.ipaddr('net')
+  | ansible.utils.ipaddr(4)
+  | ansible.utils.ipaddr('address') }}
 dns_domain: "{{ cluster_name }}"
 
 ## Container runtime
@@ -339,7 +350,8 @@ default_kubelet_config_dir: "{{ kube_config_dir }}/dynamic_kubelet_dir"
 ## That can be useful for example to setup a keepalived virtual IP
 # supplementary_addresses_in_ssl_keys: [10.0.0.1, 10.0.0.2, 10.0.0.3]
 
-## Running on top of openstack vms with cinder enabled may lead to unschedulable pods due to NoVolumeZoneConflict restriction in kube-scheduler.
+## Running on top of openstack vms with cinder enabled may lead to unschedulable pods
+# due to NoVolumeZoneConflict restriction in kube-scheduler.
 ## See https://github.com/kubernetes-sigs/kubespray/issues/2141
 ## Set this variable to true to get rid of this issue
 volume_cross_zone_attachment: false
