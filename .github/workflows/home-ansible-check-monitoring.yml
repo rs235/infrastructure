@@ -24,7 +24,7 @@ jobs:
       concurrency-group: home-ansible-monitoring
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       ansible-playbook: monitoring
-      ansible-group: monitoring
+      ansible-inventory-group: monitoring
 
     secrets:
       ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}

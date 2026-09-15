@@ -1,6 +1,6 @@
 ---
 - name: Bootstrap (users, mounts)
-  hosts: monitoring
+  hosts: pve-exporter
   become: true
   roles:
     - linux_users

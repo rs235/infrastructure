@@ -20,7 +20,7 @@ on:
         required: true
         type: string
 
-      ansible-group:
+      ansible-inventory-group:
         required: true
         type: string
 
@@ -85,7 +85,7 @@ jobs:
 
       - name: Wait for machines
         run: |
-          "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-group }} \
+          "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-inventory-group }} \
             -u ansible \
             -i inventories/home/inventory.yml \
             --vault-password-file "${{ runner.temp }}/vault_pass" \

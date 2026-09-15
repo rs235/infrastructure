@@ -16,14 +16,14 @@ permissions:
   pull-requests: write
 
 jobs:
-  ansible-check-monitoring:
+  ansible-check-kubernetes:
     uses: ./.github/workflows/reusable-ansible-check.yml
     with:
       working-directory: ansible
-      concurrency-group: home-ansible-monitoring
+      concurrency-group: home-ansible-kubernetes
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
-      ansible-playbook: monitoring
-      ansible-group: monitoring
+      ansible-playbook: kubernetes
+      ansible-inventory-group: k8s_cluster
 
     secrets:
       ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
