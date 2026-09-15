@@ -4,10 +4,10 @@ all:
 
     # AWS environment
     aws:
-       children:
+      children:
 
          # EC2 instances
-         ec2:
-           hosts:
-             website:
-               ansible_host: ec2-51-20-142-2.eu-north-1.compute.amazonaws.com
+        ec2:
+          hosts:
+            website:
+              ansible_host: ec2-51-20-142-2.eu-north-1.compute.amazonaws.com

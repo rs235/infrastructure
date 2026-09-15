@@ -17,4 +17,3 @@
     - Systemd daemon reload
     - Systemd enable syncthing
     - Systemd restart syncthing
-

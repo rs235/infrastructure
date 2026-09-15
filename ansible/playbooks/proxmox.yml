@@ -53,4 +53,3 @@
   hosts: proxmox
   roles:
     - proxmox_reboot
-

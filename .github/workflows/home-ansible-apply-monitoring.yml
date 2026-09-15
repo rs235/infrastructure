@@ -4,7 +4,7 @@ name: Home - Ansible Apply - monitoring
 on:
   push:
     branches:
-        - main
+      - main
     paths:
       - "ansible/inventories/home/**"
       - "ansible/playbooks/monitoring.yml"

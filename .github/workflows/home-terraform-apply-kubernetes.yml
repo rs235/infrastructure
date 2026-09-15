@@ -4,7 +4,7 @@ name: Home - Terraform Apply - kubernetes
 on:
   push:
     branches:
-        - main
+      - main
     paths:
       - "terraform/environments/home/kubernetes/**"
       - "terraform/modules/proxmox/**"

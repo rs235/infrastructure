@@ -34,10 +34,17 @@
   become: true
   become_user: "{{ runner_linux_user }}"
   ansible.builtin.command:
-    cmd: ./config.sh --unattended --url "https://github.com/{{ github_username }}/{{ github_repo_name }}" --token "{{ runner_token }}" --runnergroup "{{ runner_group }}" --name "{{ runner_name }}" --labels "{{ runner_labels }}" --work "{{ runner_work }}"
+    cmd: ./config.sh \
+    --unattended \
+    --url "https://github.com/{{ github_username }}/{{ github_repo_name }}" \
+    --token "{{ runner_token }}" \
+    --runnergroup "{{ runner_group }}" \
+    --name "{{ runner_name }}" \
+    --labels "{{ runner_labels }}" \
+    --work "{{ runner_work }}"
     chdir: /opt/actions-runner
     creates: /opt/actions-runner/.runner
-  # no_log: true
+    # no_log: true
 
 - name: Check if runner service is installed
   ansible.builtin.stat:

@@ -4,7 +4,7 @@ name: Home - Terraform Apply - monitoring
 on:
   push:
     branches:
-        - main
+      - main
     paths:
       - "terraform/environments/home/monitoring/**"
       - "terraform/modules/proxmox/**"

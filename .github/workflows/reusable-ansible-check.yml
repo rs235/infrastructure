@@ -158,7 +158,7 @@ jobs:
           --diff \
           "playbooks/${{ inputs.ansible-playbook }}.yml" \
           | tee "${{ runner.temp }}/ansible-check.txt"
-      
+
       - name: Comment Ansible check
         uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
         with:

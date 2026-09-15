@@ -48,7 +48,7 @@ concurrency:
 jobs:
   reusable-terraform-plan:
     runs-on: ${{ fromJSON(inputs.runner) }}
-    
+
     env:
       TF_INPUT: "0"
 
@@ -73,10 +73,10 @@ jobs:
 
       - name: Terraform fmt
         run: terraform fmt -check -recursive
-          
+
       - name: Terraform init
         run: terraform init -input=false
-        
+
       - name: Terraform validate
         run: terraform validate
 
