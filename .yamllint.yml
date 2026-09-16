@@ -24,7 +24,7 @@ rules:
   # Useful for catching accidental YAML 1.1 booleans such as `yes`, `no`,
   # `on`, and `off`.
   truthy:
-    allowed-values: ['true', 'false']
+    allowed-values: ['true', 'false', 'on']
     check-keys: true
 
   # Duplicate YAML keys are almost always a bug in manifests.
