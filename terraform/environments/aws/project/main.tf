@@ -19,7 +19,7 @@ module "sg" {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
-      cidr_ipv4   = "78.10.223.0/24"
+      cidr_ipv4   = "78.10.223.132/32"
     }
     http = {
       description = "HTTP"
@@ -38,10 +38,33 @@ module "sg" {
   }
 
   egress_rules = {
-    all = {
-      description = "all outbound"
-      protocol    = "-1"
+    http = {
+      description = "HTTP"
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
       cidr_ipv4   = "0.0.0.0/0"
+    }
+    https = {
+      description = "HTTPS"
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_ipv4   = "0.0.0.0/0"
+    }
+    dns_tcp = {
+      description = "DNS TCP"
+      from_port   = 53
+      to_port     = 53
+      protocol    = "tcp"
+      cidr_ipv4   = "10.0.0.2/32"
+    }
+    dns_udp = {
+      description = "DNS UDP"
+      from_port   = 53
+      to_port     = 53
+      protocol    = "udp"
+      cidr_ipv4   = "10.0.0.2/32"
     }
   }
 }
