@@ -41,7 +41,7 @@ concurrency:
 
 jobs:
   yamllint:
-    name: Linting
+    name: YAML Linting
     runs-on: ubuntu-latest
 
     steps:
@@ -86,6 +86,7 @@ jobs:
           exit-code: '1'
 
   reusable-ansible-check:
+    name: Ansible Check
     runs-on: ${{ fromJSON(inputs.runner) }}
 
     defaults:
