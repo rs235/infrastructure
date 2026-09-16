@@ -1,11 +1,11 @@
-module "<MODULE_NAME>" {
+module "MODULE_NAME" {
   source = "../../../modules/proxmox/vm"
 
   # General
 
-  name = "<RESOURCE_NAME>"
+  name = "RESOURCE_NAME"
 
-  vm_id = <VM_ID>
+  vm_id = VM_ID
 
   target_node = module.common.proxmox.node
 
@@ -33,7 +33,7 @@ module "<MODULE_NAME>" {
 
   # cloud-init
 
-  address = "10.10.10.<LAST_OCTET>/24"
+  address = "10.10.10.LAST_OCTET/24"
 
   gateway = module.common.cloud-init.gateway
 

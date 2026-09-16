@@ -1,9 +1,9 @@
-module "<MODULE_NAME>" {
+module "MODULE_NAME" {
   source = "../../../modules/proxmox/lxc"
 
   # General
-  name         = "<RESOURCE_NAME>"
-  vm_id        = <VM_ID>
+  name         = "RESOURCE_NAME"
+  vm_id        = VM_ID
   target_node  = module.common.proxmox.node
   unprivileged = true
   template     = "local:vztmpl/ubuntu-26.04-standard_26.04-1_amd64.tar.zst"
@@ -24,7 +24,7 @@ module "<MODULE_NAME>" {
   bridge   = module.common.network.bridge
   firewall = true
   # vlan_id = module.common.network.vlan_id
-  address = "10.10.10.<LAST_OCTET>/24"
+  address = "10.10.10.LAST_OCTET/24"
   gateway = "10.10.10.1"
 
   # User
