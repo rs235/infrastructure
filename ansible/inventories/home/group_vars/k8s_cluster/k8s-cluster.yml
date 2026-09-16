@@ -74,11 +74,11 @@ kube_pods_subnet_ipv6: fd85:ee78:d8a6:8607::1:0000/112
 kube_network_node_prefix_ipv6: 120
 
 kube_apiserver_ip: >
-  "{{ kube_service_subnets.split(',') 
-  | first | ansible.utils.ipaddr('net') 
-  | ansible.utils.ipaddr(1) 
+  "{{ kube_service_subnets.split(',')
+  | first | ansible.utils.ipaddr('net')
+  | ansible.utils.ipaddr(1)
   | ansible.utils.ipaddr('address') }}"
-kube_apiserver_port: 6443  # (https)
+kube_apiserver_port: 6443
 
 kube_proxy_mode: nftables
 
