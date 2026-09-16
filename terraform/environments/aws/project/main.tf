@@ -19,7 +19,7 @@ module "sg" {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
-      cidr_ipv4   = "78.10.223.132/24"
+      cidr_ipv4   = "78.10.223.132"
     }
     http = {
       description = "HTTP"
