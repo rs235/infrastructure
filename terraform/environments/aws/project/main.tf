@@ -38,20 +38,20 @@ module "sg" {
   }
 
   egress_rules = {
-    http = {
-      description = "HTTP for APT"
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_ipv4   = "0.0.0.0/0"
-    }
-    https = {
-      description = "HTTPS for APT"
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
-      cidr_ipv4   = "0.0.0.0/0"
-    }
+#     http = {
+#       description = "HTTP for APT"
+#       from_port   = 80
+#       to_port     = 80
+#       protocol    = "tcp"
+#       cidr_ipv4   = "0.0.0.0/0"
+#     }
+#     https = {
+#       description = "HTTPS for APT"
+#       from_port   = 443
+#       to_port     = 443
+#       protocol    = "tcp"
+#       cidr_ipv4   = "0.0.0.0/0"
+#     }
     dns_tcp = {
       description = "DNS TCP"
       from_port   = 53

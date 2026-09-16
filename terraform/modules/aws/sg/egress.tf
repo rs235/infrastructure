@@ -1,7 +1,6 @@
 resource "aws_vpc_security_group_egress_rule" "sg" {
   for_each = var.egress_rules
 
-  # trivy:ignore:AVD-AWS-0104
   security_group_id = aws_security_group.sg.id
 
   description = each.value.description
