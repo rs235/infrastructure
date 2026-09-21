@@ -1,5 +1,5 @@
 terraform {
   backend "local" {
-    path = "/opt/terraform-state/proxmox/LXC/terraform.tfstate"
+    path = "/opt/terraform-state/proxmox/monitoring/terraform.tfstate"
   }
 }
