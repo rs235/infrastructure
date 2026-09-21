@@ -12,9 +12,6 @@ all:
         # Network infrastructure
         networking:
           hosts:
-            opnsense:
-              ansible_host: opnsense.home.arpa
-
             caddy:
               ansible_host: caddy.home.arpa
 
