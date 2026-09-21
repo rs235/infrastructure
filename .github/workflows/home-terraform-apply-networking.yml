@@ -1,0 +1,24 @@
+---
+name: Home - Terraform Apply - networking
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform/environments/home/networking/**"
+      - "terraform/modules/proxmox/**"
+
+  workflow_dispatch:
+
+jobs:
+  terraform-apply-networking:
+    uses: ./.github/workflows/reusable-terraform-apply.yml
+    with:
+      working-directory: terraform/environments/home/networking
+      concurrency-group: home-terraform-networking
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
+    secrets:
+      proxmox_ve_endpoint: ${{ secrets.PROXMOX_VE_ENDPOINT }}
+      proxmox_ve_api_token: ${{ secrets.PROXMOX_VE_API_TOKEN }}
