@@ -10,10 +10,13 @@ all:
       children:
 
         # Network infrastructure
-        network:
+        networking:
           hosts:
             opnsense:
               ansible_host: opnsense.home.arpa
+
+            caddy:
+              ansible_host: caddy.home.arpa
 
         # Self hosted services
         services:

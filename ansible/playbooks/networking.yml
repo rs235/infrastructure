@@ -1,0 +1,15 @@
+---
+- name: Bootstrap VM
+  hosts: networking
+  become: true
+
+  roles:
+    - linux_users
+    - cifs_mount
+
+- name: Install Caddy
+  hosts: networking
+  become: true
+
+  roles:
+    - caddy
