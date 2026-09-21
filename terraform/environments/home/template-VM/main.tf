@@ -9,6 +9,11 @@ module "MODULE_NAME" {
 
   target_node = module.common.proxmox.node
 
+  tags = [
+    "terraform",
+    "RESOURCE_NAME"
+  ]
+
   template_vm_id = 900
 
   # CPU

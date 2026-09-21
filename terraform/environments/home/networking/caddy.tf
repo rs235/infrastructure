@@ -9,6 +9,11 @@ module "caddy" {
 
   target_node = module.common.proxmox.node
 
+  tags = [
+    "terraform",
+    "networking"
+  ]
+
   template_vm_id = 900
 
   # CPU
