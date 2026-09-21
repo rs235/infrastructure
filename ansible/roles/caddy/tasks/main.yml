@@ -1,0 +1,16 @@
+---
+- name: Add Caddy repo using key from URL
+  deb822_repository:
+    name: caddy
+    types: deb
+    uris: https://dl.cloudsmith.io/public/caddy/stable/deb/ubuntu
+    suites: '{{ ansible_distribution_release }}'
+    components: main
+    signed_by: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+
+- name: Install Caddy package
+  ansible.builtin.apt:
+    name: caddy
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
