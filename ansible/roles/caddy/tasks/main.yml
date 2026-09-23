@@ -14,3 +14,13 @@
     state: present
     update_cache: true
     cache_valid_time: 3600
+
+- name: Copy Caddyfile
+  ansible.builtin.copy:
+    src: "Caddyfile"
+    dest: "/etc/caddy/Caddyfile"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    # backup: true
+  notify: Systemd restart Caddy
