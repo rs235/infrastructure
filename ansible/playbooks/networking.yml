@@ -1,15 +1,13 @@
 ---
-- name: Bootstrap VM
+- name: Bootstrap Proxmox VM
   hosts: networking
   become: true
-
   roles:
+    - common
     - linux_users
-    - cifs_mount
 
-- name: Install Caddy
-  hosts: networking
+- name: Deploy Caddy
+  hosts: caddy
   become: true
-
   roles:
     - caddy

@@ -1,0 +1,6 @@
+{% for site in caddy_sites %}
+{{ site.domains | join(', ') }} {
+    reverse_proxy {{ site.upstream }}
+}
+
+{% endfor %}

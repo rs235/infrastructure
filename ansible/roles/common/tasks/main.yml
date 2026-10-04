@@ -1,0 +1,13 @@
+---
+- name: Install common packages
+  ansible.builtin.package:
+    name:
+      - curl
+      - unzip
+      - htop
+    state: present
+
+- name: Set timezone
+  become: true
+  community.general.timezone:
+    name: "{{ timezone }}"

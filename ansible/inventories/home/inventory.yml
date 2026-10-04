@@ -18,27 +18,15 @@ all:
         # Self hosted services
         services:
           hosts:
-            syncthing:
-              ansible_host: syncthing.home.arpa
-
-            minecraft:
-              ansible_host: minecraft.home.arpa
-
-            github-runner:
+            actions-runner:
               ansible_host: github-runner.home.arpa
-
-        # Media
-        media:
-          hosts:
-            qbittorrent:
-              ansible_host: qbittorrent.home.arpa
 
         monitoring:
           hosts:
             pve-exporter:
               ansible_host: pve-exporter.home.arpa
 
-        # Kubespray
+        # Kubernetes
         k8s_cluster:
           children:
 
@@ -74,6 +62,7 @@ all:
                 k8s-w3:
                   ansible_host: k8s-w3.home.arpa
                   ip: 10.10.10.36
+
             # ETCD
             etcd:
               hosts:

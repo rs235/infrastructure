@@ -1,5 +1,8 @@
 ---
 all:
+  vars:
+    ansible_user: ansible
+
   children:
 
     # AWS environment
@@ -9,5 +12,5 @@ all:
         # EC2 instances
         ec2:
           hosts:
-            website:
-              ansible_host: ec2-51-20-142-2.eu-north-1.compute.amazonaws.com
+            project_ec2:
+              ansible_host: ec2-16-171-64-75.eu-north-1.compute.amazonaws.com

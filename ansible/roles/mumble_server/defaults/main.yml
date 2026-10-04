@@ -1,4 +1,0 @@
----
-# Defaults for Debian/Ubuntu
-mumble_user: mumble-server
-mumble_group: mumble-server

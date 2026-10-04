@@ -1,10 +1,12 @@
 ---
-- name: Configure Linux users
+- name: Bootstrap Proxmox VM
   hosts: k8s_cluster
   become: true
   roles:
+    - common
     - linux_users
 
+# Deploy Kubernetes cluster with Kubespray
 - import_playbook: ../../dependencies/kubespray/playbooks/cluster.yml
 
 - name: Configure kubectl
@@ -12,12 +14,3 @@
   become: true
   roles:
     - kubeconfig_remote
-
-# - name: Ensure kubectl access from local machine.
-#   hosts: k8s-cp1
-#   roles:
-#     - kubeconfig_local
-#   vars:
-#     local_owner: rs
-#     local_group: rs
-#     local_home: /home/rs

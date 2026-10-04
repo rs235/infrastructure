@@ -39,24 +39,6 @@ linux_users:
     # shell: /usr/sbin/nologin
     shell: /bin/bash
 
-cifs_mounts:
-  - server: "truenas.{{ domain_name }}"
-    share: common
-    mount_point: /mnt/common
-    username: common
-    password: "{{ smb_common_password }}"
-    options:
-      - uid=1500
-      - gid=1500
-      - _netdev
-      - x-systemd.automount
-      - iocharset=utf8
-      - vers=3.1.1
-      - serverino
-      - cache=strict
-      - actimeo=1
-      - noperm
-
 runner_linux_user: github-runner
 runner_linux_group: github-runner
 

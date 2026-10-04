@@ -1,16 +1,13 @@
 ---
-- name: Bootstrap container
-  hosts: pve-exporter
-  become: false
-  vars:
-    ansible_user: root
+- name: Bootstrap Proxmox VM
+  hosts: monitoring
+  become: true
   roles:
-    - bootstrap_lxc
-
-- name: Configure Linux users
-  hosts: pve-exporter
-  become: false
-  vars:
-    ansible_user: root
-  roles:
+    - common
     - linux_users
+
+- name: Deploy prometheus-pve-exporter
+  hosts: pve-exporter
+  become: true
+  roles:
+    - prometheus-pve-exporter

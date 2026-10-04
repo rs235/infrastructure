@@ -1,0 +1,4 @@
+---
+- hosts: aws
+
+- import_playbook: aws_website.yml

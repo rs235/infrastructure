@@ -1,0 +1,20 @@
+---
+- name: Configure Linux users
+  hosts: actions-runner
+  become: false
+  vars:
+    ansible_user: root
+  roles:
+    - linux_users
+
+- name: Bootstrap Proxmox LXC
+  hosts: actions-runner
+  become: true
+  roles:
+    - common
+
+- name: Install and configure GitHub runner
+  hosts: github-runner
+  become: true
+  roles:
+    - actions-runner

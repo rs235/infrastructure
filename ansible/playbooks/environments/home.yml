@@ -1,0 +1,7 @@
+---
+- hosts: home
+
+- import_playbook: kubernetes.yml
+- import_playbook: networking.yml
+- import_playbook: monitoring.yml
+- import_playbook: cicd.yml
