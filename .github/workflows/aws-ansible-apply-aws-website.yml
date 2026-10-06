@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - "ansible/inventories/home/**"
-      - "ansible/playbooks/aws-website.yml"
+      - "ansible/playbooks/aws_website.yml"
       - "ansible/roles/**"
       - "ansible/requirements.yml"
       - "ansible/ansible.cfg"
@@ -24,7 +24,7 @@ jobs:
       working-directory: ansible
       concurrency-group: home-ansible-aws-website
       runner: '["ubuntu-latest"]'
-      ansible-playbook: aws-website
+      ansible-playbook: aws_website
       ansible-inventory-group: project_ec2
 
     secrets:
