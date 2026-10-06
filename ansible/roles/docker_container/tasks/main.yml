@@ -10,4 +10,3 @@
     state: started
     restart_policy: unless-stopped
     ports: "{{ docker_ports }}"
- 

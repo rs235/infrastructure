@@ -1,0 +1,6 @@
+---
+caddy_sites:
+  - domains:
+      - 01011101.xyz
+      - www.01011101.xyz
+    upstream: 10.10.10.46:80
