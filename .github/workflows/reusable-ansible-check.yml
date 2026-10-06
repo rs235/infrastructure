@@ -138,11 +138,6 @@ jobs:
           printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${{ runner.temp }}/vault_pass"
           chmod 600 "${{ runner.temp }}/vault_pass"
 
-      - name: Debug step
-        run: |
-          cat "${{ runner.temp }}/vault_pass"
-          echo ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
-
       - name: Wait for machines
         run: |
           "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-inventory-group }} \

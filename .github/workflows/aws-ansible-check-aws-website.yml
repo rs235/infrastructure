@@ -23,7 +23,7 @@ jobs:
       environment: aws
       working-directory: ansible
       concurrency-group: home-ansible-aws-website
-      runner: '["ubuntu-26.04"]'
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       ansible-playbook: aws_website
       ansible-inventory-group: project_website
 
