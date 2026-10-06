@@ -12,5 +12,5 @@ all:
         # EC2 instances
         ec2:
           hosts:
-            project_ec2:
+            project_website:
               ansible_host: ec2-16-171-64-75.eu-north-1.compute.amazonaws.com

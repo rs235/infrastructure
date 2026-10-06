@@ -24,7 +24,7 @@ jobs:
       concurrency-group: home-ansible-aws-website
       runner: '["ubuntu-latest"]'
       ansible-playbook: aws_website
-      ansible-inventory-group: ec2
+      ansible-inventory-group: project_website
       environment: aws
 
     secrets:
