@@ -24,7 +24,7 @@ jobs:
       concurrency-group: home-ansible-aws-website
       runner: '["ubuntu-latest"]'
       ansible-playbook: aws_website
-      ansible-inventory-group: project_ec2
+      ansible-inventory-group: ec2
 
     secrets:
       ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
