@@ -78,6 +78,7 @@ jobs:
         run: |
           "${{ runner.temp }}/venv/bin/python" -m pip install --upgrade pip
           "${{ runner.temp }}/venv/bin/python" -m pip install -r requirements.txt
+          "${{ runner.temp }}/venv/bin/ansible-galaxy" collection install -r requirements.yml
 
       - name: Create vault password file
         run: |
@@ -87,7 +88,7 @@ jobs:
       - name: Wait for machines
         run: |
           "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-inventory-group }} \
-            -i inventories/home/inventory.yml \
+            -i "inventories/${{ inputs.environment }}/inventory.yml" \
             --vault-password-file "${{ runner.temp }}/vault_pass" \
             --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
             -m ansible.builtin.wait_for_connection \
