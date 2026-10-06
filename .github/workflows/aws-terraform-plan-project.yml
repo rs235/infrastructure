@@ -19,7 +19,7 @@ jobs:
     with:
       working-directory: terraform/environments/aws/project
       concurrency-group: aws-terraform-project
-      runner: '["ubuntu-latest"]'
+      runner: '["ubuntu-26.04"]'
       ansible_ssh_public_key: ${{ vars.ANSIBLE_SSH_PUBLIC_KEY }}
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}

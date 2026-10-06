@@ -17,15 +17,15 @@ permissions:
   pull-requests: write
 
 jobs:
-  ansible-check-networking:
+  ansible-check-aws-website:
     uses: ./.github/workflows/reusable-ansible-check.yml
     with:
+      environment: aws
       working-directory: ansible
       concurrency-group: home-ansible-aws-website
-      runner: '["ubuntu-latest"]'
+      runner: '["ubuntu-26.04"]'
       ansible-playbook: aws_website
       ansible-inventory-group: project_website
-      environment: aws
 
     secrets:
       ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}

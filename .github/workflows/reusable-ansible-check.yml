@@ -91,6 +91,7 @@ jobs:
 
   reusable-ansible-check:
     name: Ansible Check
+    environment: ${{ inputs.environment }}
     runs-on: ${{ fromJSON(inputs.runner) }}
 
     defaults:

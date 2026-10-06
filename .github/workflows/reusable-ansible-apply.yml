@@ -45,6 +45,7 @@ concurrency:
 jobs:
   reusable-ansible-apply:
     name: Ansible Apply
+    environment: ${{ inputs.environment }}
     runs-on: ${{ fromJSON(inputs.runner) }}
 
     defaults:
