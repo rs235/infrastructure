@@ -1,19 +1,19 @@
 ---
 - name: Bootstrap AWS instance
-  hosts: project_ec2
+  hosts: project_website
   become: true
   roles:
     - linux_users
     - docker
 
 - name: Deploy Caddy
-  hosts: project_ec2
+  hosts: project_website
   become: true
   roles:
     - caddy
 
 - name: Deploy website in Docker
-  hosts: project_ec2
+  hosts: project_website
   become: true
   roles:
     - docker_container
