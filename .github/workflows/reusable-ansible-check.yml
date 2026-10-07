@@ -37,7 +37,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 concurrency:
   group: ${{ inputs.concurrency-group }}
@@ -93,6 +92,9 @@ jobs:
     name: Ansible Check
     environment: ${{ inputs.environment }}
     runs-on: ${{ fromJSON(inputs.runner) }}
+    permissions:
+      contents: read
+      pull-requests: write
 
     defaults:
       run:
@@ -116,7 +118,7 @@ jobs:
           mkdir -p "${{ runner.temp }}/.ssh"
           chmod 700 "${{ runner.temp }}/.ssh"
 
-          printf '%s' "${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}" > "${{ runner.temp }}/.ssh/id_ed25519_ansible"
+          printf '%s' "${{ secrets.ansible_ssh_private_key }}" > "${{ runner.temp }}/.ssh/id_ed25519_ansible"
 
           chmod 600 "${{ runner.temp }}/.ssh/id_ed25519_ansible"
 
@@ -135,7 +137,7 @@ jobs:
 
       - name: Create vault password file
         run: |
-          printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${{ runner.temp }}/vault_pass"
+          printf '%s' "${{ secrets.ansible_vault_password }}" > "${{ runner.temp }}/vault_pass"
           chmod 600 "${{ runner.temp }}/vault_pass"
 
       - name: Wait for machines
