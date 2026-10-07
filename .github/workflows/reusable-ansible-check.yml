@@ -101,7 +101,7 @@ jobs:
 
   reusable-ansible-check:
     name: Ansible Check
-    environment: ${{ inputs.environment }}
+    environment: home
     runs-on: ${{ fromJSON(inputs.runner) }}
     permissions:
       contents: read
