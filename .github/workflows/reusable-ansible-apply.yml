@@ -45,7 +45,6 @@ concurrency:
 jobs:
   reusable-ansible-apply:
     name: Ansible Apply
-    environment: ${{ inputs.environment }}
     runs-on: ${{ fromJSON(inputs.runner) }}
 
     defaults:
@@ -53,11 +52,19 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Clean workspace
+        run: |
+          rm -rf "${GITHUB_WORKSPACE:?}"/*
+          rm -rf "${GITHUB_WORKSPACE:?}"/.[!.]*
+          rm -rf "${GITHUB_WORKSPACE:?}"/..?*
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           submodules: recursive
 
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+      - name: Install Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           # Pinned major and minor version to ensure reproducibility but allow newest patches.
           python-version: "3.13"
@@ -67,7 +74,7 @@ jobs:
           mkdir -p "${{ runner.temp }}/.ssh"
           chmod 700 "${{ runner.temp }}/.ssh"
 
-          printf '%s' "${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}" > "${{ runner.temp }}/.ssh/id_ed25519_ansible"
+          printf '%s' "${{ secrets.ansible_ssh_private_key }}" > "${{ runner.temp }}/.ssh/id_ed25519_ansible"
 
           chmod 600 "${{ runner.temp }}/.ssh/id_ed25519_ansible"
 
@@ -83,7 +90,7 @@ jobs:
 
       - name: Create vault password file
         run: |
-          printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${{ runner.temp }}/vault_pass"
+          printf '%s' "${{ secrets.ansible_vault_password }}" > "${{ runner.temp }}/vault_pass"
           chmod 600 "${{ runner.temp }}/vault_pass"
 
       - name: Wait for machines
