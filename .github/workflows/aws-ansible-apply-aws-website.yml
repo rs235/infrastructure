@@ -21,13 +21,15 @@ jobs:
   ansible-apply-aws-website:
     uses: ./.github/workflows/reusable-ansible-apply.yml
     with:
+      # Actions specific values
       environment: aws
-      working-directory: ansible
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       concurrency-group: home-ansible-aws-website
-      runner: '["ubuntu-26.04"]'
+      working-directory: ansible
+      # Ansible specific values
       ansible-playbook: aws_website
       ansible-inventory-group: project_website
 
     secrets:
-      ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
-      ansible_vault_password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+      ansible_ssh_private_key: ${{ secrets.AWS_ANSIBLE_SSH_PRIVATE_KEY }}
+      ansible_vault_password: ${{ secrets.AWS_ANSIBLE_VAULT_PASSWORD }}
