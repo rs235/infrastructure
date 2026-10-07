@@ -13,4 +13,4 @@ all:
         ec2:
           hosts:
             project_website:
-              ansible_host: ec2-16-171-64-75.eu-north-1.compute.amazonaws.com
+              ansible_host: ec2-51-21-131-41.eu-north-1.compute.amazonaws.com
