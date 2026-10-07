@@ -27,6 +27,6 @@ jobs:
       ansible-playbook: aws_website
       ansible-inventory-group: project_website
 
-    # secrets:
-    #   ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
-    #   ansible_vault_password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+    secrets:
+      ansible_ssh_private_key: ${{ secrets.AWS_ANSIBLE_SSH_PRIVATE_KEY }}
+      ansible_vault_password: ${{ secrets.AWS_ANSIBLE_VAULT_PASSWORD }}
