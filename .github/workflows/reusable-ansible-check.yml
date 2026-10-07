@@ -91,6 +91,7 @@ jobs:
         env:
           # Temporary, automatically generated GitHub Token for GH API access.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
 
   trivy:
     name: Security Scan
