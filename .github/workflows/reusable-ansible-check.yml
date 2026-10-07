@@ -164,30 +164,6 @@ jobs:
           printf '%s' "${{ secrets.ansible_vault_password }}" > "${{ runner.temp }}/vault_pass"
           chmod 600 "${{ runner.temp }}/vault_pass"
 
-      - name: Check vault password
-        env:
-          VAULT_PASSWORD: ${{ secrets.ansible_vault_password }}
-        run: |
-          if [ -z "$VAULT_PASSWORD" ]; then
-            echo "::error::ansible_vault_password is empty or unavailable"
-            exit 1
-          fi
-
-          echo "Vault password is present"
-          echo "Length: ${#VAULT_PASSWORD}"
-
-      - name: Check SSH key
-        env:
-          SSH_KEY: ${{ secrets.ansible_ssh_private_key }}
-        run: |
-          if [ -z "$SSH_KEY" ]; then
-            echo "::error::ansible_ssh_private_key is empty or unavailable"
-            exit 1
-          fi
-
-          echo "SSH key is present"
-          echo "Length: ${#SSH_KEY}"
-
       - name: Wait for machines
         run: |
           "${{ runner.temp }}/venv/bin/ansible" ${{ inputs.ansible-inventory-group }} \

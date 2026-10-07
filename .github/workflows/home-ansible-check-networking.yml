@@ -21,7 +21,7 @@ jobs:
     uses: ./.github/workflows/reusable-ansible-check.yml
     with:
       # Actions specific values
-      environment: aws
+      environment: home
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       concurrency-group: home-ansible-networking
       working-directory: ansible
