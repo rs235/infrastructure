@@ -52,6 +52,16 @@ jobs:
           # Pinned version to ensure reproducibility but allow newest patches.
           python-version: "3.13"
 
+      - name: Debug runner
+        run: |
+          echo "Runner: $RUNNER_NAME"
+          echo "Workspace: $GITHUB_WORKSPACE"
+          echo "Job: $GITHUB_JOB"
+          echo "Run: $GITHUB_RUN_ID"
+          echo "Started: $(date --iso-8601=seconds)"
+          sleep 30
+          echo "Finished: $(date --iso-8601=seconds)"
+
       - name: Create Python virtual environment
         run: |
           python -m venv "${{ runner.temp }}/venv"
@@ -86,6 +96,16 @@ jobs:
           submodules: false
           clean: true
 
+      - name: Debug runner
+        run: |
+          echo "Runner: $RUNNER_NAME"
+          echo "Workspace: $GITHUB_WORKSPACE"
+          echo "Job: $GITHUB_JOB"
+          echo "Run: $GITHUB_RUN_ID"
+          echo "Started: $(date --iso-8601=seconds)"
+          sleep 30
+          echo "Finished: $(date --iso-8601=seconds)"
+
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e
         env:
@@ -105,6 +125,16 @@ jobs:
         with:
           submodules: false
           clean: true
+
+      - name: Debug runner
+        run: |
+          echo "Runner: $RUNNER_NAME"
+          echo "Workspace: $GITHUB_WORKSPACE"
+          echo "Job: $GITHUB_JOB"
+          echo "Run: $GITHUB_RUN_ID"
+          echo "Started: $(date --iso-8601=seconds)"
+          sleep 30
+          echo "Finished: $(date --iso-8601=seconds)"
 
       - name: Run Trivy
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
@@ -136,6 +166,16 @@ jobs:
         with:
           # Pinned version to ensure reproducibility but allow newest patches.
           python-version: "3.13"
+
+      - name: Debug runner
+        run: |
+          echo "Runner: $RUNNER_NAME"
+          echo "Workspace: $GITHUB_WORKSPACE"
+          echo "Job: $GITHUB_JOB"
+          echo "Run: $GITHUB_RUN_ID"
+          echo "Started: $(date --iso-8601=seconds)"
+          sleep 30
+          echo "Finished: $(date --iso-8601=seconds)"
 
       - name: Configure SSH
         run: |
@@ -207,3 +247,10 @@ jobs:
           path: "${{ runner.temp }}/ansible-check.txt"
           if-no-files-found: error
           retention-days: 14
+
+      - name: Clean workspace
+        run: |
+          git clean -ffdx || true
+          git submodule deinit --all --force || true
+          rm -rf .git/modules
+          rm -rf dependencies/kubespray
