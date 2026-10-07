@@ -47,6 +47,19 @@ jobs:
       contents: read
 
     steps:
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          # Pinned version to ensure reproducibility but allow newest patches.
+          python-version: "3.13"
+
+      - name: Create Python virtual environment
+        run: |
+          python -m venv "${{ runner.temp }}/venv"
+
+      - name: Upgrade pip to latest version
+        run: |
+          "${{ runner.temp }}/venv/bin/python" -m pip install --upgrade pip
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -101,7 +114,7 @@ jobs:
 
   reusable-ansible-check:
     name: Ansible Check
-    environment: home
+    environment: ${{ inputs.environment }}
     runs-on: ${{ fromJSON(inputs.runner) }}
     permissions:
       contents: read
