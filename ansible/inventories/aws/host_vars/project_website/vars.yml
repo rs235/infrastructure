@@ -10,4 +10,4 @@ caddy_sites:
 docker_image: "docker.io/rs235/website:latest"
 docker_container: project-website
 docker_ports:
-  - "127.0.0.1:8081:8080"
+  - "127.0.0.1:8080:8080"
