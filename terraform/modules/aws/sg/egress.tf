@@ -1,4 +1,4 @@
-#trivy:ignore:AWS-0104
+# trivy:ignore:AVD-AWS-0104
 # Egress to the internet is intentional as workloads require outbound HTTP/HTTPS access to package repositories.
 resource "aws_vpc_security_group_egress_rule" "sg" {
   for_each = var.egress_rules
