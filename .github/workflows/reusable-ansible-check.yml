@@ -47,20 +47,17 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+      - name: Clean workspace
+        run: |
+          rm -rf "${GITHUB_WORKSPACE:?}"/*
+          rm -rf "${GITHUB_WORKSPACE:?}"/.[!.]*
+          rm -rf "${GITHUB_WORKSPACE:?}"/..?*
+
+      - name: Install Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           # Pinned version to ensure reproducibility but allow newest patches.
           python-version: "3.13"
-
-      - name: Debug runner
-        run: |
-          echo "Runner: $RUNNER_NAME"
-          echo "Workspace: $GITHUB_WORKSPACE"
-          echo "Job: $GITHUB_JOB"
-          echo "Run: $GITHUB_RUN_ID"
-          echo "Started: $(date --iso-8601=seconds)"
-          sleep 30
-          echo "Finished: $(date --iso-8601=seconds)"
 
       - name: Create Python virtual environment
         run: |
@@ -89,22 +86,18 @@ jobs:
       contents: read
 
     steps:
+      - name: Clean workspace
+        run: |
+          rm -rf "${GITHUB_WORKSPACE:?}"/*
+          rm -rf "${GITHUB_WORKSPACE:?}"/.[!.]*
+          rm -rf "${GITHUB_WORKSPACE:?}"/..?*
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
           submodules: false
           clean: true
-
-      - name: Debug runner
-        run: |
-          echo "Runner: $RUNNER_NAME"
-          echo "Workspace: $GITHUB_WORKSPACE"
-          echo "Job: $GITHUB_JOB"
-          echo "Run: $GITHUB_RUN_ID"
-          echo "Started: $(date --iso-8601=seconds)"
-          sleep 30
-          echo "Finished: $(date --iso-8601=seconds)"
 
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e
@@ -120,21 +113,17 @@ jobs:
       contents: read
 
     steps:
+      - name: Clean workspace
+        run: |
+          rm -rf "${GITHUB_WORKSPACE:?}"/*
+          rm -rf "${GITHUB_WORKSPACE:?}"/.[!.]*
+          rm -rf "${GITHUB_WORKSPACE:?}"/..?*
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           submodules: false
           clean: true
-
-      - name: Debug runner
-        run: |
-          echo "Runner: $RUNNER_NAME"
-          echo "Workspace: $GITHUB_WORKSPACE"
-          echo "Job: $GITHUB_JOB"
-          echo "Run: $GITHUB_RUN_ID"
-          echo "Started: $(date --iso-8601=seconds)"
-          sleep 30
-          echo "Finished: $(date --iso-8601=seconds)"
 
       - name: Run Trivy
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
@@ -158,12 +147,20 @@ jobs:
       ANSIBLE_NOCOLOR: "1"
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Clean workspace
+        run: |
+          rm -rf "${GITHUB_WORKSPACE:?}"/*
+          rm -rf "${GITHUB_WORKSPACE:?}"/.[!.]*
+          rm -rf "${GITHUB_WORKSPACE:?}"/..?*
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           path: ansible-workspace
           submodules: recursive
 
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+      - name: Install Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           # Pinned version to ensure reproducibility but allow newest patches.
           python-version: "3.13"
@@ -238,10 +235,3 @@ jobs:
           path: "${{ runner.temp }}/ansible-check.txt"
           if-no-files-found: error
           retention-days: 14
-
-      - name: Clean workspace
-        run: |
-          git clean -ffdx || true
-          git submodule deinit --all --force || true
-          rm -rf .git/modules
-          rm -rf dependencies/kubespray
