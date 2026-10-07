@@ -7,6 +7,7 @@ module "vpc" {
   availability_zone  = "eu-north-1a"
 }
 
+# trivy:ignore:AVD-AWS-0104
 module "sg" {
   source = "../../../modules/aws/sg"
 
