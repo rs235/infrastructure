@@ -134,6 +134,7 @@ jobs:
 
   reusable-ansible-check:
     name: Ansible Check
+    needs: [yamllint, gitleaks, trivy]
     runs-on: ${{ fromJSON(inputs.runner) }}
     permissions:
       contents: read
