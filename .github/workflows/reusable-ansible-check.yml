@@ -49,6 +49,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          submodules: false
+          clean: true
 
       - name: Install yamllint
         run: pip install yamllint==1.38.0
@@ -67,6 +70,8 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          submodules: false
+          clean: true
 
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e
@@ -83,6 +88,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          submodules: false
+          clean: true
 
       - name: Run Trivy
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
@@ -135,8 +143,8 @@ jobs:
           "${{ runner.temp }}/venv/bin/python" -m pip install -r requirements.txt
           "${{ runner.temp }}/venv/bin/ansible-galaxy" collection install -r requirements.yml
 
-      - name: Add venv to PATH
-        run: echo "${{ runner.temp }}/venv/bin" >> "$GITHUB_PATH"
+      # - name: Add venv to PATH
+      #   run: echo "${{ runner.temp }}/venv/bin" >> "$GITHUB_PATH"
 
       - name: Create vault password file
         run: |
