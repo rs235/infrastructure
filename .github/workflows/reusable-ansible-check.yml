@@ -101,7 +101,7 @@ jobs:
 
   reusable-ansible-check:
     name: Ansible Check
-    environment: home
+    environment: ${{ inputs.environment }}
     runs-on: ${{ fromJSON(inputs.runner) }}
     permissions:
       contents: read
@@ -150,6 +150,30 @@ jobs:
         run: |
           printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${{ runner.temp }}/vault_pass"
           chmod 600 "${{ runner.temp }}/vault_pass"
+
+      - name: Check vault password
+        env:
+          VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+        run: |
+          if [ -z "$VAULT_PASSWORD" ]; then
+            echo "::error::ANSIBLE_VAULT_PASSWORD is empty or unavailable"
+            exit 1
+          fi
+
+          echo "Vault password is present"
+          echo "Length: ${#VAULT_PASSWORD}"
+
+      - name: Check SSH key
+        env:
+          SSH_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
+        run: |
+          if [ -z "$SSH_KEY" ]; then
+            echo "::error::ANSIBLE_SSH_PRIVATE_KEY is empty or unavailable"
+            exit 1
+          fi
+
+          echo "SSH key is present"
+          echo "Length: ${#SSH_KEY}"
 
       - name: Wait for machines
         run: |
