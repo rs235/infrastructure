@@ -37,10 +37,6 @@ on:
       proxmox_ve_api_token:
         required: false
 
-permissions:
-  contents: read
-  pull-requests: write
-
 concurrency:
   group: ${{ inputs.concurrency-group }}
   cancel-in-progress: false
@@ -48,41 +44,71 @@ concurrency:
 jobs:
   yamllint:
     name: YAML Linting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
 
     steps:
+      - name: Install Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.13"
+
+      - name: Create Python virtual environment and add it to PATH
+        run: |
+          python -m venv "${{ runner.temp }}/venv"
+          echo "${{ runner.temp }}/venv/bin" >> "$GITHUB_PATH"
+
+      - name: Install pip
+        run: python -m pip install pip==26.2.1
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          submodules: false
+          clean: true
 
       - name: Install yamllint
-        run: pip install yamllint==1.38.0
+        run: |
+          python -m pip install yamllint==1.38.0
 
       - name: Run yamllint
-        run: yamllint --format github .
+        run: |
+          yamllint --format github .
 
   gitleaks:
     name: Secrets Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          submodules: false
+          clean: true
 
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e
         env:
-          # Temporary, automatically generated GitHub Token for GH API access.
+          # Temporary, automatically generated GitHub Token for API access.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
 
   trivy:
     name: Security Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          submodules: false
+          clean: true
 
       - name: Run Trivy
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
@@ -93,17 +119,21 @@ jobs:
 
   reusable-terraform-plan:
     name: Terraform Plan
+    needs: [yamllint, gitleaks, trivy]
     runs-on: ${{ fromJSON(inputs.runner) }}
 
     env:
+      # Allows Terraform tasks to run without confirmation
       TF_INPUT: "0"
-
+      # AWS credentials
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      # Ansible SSH private key to be injected during AWS instance creation for secure automation access.
       TF_VAR_ansible_ssh_public_key: ${{ inputs.ansible_ssh_public_key }}
-
+      # Proxmox VE API token
       PROXMOX_VE_ENDPOINT: ${{ secrets.proxmox_ve_endpoint }}
       PROXMOX_VE_API_TOKEN: ${{ secrets.proxmox_ve_api_token }}
+      # Disables TLS certificate verification for Proxmox BPG provider. Only acceptable during development.
       PROXMOX_VE_INSECURE: ${{ inputs.proxmox_ve_insecure }}
 
     defaults:
@@ -111,9 +141,22 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Clean workspace on self hosted runner
+        # Override working directory for this step to ensure entire workspace is cleaned.
+        working-directory: ${{ github.workspace }}
+        run: |
+          rm -rf "${GITHUB_WORKSPACE:?}"/*
+          rm -rf "${GITHUB_WORKSPACE:?}"/.[!.]*
+          rm -rf "${GITHUB_WORKSPACE:?}"/..?*
 
-      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          submodules: false
+          clean: true
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
           terraform_version: "1.15.0"
 
@@ -126,10 +169,10 @@ jobs:
       - name: Terraform validate
         run: terraform validate
 
-      - name: Setup TFLint
+      - name: Install TFLint
         uses: terraform-linters/setup-tflint@6e1e0642c0289bd619021bf6b34e3c08ed1e005a
 
-      - name: TFLint
+      - name: Run TFLint
         run: |
           tflint --init
           tflint --recursive
@@ -140,12 +183,12 @@ jobs:
       - name: Terraform show
         run: terraform show -no-color tfplan > "${{ runner.temp }}/tfplan.txt"
 
-      - name: Comment Terraform plan
+      - name: Comment Terraform plan to PR
         uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
         with:
           path: "${{ runner.temp }}/tfplan.txt"
 
-      - name: Upload Terraform plan
+      - name: Upload Terraform plan as artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: "${{ inputs.concurrency-group }}-plan"

@@ -37,9 +37,6 @@ on:
       proxmox_ve_api_token:
         required: false
 
-permissions:
-  contents: read
-
 concurrency:
   group: ${{ inputs.concurrency-group }}
   cancel-in-progress: false
@@ -48,16 +45,21 @@ jobs:
   reusable-terraform-apply:
     name: Terraform Apply
     runs-on: ${{ fromJSON(inputs.runner) }}
+    permissions:
+      contents: read
 
     env:
+      # Allows Terraform tasks to run without confirmation
       TF_INPUT: "0"
-
+      # AWS credentials
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      # Ansible SSH private key to be injected during AWS instance creation for secure automation access.
       TF_VAR_ansible_ssh_public_key: ${{ inputs.ansible_ssh_public_key }}
-
+      # Proxmox VE API token
       PROXMOX_VE_ENDPOINT: ${{ secrets.proxmox_ve_endpoint }}
       PROXMOX_VE_API_TOKEN: ${{ secrets.proxmox_ve_api_token }}
+      # Disables TLS certificate verification for Proxmox BPG provider. Only acceptable during development.
       PROXMOX_VE_INSECURE: ${{ inputs.proxmox_ve_insecure }}
 
     defaults:
@@ -65,9 +67,22 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Clean workspace on self hosted runner
+        # Override working directory for this step to ensure entire workspace is cleaned.
+        working-directory: ${{ github.workspace }}
+        run: |
+          rm -rf "${GITHUB_WORKSPACE:?}"/*
+          rm -rf "${GITHUB_WORKSPACE:?}"/.[!.]*
+          rm -rf "${GITHUB_WORKSPACE:?}"/..?*
 
-      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          submodules: false
+          clean: true
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
           terraform_version: "1.15.0"
 

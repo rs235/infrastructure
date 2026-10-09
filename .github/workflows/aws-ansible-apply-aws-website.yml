@@ -21,12 +21,10 @@ jobs:
   ansible-apply-aws-website:
     uses: ./.github/workflows/reusable-ansible-apply.yml
     with:
-      # Actions specific values
       environment: aws
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       concurrency-group: home-ansible-aws-website
       working-directory: ansible
-      # Ansible specific values
       ansible-playbook: aws_website
       ansible-inventory-group: project_website
 

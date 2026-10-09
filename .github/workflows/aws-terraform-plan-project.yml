@@ -14,13 +14,15 @@ permissions:
   pull-requests: write
 
 jobs:
-  project-terraform-plan:
+  terraform-plan-project:
     uses: ./.github/workflows/reusable-terraform-plan.yml
     with:
       working-directory: terraform/environments/aws/project
       concurrency-group: aws-terraform-project
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      # Ansible SSH private key to be injected during AWS instance creation for secure automation access.
       ansible_ssh_public_key: ${{ vars.ANSIBLE_SSH_PUBLIC_KEY }}
     secrets:
+      # AWS credentials
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

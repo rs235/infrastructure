@@ -22,7 +22,9 @@ jobs:
       working-directory: terraform/environments/home/kubernetes
       concurrency-group: home-terraform-kubernetes
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      # Disables TLS certificate verification for Proxmox BPG provider. Only acceptable during development.
       proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
     secrets:
+      # Proxmox VE API token
       proxmox_ve_endpoint: ${{ secrets.PROXMOX_VE_ENDPOINT }}
       proxmox_ve_api_token: ${{ secrets.PROXMOX_VE_API_TOKEN }}

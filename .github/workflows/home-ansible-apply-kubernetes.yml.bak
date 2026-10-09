@@ -21,12 +21,13 @@ jobs:
   kubernetes-ansible-apply:
     uses: ./.github/workflows/reusable-ansible-apply.yml
     with:
-      working-directory: ansible
-      concurrency-group: home-ansible-kubernetes
+      environment: home
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      concurrency-group: home-ansible-kubernetes
+      working-directory: ansible
       ansible-playbook: kubernetes
       ansible-inventory-group: k8s_cluster
 
     secrets:
-      ansible_ssh_private_key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
-      ansible_vault_password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+      ansible_ssh_private_key: ${{ secrets.HOME_ANSIBLE_SSH_PRIVATE_KEY }}
+      ansible_vault_password: ${{ secrets.HOME_ANSIBLE_VAULT_PASSWORD }}
