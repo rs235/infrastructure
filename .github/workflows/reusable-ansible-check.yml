@@ -176,7 +176,7 @@ jobs:
 
       - name: Wait for machines
         run: |
-          ansible" ${{ inputs.ansible-inventory-group }} \
+          ansible ${{ inputs.ansible-inventory-group }} \
             -i "inventories/${{ inputs.environment }}/inventory.yml" \
             --vault-password-file "${{ runner.temp }}/vault_pass" \
             --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
@@ -185,7 +185,7 @@ jobs:
 
       - name: Ansible syntax check
         run: |
-          ansible-playbook" \
+          ansible-playbook \
           -i "inventories/${{ inputs.environment }}/inventory.yml" \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
           --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
@@ -196,7 +196,7 @@ jobs:
         run: |
           set -o pipefail
 
-          ansible-playbook" \
+          ansible-playbook \
           -i "inventories/${{ inputs.environment }}/inventory.yml" \
           --vault-password-file "${{ runner.temp }}/vault_pass" \
           --private-key "${{ runner.temp }}/.ssh/id_ed25519_ansible" \
