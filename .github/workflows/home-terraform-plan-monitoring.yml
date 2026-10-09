@@ -26,4 +26,3 @@ jobs:
       # Proxmox VE API token
       proxmox_ve_endpoint: ${{ secrets.PROXMOX_VE_ENDPOINT }}
       proxmox_ve_api_token: ${{ secrets.PROXMOX_VE_API_TOKEN }}
-
