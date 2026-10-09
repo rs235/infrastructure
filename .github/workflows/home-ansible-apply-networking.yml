@@ -21,10 +21,10 @@ jobs:
   ansible-apply-networking:
     uses: ./.github/workflows/reusable-ansible-apply.yml
     with:
-      environment: home
-      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
-      concurrency-group: home-ansible-networking
       working-directory: ansible
+      concurrency-group: home-networking
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      environment: home
       ansible-playbook: networking
       ansible-inventory-group: networking
 

@@ -21,10 +21,10 @@ jobs:
   kubernetes-ansible-apply:
     uses: ./.github/workflows/reusable-ansible-apply.yml
     with:
-      environment: home
-      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
-      concurrency-group: home-ansible-kubernetes
       working-directory: ansible
+      concurrency-group: home-kubernetes
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      environment: home
       ansible-playbook: kubernetes
       ansible-inventory-group: k8s_cluster
 

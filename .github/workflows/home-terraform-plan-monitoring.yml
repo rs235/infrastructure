@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/reusable-terraform-plan.yml
     with:
       working-directory: terraform/environments/home/monitoring
-      concurrency-group: home-terraform-monitoring
+      concurrency-group: home-monitoring
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       # Disables TLS certificate verification for Proxmox BPG provider. Only acceptable during development.
       proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}

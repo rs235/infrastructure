@@ -20,10 +20,10 @@ jobs:
   ansible-check-monitoring:
     uses: ./.github/workflows/reusable-ansible-check.yml
     with:
-      environment: home
-      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
-      concurrency-group: home-ansible-monitoring
       working-directory: ansible
+      concurrency-group: home-monitoring
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      environment: home
       ansible-playbook: monitoring
       ansible-inventory-group: monitoring
 

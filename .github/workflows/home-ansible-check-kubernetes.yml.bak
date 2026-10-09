@@ -21,7 +21,7 @@ jobs:
     with:
       environment: home
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
-      concurrency-group: home-ansible-kubernetes
+      concurrency-group: home-kubernetes
       working-directory: ansible
       ansible-playbook: kubernetes
       ansible-inventory-group: k8s_cluster

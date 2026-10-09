@@ -20,10 +20,10 @@ jobs:
   ansible-check-aws-website:
     uses: ./.github/workflows/reusable-ansible-check.yml
     with:
-      environment: aws
-      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
-      concurrency-group: home-ansible-aws-website
       working-directory: ansible
+      concurrency-group: aws-website
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      environment: aws
       ansible-playbook: aws_website
       ansible-inventory-group: project_website
 
