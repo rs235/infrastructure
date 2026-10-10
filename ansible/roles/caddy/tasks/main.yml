@@ -13,7 +13,7 @@
     name: caddy
     state: present
     update_cache: true
-    cache_valid_time: 3600
+    cache_valid_time: 604800
 
 - name: Deploy Caddyfile
   ansible.builtin.template:
