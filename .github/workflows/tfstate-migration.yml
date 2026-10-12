@@ -51,6 +51,8 @@ jobs:
       # AWS credentials
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      # Ansible SSH private key to be injected during AWS instance creation for secure automation access.
+      TF_VAR_ansible_ssh_public_key: ${{ inputs.ansible_ssh_public_key }}
       # Proxmox VE API token
       PROXMOX_VE_ENDPOINT: ${{ secrets.proxmox_ve_endpoint }}
       PROXMOX_VE_API_TOKEN: ${{ secrets.proxmox_ve_api_token }}
