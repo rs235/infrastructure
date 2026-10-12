@@ -15,7 +15,7 @@ on:
       proxmox_ve_insecure:
         required: false
         type: string
-      
+
       tfstate_dir:
         required: true
         type: string
@@ -40,7 +40,7 @@ on:
 
       proxmox_ve_api_token:
         required: false
-      
+
       tf_api_token:
         required: true
 
@@ -93,7 +93,7 @@ jobs:
         run: |
           cp -f "${{ inputs.tfstate_dir }}/terraform.tfstate" \
           "${GITHUB_WORKSPACE}/${{ inputs.working-directory }}/terraform.tfstate"
-      
+
       - name: Terraform fmt
         run: terraform fmt -recursive
 
@@ -105,4 +105,4 @@ jobs:
         run: terraform validate
 
       - name: Terraform plan
-        run: terraform plan -input=false -no-color -out=tfplan 
+        run: terraform plan -input=false -no-color -out=tfplan
