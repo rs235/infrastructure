@@ -57,6 +57,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
       # Ansible SSH private key to be injected during AWS instance creation for secure automation access.
       TF_VAR_ansible_ssh_public_key: ${{ inputs.ansible_ssh_public_key }}
+      TF_WORKSPACE: ${{ inputs.tf_workspace_name }}
       # Proxmox VE API token
       PROXMOX_VE_ENDPOINT: ${{ secrets.proxmox_ve_endpoint }}
       PROXMOX_VE_API_TOKEN: ${{ secrets.proxmox_ve_api_token }}
@@ -97,12 +98,7 @@ jobs:
 
       - name: Terraform init
         run: |
-          terraform init \
-            -backend-config="hostname=app.terraform.io" \
-            -backend-config="organization=rs235" \
-            -backend-config="workspaces.name=${{ inputs.tf_workspace_name }}" \
-            -input=false \
-            -force-copy
+          terraform init -input=false -force-copy
 
       - name: Terraform validate
         run: terraform validate

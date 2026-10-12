@@ -1,3 +1,5 @@
 terraform {
-  backend "remote" {}
+  cloud {
+    organization = "rs235"
+  }
 }
