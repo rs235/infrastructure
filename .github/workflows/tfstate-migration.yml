@@ -91,7 +91,8 @@ jobs:
 
       - name: Copy Terraform state for migration
         run: |
-          cp -f "${{ inputs.tfstate_dir }}/terraform.tfstate" "${GITHUB_WORKSPACE}/${{ inputs.working-directory }}/terraform.tfstate"
+          cp -f "${{ inputs.tfstate_dir }}/terraform.tfstate" \
+          "${GITHUB_WORKSPACE}/${{ inputs.working-directory }}/terraform.tfstate"
       
       - name: Terraform fmt
         run: terraform fmt -recursive
