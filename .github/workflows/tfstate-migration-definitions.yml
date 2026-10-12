@@ -14,8 +14,9 @@ jobs:
       working-directory: terraform/environments/aws/project
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
-      tfstate_dir: /opt/terraform-state/proxmox/kubernetes
       ansible_ssh_public_key: ${{ vars.ANSIBLE_SSH_PUBLIC_KEY }}
+      tfstate_dir: /opt/terraform-state/aws/project
+      tf_workspace_name: project-aws
     secrets:
       # AWS credentials
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}

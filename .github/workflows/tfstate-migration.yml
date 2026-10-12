@@ -24,6 +24,10 @@ on:
         required: false
         type: string
 
+      tf_workspace_name:
+        required: true
+        type: string
+
     secrets:
       aws_access_key_id:
         required: false
@@ -92,7 +96,13 @@ jobs:
         run: terraform fmt -recursive
 
       - name: Terraform init
-        run: terraform init -input=false -force-copy
+        run: |
+          terraform init \
+            -backend-config="hostname=app.terraform.io" \
+            -backend-config="organization=rs235" \
+            -backend-config="workspaces.name=${{ inputs.tf_workspace_name }}" \
+            -input=false \
+            -force-copy
 
       - name: Terraform validate
         run: terraform validate
