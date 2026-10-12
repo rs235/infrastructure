@@ -16,7 +16,7 @@ jobs:
       proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
       ansible_ssh_public_key: ${{ vars.ANSIBLE_SSH_PUBLIC_KEY }}
       tfstate_dir: /opt/terraform-state/aws/project
-      tf_workspace_name: project-aws
+      tf_workspace_name: project-ec2
     secrets:
       # AWS credentials
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
