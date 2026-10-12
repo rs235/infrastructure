@@ -98,7 +98,7 @@ jobs:
 
       - name: Terraform init
         run: |
-          terraform init -input=false -force-copy
+          terraform init -input=false -migrate-state
 
       - name: Terraform validate
         run: terraform validate
