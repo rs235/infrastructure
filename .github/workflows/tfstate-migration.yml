@@ -32,6 +32,9 @@ on:
 
       proxmox_ve_api_token:
         required: false
+      
+      tf_api_token:
+        required: true
 
 jobs:
   tfstate-migrate:
@@ -72,7 +75,7 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          cli_config_credentials_token: ${{ secrets.tf_api_token }}
           terraform_version: "1.15.0"
 
       - name: Copy Terraform state for migration
