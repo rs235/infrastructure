@@ -98,10 +98,10 @@ jobs:
 
       - name: Terraform init
         run: |
-          terraform init -input=false -migrate-state
+          terraform init -input=false
 
       - name: Terraform validate
         run: terraform validate
 
       - name: Terraform plan
-        run: terraform plan -input=false -no-color -out=tfplan
+        run: terraform plan -input=false -no-color -out=tfplan 

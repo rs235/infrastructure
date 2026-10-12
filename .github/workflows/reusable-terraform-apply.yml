@@ -24,6 +24,10 @@ on:
         required: false
         type: string
 
+      tf_workspace_name:
+        required: true
+        type: string
+
     secrets:
       aws_access_key_id:
         required: false
@@ -36,6 +40,9 @@ on:
 
       proxmox_ve_api_token:
         required: false
+
+      tf_api_token:
+        required: true
 
 concurrency:
   group: ${{ inputs.concurrency-group }}
@@ -51,6 +58,8 @@ jobs:
     env:
       # Allows Terraform tasks to run without confirmation
       TF_INPUT: "0"
+      # Configures "cloud" backend to use correct workspace.
+      TF_WORKSPACE: ${{ inputs.tf_workspace_name }}
       # AWS credentials
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
