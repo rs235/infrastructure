@@ -27,3 +27,5 @@ linux_users:
       - sudo
     ssh_key: "{{ ssh_key_ansible }}"
     sudo_nopasswd: true
+
+pp-exporter_version: 3.10.1
