@@ -12,7 +12,6 @@ jobs:
     uses: ./.github/workflows/tfstate-migration.yml
     with:
       working-directory: terraform/environments/aws/project
-      concurrency-group: tf-migration
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
       tfstate_dir: /opt/terraform-state/aws/project
