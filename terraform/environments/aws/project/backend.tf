@@ -1,5 +1,10 @@
 terraform {
-  backend "local" {
-    path = "/opt/terraform-state/aws/project/terraform.tfstate"
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "rs235"
+
+    workspaces {
+      name = "project-workspace"
+    }
   }
 }

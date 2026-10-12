@@ -1,0 +1,25 @@
+---
+name: Terraform State Migration Definitions
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform-state-migrate:
+    uses: ./.github/workflows/tfstate-migration.yml
+    with:
+      working-directory: terraform/environments/aws/project
+      concurrency-group: tf-migration
+      runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
+      proxmox_ve_insecure: ${{ vars.PROXMOX_VE_INSECURE }}
+      tfstate_dir: /opt/terraform-state/aws/project
+    secrets:
+      # AWS credentials
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # Proxmox VE API token
+      proxmox_ve_endpoint: ${{ secrets.PROXMOX_VE_ENDPOINT }}
+      proxmox_ve_api_token: ${{ secrets.PROXMOX_VE_API_TOKEN }}

@@ -1,0 +1,92 @@
+---
+name: Terraform State Migration
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        required: true
+        type: string
+
+      runner:
+        required: true
+        type: string
+
+      proxmox_ve_insecure:
+        required: false
+        type: string
+      
+      tfstate_dir:
+        required: true
+        type: string
+
+    secrets:
+      aws_access_key_id:
+        required: false
+
+      aws_secret_access_key:
+        required: false
+
+      proxmox_ve_endpoint:
+        required: false
+
+      proxmox_ve_api_token:
+        required: false
+
+jobs:
+  tfstate-migrate:
+    name: Migrate Terraform State
+    runs-on: ${{ fromJSON(inputs.runner) }}
+
+    env:
+      # Allows Terraform tasks to run without confirmation
+      TF_INPUT: "0"
+      # AWS credentials
+      AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      # Proxmox VE API token
+      PROXMOX_VE_ENDPOINT: ${{ secrets.proxmox_ve_endpoint }}
+      PROXMOX_VE_API_TOKEN: ${{ secrets.proxmox_ve_api_token }}
+      # Disables TLS certificate verification for Proxmox BPG provider. Only acceptable during development.
+      PROXMOX_VE_INSECURE: ${{ inputs.proxmox_ve_insecure }}
+
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
+    steps:
+      - name: Clean workspace on self hosted runner
+        # Override working directory for this step to ensure entire workspace is cleaned.
+        working-directory: ${{ github.workspace }}
+        run: |
+          rm -rf "${GITHUB_WORKSPACE:?}"/*
+          rm -rf "${GITHUB_WORKSPACE:?}"/.[!.]*
+          rm -rf "${GITHUB_WORKSPACE:?}"/..?*
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          submodules: false
+          clean: true
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_version: "1.15.0"
+
+      - name: Copy Terraform state for migration
+        run: |
+          cp -f "${{ inputs.tfstate_dir }}/terraform.tfstate" "${{ inputs.working-directory }}/terraform.tfstate"
+      
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init
+        run: terraform init -input=false -force-copy
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan
+        run: terraform plan -input=false -no-color -out=tfplan
