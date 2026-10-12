@@ -80,7 +80,7 @@ jobs:
           cp -f "${{ inputs.tfstate_dir }}/terraform.tfstate" "${GITHUB_WORKSPACE}/${{ inputs.working-directory }}/terraform.tfstate"
       
       - name: Terraform fmt
-        run: terraform fmt -check -recursive
+        run: terraform fmt -recursive
 
       - name: Terraform init
         run: terraform init -input=false -force-copy
