@@ -20,7 +20,9 @@ jobs:
       runner: '["self-hosted", "Linux", "X64", "infra", "home"]'
       # Ansible SSH private key to be injected during AWS instance creation for secure automation access.
       ansible_ssh_public_key: ${{ vars.ANSIBLE_SSH_PUBLIC_KEY }}
+      tf_workspace_name: project-ec2
     secrets:
       # AWS credentials
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      tf_api_token: ${{ secrets.TF_API_TOKEN }}
