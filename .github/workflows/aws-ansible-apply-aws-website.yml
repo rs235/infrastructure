@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "ansible/inventories/home/**"
+      - "ansible/inventories/aws/**"
       - "ansible/playbooks/aws_website.yml"
       - "ansible/roles/**"
       - "ansible/requirements.yml"
