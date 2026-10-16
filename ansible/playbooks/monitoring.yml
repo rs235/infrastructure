@@ -1,17 +1,10 @@
 ---
-- name: Configure Linux users
-  hosts: pve-exporter
-  become: false
-  vars:
-    ansible_user: root
-  roles:
-    - linux_users
-
 - name: Bootstrap Proxmox VM
   hosts: monitoring
   become: true
   roles:
     - common
+    - linux_users
 
 - name: Deploy prometheus-pve-exporter
   hosts: pve-exporter
