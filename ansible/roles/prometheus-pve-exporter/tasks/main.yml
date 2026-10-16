@@ -1,4 +1,4 @@
 - name: Install prometheus-pve-exporter
   ansible.builtin.pip:
-    name: prometheus-pve-exporter={{ pp-exporter_version }}
+    name: prometheus-pve-exporter={{ pve_exporter_version }}
     state: present
