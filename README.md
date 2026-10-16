@@ -13,7 +13,7 @@ Main building blocks of this projects are:
 - Ansible - Used for operating system, kubernetes and application installation and configuration.
 - GitHub Actions as the CI/CD tool. The glue that holds all moving parts together.
 
-Additionaly Kubernetes application provisioning is done via ArgoCD in its own GitOps repository: **REPO LINK**.
+Additionaly Kubernetes application provisioning is done via ArgoCD in its own repository: [Argo CD repository](https://github.com/rs235/project-argocd).
 
 ## Architecture
 
