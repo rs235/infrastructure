@@ -11,7 +11,7 @@
 
 - name: Install prometheus-pve-exporter
   ansible.builtin.pip:
-    name: prometheus-pve-exporter={{ pve_exporter_version }}
+    name: prometheus-pve-exporter=={{ pve_exporter_version }}
     state: present
     virtualenv: /opt/prometheus-pve-exporter/venv
     virtualenv_command: python3 -m venv
